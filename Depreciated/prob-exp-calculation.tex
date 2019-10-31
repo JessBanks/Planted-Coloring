@@ -1,0 +1,280 @@
+
+% macros specific to terminology and this project
+\newcommand{\Proj}[1]{\Pi_{#1}}
+% \newcommand{\Tr}[1]{\mathsf{Trace}\left(#1\right)}
+\newcommand{\Symm}[1]{\mathsf{Symm}\left(#1\right)}
+\newcommand{\rank}{\mathsf{rank}}
+% \newcommand{\bbN}{\bbZ_{\ge 0}}
+% \renewcommand{\span}{\mathsf{span}}
+
+
+\section{Expectations in the Planted Model} \label{sec:exp-calc}
+
+In this section we will compute the quantities
+$$
+    \bbE_{(\bG,\bm \sigma) \sim \planted} \langle \nb{\ell}{\bG}, X_{\bm \sigma} \rangle
+$$
+in the case when $\planted$ is the planted coloring model. The calculations for symmetric or generic $d$-regular block models are analogous, and we will omit them in this paper, as they contribute substantial technicalities and very little in the way of actual insight. Let us assume that $\bG \sim \planted$ is drawn in the following way. For $1 \le i \le k$, let $S_i$ be a cluster of $d\frac{n}{k}$ vertices $v_{i,1},v_{i,2},\cdots,v_{i,d\frac{n}{k}}$, and write $V = \bigcup_{i\in [k]} S_i$. Assume $(k-1)|d\frac{n}{k}$ and that both $k$ and $d$ are constant. Now,
+
+\begin{enumerate}
+    \item Sample a uniformly random perfect matching on $V$, conditional on no edges between vertices in the same cluster.
+    \item Within each cluster $S_i$, collapse $v_{i,dt+1},...,v_{i,d(t+1)}$ into one vertex $\widetilde{v}_{i,t+1}$ for $0 \le t \le \frac{n}{k}$.
+\end{enumerate}
+
+The model for drawing a random $k$-colorable $d$-regular graph is as follows.  For $1\le i\le k$, let $S_i$ be a cluster of $d\frac{n}{k}$ vertices $v_{i,1}, v_{i,2}, \dots, v_{i,d\frac{n}{k}}$.  Let $V = \cup_{i\in[k]} S_i$.  Assume $k-1$ divides $d\frac{n}{k}$.  We assume $k$ and $d$ are constant.
+\begin{enumerate}
+\item \label{step:sample-matching} Sample a uniformly random perfect matching on $V$ so there is no edge between two vertices in a cluster.
+\item \label{step:collapse} Within each cluster $S_i$, collapse $v_{i,dt+1},\dots,v_{i,d(t+1)}$ into one vertex $\widetilde{v}_{i,t+1}$ for $0\le t < \frac{n}{k}$.
+\end{enumerate}
+
+Weigh a nonbacktracking walk that starts and ends in the same cluster as 1, and weigh any other nonbacktracking walk with $\left(-\frac{1}{k-1}\right)$.  We will need to show that the expected total weight of nonbacktracking walks is roughly $d(d-1)^{\ell-1}\left(-\frac{1}{k-1}\right)^{\ell}n$.  In particular, for a graph $G$ with adjacency matrix $A_G$, suppose $\left(A_G^{(\ell)}\right)_{uv}$ contains the number of nonbacktracking walks of length $\ell$ from $u$ to $v$, we are interested in understanding $\E\langle A_G^{(\ell)}, X_p\rangle$ where $X_p$ is the PSD matrix such that
+\[
+	(X_p)_{uv} =
+	\begin{cases}
+		1 &\text{if $u,v$ in same cluster}\\
+		-\frac{1}{k-1}&\text{if $u,v$ in different clusters}
+	\end{cases}
+\]
+Further, we will also need to show that the total weight of such nonbacktracking walks concentrates around the expectation.  Towards these goals, we first answer the following question.  Let $M$ be a matching on a constant number of edges such that no edge is within a cluster.  What is the probability that $M$ is a contained in a random perfect matching $\bP$ drawn in step \ref{step:sample-matching}?
+
+In order to understand this probability, we zoom into how one samples a matching in step \ref{step:sample-matching}.  We first sample a matrix $C$ where $C_{a,b}$ denotes the number of edges going between $S_a$ and $S_b$ with probability proportional to the number of such perfect matchings.  And then we randomly partition each $S_i$ into $k-1$ buckets $S_{i,1},\dots,S_{i,k}$ of sizes $C_{i,1},\dots,C_{i,k}$\footnote{$C_{ii} = 0$} respectively, and then for each $\{i,j\}$ pair, we sample a random perfect matching between $S_{i,j}$ and $S_{j,i}$.  For a given $C$ that is symmetric and has rows and columns summing up to $d\frac{n}{k}$, the probability of sampling $C$ in step \ref{step:sample-matching} is proportional to the number of perfect matchings with $C_{a,b}$ edges between $S_a$ and $S_b$, which is equal to
+\begin{align*}
+	\prod_{a < b} C_{a,b}! \prod_{i\in[k]}\binom{d\frac{n}{k}}{C_{i,1},\dots, C_{i,k}} &= (ds)!^{k} \prod_{a < b} \frac{1}{C_{a,b}!}
+\end{align*}
+The probability of sampling $C$ is proportional to $\prod_{a<b}\frac{1}{C_{a,b}!}$, which suggests that it can be sampled in the following way.  Let $B_{\{a,b\}}$ be a bucket defined for each $a < b$.  Then place each of $dn/2$ items in a uniformly random bucket independently, and let $\widetilde{C}_{a,b}$ be the number of items in $B_{\{a,b\}}$.  Let $\calE$ be the event that all the row and column sums of $\widetilde{C}$ equal $d\frac{n}{k}$.  $C$ is distributed as $\widetilde{C}|\calE$.
+
+\begin{proposition}	\label{prop:large-prob-balance}
+$\calE$ occurs with probability $\Omega\left(\frac{1}{(dn/k)^c}\right)$ where $c$ is a constant that only depends on $d$ and $k$.
+\end{proposition}
+\begin{proof}
+When each bucket gets exactly $\frac{dn}{k(k-1)}$ items, then $\calE$ occurs.  The probability of this event occuring is
+\begin{align*}
+\left(\frac{2}{k(k-1)}\right)^{dn/2}\binom{dn/2}{\frac{dn}{k(k-1)},\dots,\frac{dn}{k(k-1)}}
+\end{align*}
+which by Stirling's approximation, can be seen to $\Omega\left(\frac{1}{(dn/k)^{k(k-1)/4}}\right)$.
+\end{proof}
+
+\begin{proposition}	\label{prop:C-concentration}
+All $C_{a,b}$ are in the interval $I = \left[\frac{dn}{k(k-1)}-\left(\frac{dn}{k(k-1)}\right)^{1/2+\eps}, \frac{dn}{k(k-1)}+\left(\frac{dn}{k(k-1)}\right)^{1/2+\eps}\right]$ with probability at least $1-\exp\left(-\Omega\left(\left(dn/k\right)^{2\eps}\right)\right)$ for any $0 < \eps < 1/2$.
+\end{proposition}
+\begin{proof}
+	Let $\delta$ be the probability of event $\calE$ and let $E$ be the event that some $\widetilde{C}_{a,b}$ is not in $I$.
+	\begin{align}
+		\begin{split}
+		\Pr[E] &= \delta\Pr[E|\calE] + (1-\delta)\Pr[E|\overline{\calE}] \ge \delta\Pr[E|\calE]\\
+		\Pr[E|\calE] &\le \frac{\Pr[E]}{\delta}	\label{eq:lower-bound-E}
+		\end{split}
+	\end{align}
+
+	For each $\widetilde{C}_{a,b}$ is $\frac{dn}{k(k-1)}$ in expectation, and hence it follows from Hoeffding's inequality applied to each $\{a,b\}$ pair along with a union bound over all $\{a,b\}$ pairs that event $E$ occurs with probability at most
+	\begin{align}
+		\Pr[E] \le \exp\left(-\Omega\left(\left(dn/k\right)^{2\eps}\right)\right)	\label{eq:upper-bound-E}
+	\end{align}
+
+	Combining \eqref{eq:lower-bound-E}, \eqref{eq:upper-bound-E} and \eqref{prop:large-prob-balance} gives
+	\[
+		\Pr[E|\calE] \le \exp\left(-\Omega\left(\left(dn/k\right)^{2\eps}\right)\right)
+	\]
+	from which the desired statement we want to prove follows.
+\end{proof}
+
+
+\begin{proposition}	\label{prop:random-matching-prob}
+	Let $\bP$ be a random perfect matching on $V$ sampled in step \ref{step:sample-matching} of the sampling procedure and let $M$ be a matching on a constant number of edges $T$.  The probability that $M\subseteq \bP$ is $(1\pm o(1))\left(\frac{k}{dn(k-1)}\right)^T$.
+\end{proposition}
+\begin{proof}
+	Let $T_{a}$ be the number of matched vertices in $S_a$ in $M$.  And let $T_{a,b}$ be the number of edges in $M$ between clusters $S_a$ and $S_b$.  Conditioned on the matrix $C$ with $C_{a,b}$ prescribing the number of edges in $M$ between $S_a$ and $S_b$, we give an expression for the probability of $M\subseteq\bP$.  In particular,
+	\begin{align}
+		\Pr\left[M\subseteq\bP\right|C] = \frac{\prod_{a<b}\frac{C_{a,b}!}{(C_{a,b}-T_{a,b})!}}{\prod_a\frac{(dn/k)!}{(dn/k-T_a)!}} \label{eq:exact-given-C}
+	\end{align}
+	Let $E$ be the event that for some pair $\{a,b\}$, $C_{a,b}$ is outside interval $I$ as defined in Proposition \ref{prop:C-concentration} for any $0<\eps<1/2$. Now, we have
+	\begin{align}
+		\Pr\left[M\subseteq\bP\right] &= \Pr[E]\Pr\left[M\subseteq\bP|E\right] + (1-\Pr[E])\Pr\left[M\subseteq\bP|\overline{E}\right]	\label{eq:condition-break}
+	\end{align}
+	From \eqref{eq:exact-given-C}, we can conclude,
+	\begin{align*}
+		\frac{\prod_{a<b}\left(\frac{dn}{k(k-1)}-\left(\frac{dn}{k(k-1)}\right)^{1/2+\eps}-T_{a,b}\right)^{T_{a,b}}}{\prod_a (dn/k)^{T_a}} \le \Pr\left[M\subseteq\bP|\overline{E}\right] \le \frac{\prod_{a<b}\left(\frac{dn}{k(k-1)}+\left(\frac{dn}{k(k-1)}\right)^{1/2+\eps}\right)^{T_{a,b}}}{\prod_a (dn/k-T_a)^{T_a}}
+	\end{align*}
+	The bounds can be slacked to
+	\begin{align*}
+		\left(1-\left(\frac{dn}{k(k-1)}\right)^{-\frac{1+4\eps}{2}}\right)\frac{\prod_{a<b}\left(\frac{dn}{k(k-1)}\right)^{T_{a,b}}}{\prod_a (dn/k)^{T_a}} \le \Pr\left[M\subseteq\bP|\overline{E}\right] \le \left(1+\left(\frac{dn}{k(k-1)}\right)^{-\frac{1+4\eps}{2}}\right)\frac{\prod_{a<b}\left(\frac{dn}{k(k-1)}\right)^{T_{a,b}}}{\prod_a (dn/k)^{T_a}}
+	\end{align*}
+	which leads to the conclusion
+	\begin{align*}
+		\Pr\left[M\subseteq\bP|\overline{E}\right] = \left(1\pm\left(\frac{dn}{k(k-1)}\right)^{-\frac{1}{2}+2\eps}\right)\left(\frac{k}{dn(k-1)}\right)^T
+	\end{align*}
+	thus completing our proof.
+\end{proof}
+
+For the rest of this section, we use $\bG$ to denote a $d$-regular graph sampled according to the procedure described at the start of this section, and $\bP$ to denote the random perfect matching sampled in step \ref{step:sample-matching} as an intermediate step to sampling $\bP$.
+\begin{proposition}	\label{prop:single-seq}
+	Given a sequence of distinct vertices $u_1, \dots, u_\ell$ of $\bG$ such that $u_i$ and $u_{i+1}$ are in different clusters for $1\le i<\ell$, the expected number of paths formed by the sequence $u_1 \dots u_\ell$ is
+	\[
+		(1\pm o(1)) \frac{d}{k-1}\left(\frac{d-1}{k-1}\right)^{\ell-2}\left(\frac{k}{n}\right)^{\ell-1}
+	\]
+\end{proposition}
+\begin{proof}
+	Let $U_i = \{u_{i,1}, \dots, u_{i,d}\}$ be the $d$ vertices that were collapsed to $u_i$ in step \ref{step:collapse}.  Let $\calM$ be the collection of matchings on $\ell-1$ edges such that there is exactly one edge between $U_i$ and $U_{i+1}$ for $1 \le i < \ell$.  The expected number of paths in $\bG$ in order $u_1 \dots u_\ell$ is equal to the expected number of matchings in $\calM$ that are contained in the random matching $\bP$ sampled in step \ref{step:sample-matching}.  This is in the range
+	\begin{align*}
+		(1\pm o(1))|\calM|\left(\frac{k}{dn(k-1)}\right)^{\ell-1} &= (1\pm o(1))d^{\ell}(d-1)^{\ell-2}\left(\frac{k}{dn(k-1)}\right)^{\ell-1}\\
+		&= (1\pm o(1)) \frac{d}{k-1}\left(\frac{d-1}{k-1}\right)^{\ell-2}\left(\frac{k}{n}\right)^{\ell-1}
+	\end{align*}
+\end{proof}
+
+
+The next task is to count sequences of vertices that start and end in the same cluster, and also sequences that start and end in different clusters.
+\begin{proposition}	\label{prop:num-seq}
+	Let $P_{i,0}$ be the number of length-$(i+1)$ sequences of vertices starting and ending in the same cluster, and $P_{i,1}$ be the number of length-$(i+1)$ sequences of vertices whose last vertex is in a different cluster from the first vertex.  Then
+	\[
+		Q_i := P_{i,0}-\frac{1}{k-1}P_{i,1} = (1\pm o(1))(-1)^i \left(\frac{n}{k}\right)^{i+1}k
+	\]
+	for $i\le T$ for constant $T$.
+\end{proposition}
+\begin{proof}
+	It is easy to see that $P_{i,0}$ and $P_{i,1}$ satisfy
+	\begin{align*}
+		\left(\frac{n}{k}-i\right)P_{i-1,1} &\le P_{i,0} \le \frac{n}{k}P_{i-1,1}\\
+		\left(\frac{n}{k}(k-1)-i\right)P_{i-1,0} + \left(\frac{n}{k}(k-2)-i\right)P_{i-1,1} &\le P_{i,1} \le \frac{n}{k}(k-1)P_{i-1,0} + \frac{n}{k}(k-2)P_{i-1,1}
+	\end{align*}
+	from which we have
+	\begin{align*}
+		P_{i,0} &= (1\pm o(1)) \frac{n}{k}P_{i-1,1}\\
+		P_{i,1} &= (1\pm o(1)) \left(\frac{n}{k}(k-1)P_{i-1,0} + \frac{n}{k}(k-2)P_{i-1,1}\right)
+	\end{align*}
+	Thus, we have
+	\begin{align*}
+		Q_i = P_{i,0} - \frac{1}{k-1}P_{i,1} &= (1\pm o(1))\left(\frac{n}{k(k-1)}P_{i-1,1} - \frac{n}{k}P_{i-1,0}\right)\\
+		&= -(1\pm o(1))\frac{n}{k}\left(P_{i-1,0}-\frac{1}{k-1}P_{i-1,1}\right) = -(1\pm o(1))\frac{n}{k}Q_{i-1}
+	\end{align*}
+Since $Q_0 = n$, we have that $Q_i$ must be $(1\pm o(1))(-1)^{i}\left(\frac{n}{k}\right)^{i+1}k$ as long as $i$ is constant.
+\end{proof}
+
+
+\begin{definition}
+	Let $G$ and $H$ be graphs.  Given an injective map $\pi$ from $V(G)$ to $V(H)$, we call $\pi$ an \emph{occurrence} of $G$ in $H$ if $\pi(E(G)) := \{\{\pi(a),\pi(b)\}:\{a,b\}\in E(G)\}$ is contained in $E(H)$.  The number of occurrences of $G$ in $H$ under $\pi$ is the number of subsets of $E(H)$ that are equal to $\pi(E(G))$ (this could be a greater than 1 if $E(H)$ is a multiset, i.e., if $E(H)$ has parallel edges).  The number of occurrences of $G$ in $H$ is
+	\[
+		\sum_{\pi~\text{injective from $V(G)$ to $V(H)$}} \text{number of occurrences of $G$ in $H$ under $\pi$}
+	\]
+\end{definition}
+
+\begin{proposition}	\label{prop:subgraph-count}
+	Let $S$ be a graph with $\alpha$ vertices and $\beta$ edges for constant $\alpha,\beta$.  The expected number of occurrences of $S$ in $\bG$ is $O(n^{\alpha-\beta})$.  In particular, if $\alpha \ge \beta$, the expected number of occurrences is $O(1)$.
+\end{proposition}
+\begin{proof}
+	Define $\Pi:=\{\pi:V(S)\rightarrow V(\bG):\pi~\text{injective}\}$, fix $\pi\in\Pi$ and consider the set $\pi(V(S))$.  For each $v\in V(S)$ let $U_{\pi,v}:=\{u_1,\dots,u_d\}$ be the collection of $d$ vertices of $V$ prior to being collapsed to $\pi(v)$ in step \ref{step:collapse}.  Let $\calM_{\pi}$ be the collection of partial matchings $M$ on $\cup_{v\in V(S)} U_v$ such that the number of edges between $U_v$ and $U_{v'}$ is equal to the number of edges between $v$ and $v'$ in $S$.  Observe that $\pi$ is an occurrence of $S$ in $\bG$ if and only if there is $M\in\calM$ for which $M\subseteq\bP$.  The size of $\calM_{\pi}$ is at most $d^{\alpha}$.  For a given $M\in\calM_{\pi}$, we know from Proposition \ref{prop:random-matching-prob} that
+	\[
+		\Pr[M\subseteq\bP] = (1\pm o(1))\left(\frac{k}{dn(k-1)}\right)^{\beta}
+	\]
+	and the expected number of $M$ in $\calM_{\pi}$ is thus at most
+	\[
+		(1\pm o(1))\left(\frac{k}{dn(k-1)}\right)^{\beta}d^{\alpha}
+	\]
+	Finally, the expected number of occurrences of $S$ in $\bG$ is
+	\[
+		(1\pm o(1))|\Pi|\left(\frac{k}{n(k-1)}\right)^{\beta}d^{\alpha-\beta} \le (1\pm o(1))n^{\alpha}\left(\frac{k}{n(k-1)}\right)^{\beta}d^{\alpha-\beta} = O(n^{\alpha-\beta})
+	\]
+\end{proof}
+
+
+Finally, we are set to prove
+\begin{proposition}
+	$\displaystyle
+		\E\langle A_{\bG}^{(\ell)}, X_p\rangle = (1\pm o(1))d(d-1)^{\ell-1}\left(-\frac{1}{k-1}\right)^{\ell}n
+	$
+\end{proposition}
+\begin{proof}
+	Let $\calU$ be the collection of sequences of vertices $u_0,\dots,u_\ell$ such that $u_i$ and $u_{i+1}$ are in different clusters and $u_i\ne u_{i+2}$.  For such a sequence, assign weight $w(u_0,u_\ell)$ as 1 if $u_0$ and $u_\ell$ are in the same cluster and $\frac{-1}{k-1}$ if they are in different clusters.  Let $\calU_{\mathrm{distinct}}\subseteq \calU$ be the subcollection of sequences for which the vertices $u_0,\dots,u_\ell$ are distinct.  We have,
+	\begin{align*}
+		\E\langle A_{\bG}^{(\ell)}, X_p\rangle &= \sum_{(u_0,\dots,u_\ell)\in\calU} w(u_0,u_\ell) \E[\text{number of paths on $u_0,\dots,u_\ell$}]\\
+		&= \sum_{(u_0,\dots,u_\ell)\in\calU_{\mathrm{distinct}}} w(u_0,u_\ell) \E[\text{number of paths on $u_0,\dots,u_\ell$}] \\ +
+		&\sum_{(u_0,\dots,u_\ell)\in\calU\setminus\calU_{\mathrm{distinct}}} w(u_0,u_\ell) \E[\text{number of paths on $u_0,\dots,u_\ell$}]
+	\end{align*}
+	Applying Proposition \ref{prop:single-seq} on the first term tells us that it is
+	\[
+		(1\pm o(1))d(d-1)^{\ell-1}\left(\frac{1}{k-1}\right)^{\ell}\left(\frac{k}{n}\right)^{\ell}\sum_{(u_0,\dots,u_\ell)\in\calU_{\mathrm{distinct}}} w(u_0,u_\ell)
+	\]
+	and then from Proposition \ref{prop:num-seq} we can write the above as
+	\[
+		(1\pm o(1))d(d-1)^{\ell-1}\left(\frac{1}{k-1}\right)^{\ell}\left(\frac{k}{n}\right)^{\ell}\left(\frac{n}{k}\right)^{\ell+1}k = (1\pm o(1))d(d-1)^{\ell-1}\left(\frac{1}{k-1}\right)^{\ell}n
+	\]
+	The second term is in $\displaystyle \left[-\frac{1}{k-1},~1\right] \sum_{(u_0,\dots,u_\ell)\in\calU\setminus\calU_{\mathrm{distinct}}} \E[\text{number of paths on $u_0,\dots,u_\ell$}]$,
+	which from Proposition \ref{prop:subgraph-count} is in range $\pm O(1)$ since the above sum over $\calU\setminus\calU_{\mathrm{distinct}}$ counts the expected number of occurrences of subgraphs in a constant sized collection, each of which have at least as many vertices as edges.
+
+	Thus, $\displaystyle \E\langle A_{\bG}^{(\ell)}, X_p\rangle = (1\pm o(1))d(d-1)^{\ell-1}\left(-\frac{1}{k-1}\right)^{\ell}n$ as desired.
+
+\end{proof}
+
+In order to show concentration of $\langle A_{\bG}^{(\ell)}, X_p\rangle$, we bound its variance.
+\begin{proposition}	\label{prop:var-bound}
+	$\displaystyle \Var\left[\langle A_{\bG}^{(\ell)}, X_p \rangle\right] = o(n^2)$.
+\end{proposition}
+\begin{proof}
+	For a nonbacktracking sequence of vertices in $V(\bG)$ (also equal to $\widetilde{V}$) $\vec{u} := (u_0,u_1,\dots,u_\ell)$, i.e. a sequence satisfying $u_i\ne u_{i+2}$ for all $i$, define $\calM_{\vec{u}}$ is the collection of matchings on $V$ such that when $V$ is collapsed to $\widetilde{V}$, each $M\in \calM_{\vec{u}}$ collapses to the nonbacktracking walk $u_0u_1 u_2\dots u_\ell$.  Each $M$ also comes associated with a weight $w_M$, which is 1 if $u_1$ and $u_\ell$ are in the same cluster and $-\frac{1}{k-1}$ otherwise.  Let $\calM$ be the collection of all pairs $(M,\vec{u})$ where $\vec{u}$ is a nonbacktracking sequence and $M\in \calM_{\vec{u}}$ over all such sequences.  Then,
+	\begin{align*}
+		\E\left[\langle A_{\bG}^{(\ell)}, X_p \rangle^2\right] &= \sum_{(M_1,\vec{u_1}),(M_2,\vec{u_2})\in\calM} \E\left[\bone_{M_1\subseteq \bP}\bone_{M_2\subseteq \bP}\right] w_{M_1}w_{M_2}\\
+		&= \sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ M_1\cup M_2~\text{valid matching}}} \E\left[\bone_{M_1\cup M_2\subseteq\bP}\right]w_{M_1}w_{M_2}\\
+		&= \sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ \vec{u_1}, \vec{u_2}~\text{disjoint}}} \E[\bone_{M_1\subseteq\bP}\bone_{M_2\subseteq\bP}]w_{M_1}w_{M_2} +\\
+		&\sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ M_1\cup M_2~\text{valid matching}\\ \vec{u_1},\vec{u_2}\text{ intersect}}} \E\left[\bone_{M_1\cup M_2\subseteq\bP}\right]w_{M_1}w_{M_2}
+	\end{align*}
+	On the other hand,
+	\begin{align*}
+		\E\left[\langle A_{\bG}^{(\ell)}, X_p \rangle\right]^2 &= \sum_{(M_1, \vec{u_1}), (M_2, \vec{u_2})\in\calM} \E\left[\bone_{M_1\subseteq\bP}\right]\E\left[\bone_{M_2\subseteq\bP}\right]w_{M_1}w_{M_2}
+		\intertext{which can similarly be broken into}
+		&= \sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ \vec{u_1}, \vec{u_2}~\text{disjoint}}} \E[\bone_{M_1\subseteq\bP}]\E[\bone_{M_2\subseteq\bP}]w_{M_1}w_{M_2} +\\
+		&\sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ \vec{u_1},\vec{u_2}\text{ intersect}}} \E\left[\bone_{M_1\subseteq \bP}\right]\E\left[\bone_{M_2\subseteq\bP}\right]w_{M_1}w_{M_2}
+	\end{align*}
+	Towards computing $\Var\left[\langle A_{\bG}^{(\ell)}, X_p\rangle\right]$, we first calculate
+	\begin{align*}
+		&\sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ \vec{u_1}, \vec{u_2}~\text{disjoint}}} w_{M_1}w_{M_2}\left(\E[\bone_{M_1\subseteq\bP}\bone_{M_2\subseteq\bP}] - \E[\bone_{M_1\subseteq\bP}]\E[\bone_{M_2\subseteq\bP}]\right)\\
+		=~&\sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ \vec{u_1}, \vec{u_2}~\text{disjoint}}} w_{M_1}w_{M_2}\left(\Pr[M_1\cup M_2\subseteq\bP] - \Pr[M_1\subseteq\bP]\Pr[M_2\subseteq\bP]\right)
+		\intertext{which, by an application of Proposition \ref{prop:random-matching-prob}, is}
+		=~&\sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ \vec{u_1}, \vec{u_2}~\text{disjoint}}} w_{M_1}w_{M_2} \cdot o(1) \left(\frac{k}{dn(k-1)}\right)^{|M_1|+|M_2|}\\
+		\le~&\sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ \vec{u_1}, \vec{u_2}~\text{disjoint}}} o(1)\left(\frac{k}{dn(k-1)}\right)^{2\ell}
+	\end{align*}
+	The number of ways to pick a disjoint pair $\vec{u_1},\vec{u_2}$ is at most the number of ways to pick a pair of nonbacktracking sequences, which is at most $n^2\left(\frac{n}{k}(k-1)\right)^{\ell}$.  For a given nonbacktracking sequence, there are at most $d^{\ell+1}$ matchings that collapse to it, and hence the above sum can be upper bounded by,
+	\[
+		o(1)\cdot\left( \frac{k}{dn(k-1)} \right)^{2\ell}\cdot n^2\left(\frac{n}{d}(k-1)\right)^{2\ell}d^{2\ell+2} = o(1)n^2 = o(n^2)
+	\]
+	Thus, in order to finish the proof, it suffices to upper bound
+	\begin{align*}
+		\sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ M_1\cup M_2~\text{valid matching}\\ \vec{u_1},\vec{u_2}\text{ intersect}}} \E\left[\bone_{M_1\cup M_2\subseteq\bP}\right]w_{M_1}w_{M_2} - \sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ \vec{u_1},\vec{u_2}\text{ intersect}}} \E\left[\bone_{M_1\subseteq \bP}\right]\E\left[\bone_{M_2\subseteq\bP}\right]w_{M_1}w_{M_2}
+	\end{align*}
+	by $o(n^2)$.  We can immediately upper bound the above by
+	\[
+		\sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ M_1\cup M_2~\text{valid matching}\\ \vec{u_1},\vec{u_2}\text{ intersect}}} \E\left[\bone_{M_1\cup M_2\subseteq\bP}\right] + \sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ \vec{u_1},\vec{u_2}\text{ intersect}}} \E\left[\bone_{M_1\subseteq \bP}\right]\E\left[\bone_{M_2\subseteq\bP}\right]
+	\]
+	and then bound each term separately.
+	
+	First, consider the random variable
+	\begin{align} \label{eq:nbw-intersect}
+		\sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ M_1\cup M_2~\text{valid matching}\\ \vec{u_1},\vec{u_2}\text{ intersect}}}\bone_{M_1\cup M_2\subseteq P}
+	\end{align}
+	We will prove an upper bound of $O(n)$ that always holds on the random variable, thereby giving that upper bound on
+	\[
+		\E\left[\sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ M_1\cup M_2~\text{valid matching}\\ \vec{u_1},\vec{u_2}\text{ intersect}}} \bone_{M_1\cup M_2\subseteq\bP}\right] = \sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ M_1\cup M_2~\text{valid matching}\\ \vec{u_1},\vec{u_2}\text{ intersect}}} \E\left[\bone_{M_1\cup M_2\subseteq\bP}\right]
+	\]
+	The number of nonbacktracking walks of length $\ell$ in any $d$-regular graph is exactly $skd(d-1)^{\ell-1}$, and the number of nonbacktracking walks in a fixed $d$-regular graph that intersect a fixed nonbacktracking walk $\vec{u}$ is bounded by a constant $C$.  Hence, the number of choices for pairs $\vec{u_1},\vec{u_2}$ such that they intersect is $O\left(n\right)$.  \eqref{eq:nbw-intersect} can be written as
+	\[
+		\sum_{\vec{u_1},\vec{u_2}~\text{intersect}} \sum_{\substack{(M_1,\vec{u_1}),(M_2,\vec{u_2})\in\cal M\\ M_1\cup M_2\text{ valid matching}}} \bone_{M_1\cup M_2\subseteq P} \le \sum_{\vec{u_1},\vec{u_2}~\text{intersect}} d^{2\ell+2}\bone_{M_1\cup M_2\subseteq P}=d^{2\ell+1}\sum_{\vec{u_1},\vec{u_2}~\text{intersect}} \bone_{M_1\cup M_2\subseteq P}
+	\]
+	which results in an overall bound of $O(n)$.
+
+	Finally, we upper bound the last piece by $O(n)$,
+	\begin{align}	\label{eq:final-term}
+		\sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ \vec{u_1},\vec{u_2}\text{ intersect}}} \E\left[\bone_{M_1\subseteq \bP}\right]\E\left[\bone_{M_2\subseteq\bP}\right]
+	\end{align}
+	Applying Proposition \ref{prop:random-matching-prob} to the above tells us that the quantity is
+	\begin{align*}
+		\sum_{\substack{(M_1,\vec{u_1}), (M_2,\vec{u_2}) \in \calM\\ \vec{u_1},\vec{u_2}\text{ intersect}}} (1\pm o(1)) \left(\frac{1}{ds(k-1)}\right)^{2\ell}
+	\end{align*}
+	Combining the facts that (i) for a fixed $\vec{u}$, there are $d^{\ell+1}$ matchings that collapse to it, (ii) there are at most $sk(s(k-1))^{\ell}$ choices for $\vec{u_1}$, (iii) there are $C(s(k-1))^{\ell}$ choices for $\vec{u_2}$ once $\vec{u_1}$ is fixed, we can bound \eqref{eq:final-term} by
+	\[
+		(1\pm o(1))C\left(\frac{1}{ds(k-1)}\right)^{2\ell}d^{2\ell+2}n\left(\frac{n}{k}(k-1)\right)^{2\ell} = O(n)
+	\]
+	which completes the proof of the variance bound.
+\end{proof}
+
+As an upshot of Proposition \ref{prop:var-bound} and Chebyshev's inequality, we can conclude:
+\begin{theorem}
+	$\displaystyle\langle A_{\bG}^{\ell}, X_p\rangle = (1\pm o(1))d(d-1)^{\ell-1}\left(-\frac{1}{k-1}\right)^{\ell}n$ with probability $1-o(1)$.
+\end{theorem}

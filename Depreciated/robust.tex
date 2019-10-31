@@ -1,0 +1,48 @@
+\section{A Robust Algorithm for the Distinguishing Problem} \label{sec:robust}
+
+In this section, we are promised that $\bG$ is a graph on $n$ vertices, drawn from one of $\planted_{k,\lambda}$ or $\Null$. Suppose further that before we observe $\bG$ it is corrupted by $f(n)$ adversarial edge insertions and deletions to a graph $\widetilde{\bH}$ where $f$ is some growing function of $n$. Upon observing this corrupted graph, our task is to determine whether $\bG$ was drawn from the null or planted model.  We present an algorithm below that works for an appropriate regime of $f$. 
+
+\begin{algorithm}	\label{alg:robust}
+	Given a graph $\widetilde{\bH}$ and $m \in \bbN$ as input, do the following.  Delete all edges incident to vertices that have degree greater than $d$ in $\widetilde{\bH}$, and then greedily add edges connecting any vertices with degree less than $d$ to obtain a $d$-regular graph $\bH$. Run the distinguishing SDP \eqref{eq:full-sdp} at level $m$ on $\bH$ and output \texttt{null} if the SDP is infeasible, and \texttt{planted} otherwise.
+\end{algorithm}
+
+\begin{theorem}
+    Let $\alpha$ be any positive constant.  Suppose $\lambda^2(d-1) = 1+\alpha$ and $\lambda < 0$, then there exist $\eps > 0$ satifying $f(n)\le\eps n$, and $m \in \bbN$, such that Algorithm \ref{alg:robust} on input $\widetilde{\bH}$ and $m$, correctly distinguishes whether $\bG$ was drawn from $\Null$, or from $\planted_{k,\lambda}$ with probability $1-o(1)$.
+\end{theorem}
+\begin{proof}
+	Note that $\bH$ is can be obtained by taking $\bG$ and making up to $\beta\eps n$ edge insertions and deletions for an absolute constant $\beta$.
+
+	It suffices to show that (i) the SDP is feasible on $\bH$ as input if $\bG$ is drawn from the planted distribution, and (ii) the SDP is infeasible on $\bH$ as input if $\bG$ is drawn from the null distribution.
+
+	Call a vertex $v$ \emph{corrupted} if its $(m+1)$-neighborhood in $\bH$ differs from its $(m+1)$-neighborhood in $\bG$.  We begin by analyzing the difference $\nb{\ell}{\bG} -\nb{\ell}{\bH}$ for $1\le\ell\le m$. Suppose $v$ is not a corrupted vertex, then $\nb{\ell}{\bG}$ and $\nb{\ell}{\bH}$ agree on the $v$-th row and column, which means $(\nb{\ell}{\bG}-\nb{\ell}{\bH})_{v,\cdot}$ is 0.  On the other hand, if $v$ is a corrupted vertex,
+	\begin{align*}
+		\left\|\left(A_{\bG}^{(\ell)}-A_{\bH}^{(\ell)}\right)_{v,*}\right\|_1 &\le \left\|A_{\bG}^{(\ell)}\right\|_1 + \left\|A_{\bH}^{(\ell)}\right\|_1\\
+		&\le 2d(d-1)^{\ell-1}
+	\end{align*}
+	In particular, this means the entrywise 1-norm  $\left\|A_{\bG}-A_{\bH}\right\|_1$, is bounded by $C\eps n\cdot 2d(d-1)^{\ell-1}$ since there are $C\eps n$ corrupted vertices for an absolute constant $C$.
+
+	Now, observe that for any PSD matrix $X$ with diagonal entries equal to one, every off-diagonal entry has modulus at most one.  This means
+	\begin{align*}
+		\left|\left\langle A_{\bG}^{(\ell)}, X \right\rangle - \left\langle A_{\bH}^{(\ell)}, X \right\rangle \right| &= \left| \left\langle A_{\bG}^{(\ell)}-A_{\bH}^{(\ell)}, X \right\rangle \right|\\
+		&\le \left\| A_{\bG}^{(\ell)} - A_{\bH}^{(\ell)} \right\|_1 = C'\eps n
+	\end{align*}
+    where $C'$ is a constant.
+
+	By Proposition \ref{prop:model} when $\bG$ is drawn from the planted distribution, there is w.h.p. a feasible SDP solution, given by PSD matrix $X$, for the level-$m$ local statistics SDP with $A_{\bG}$ as input, and satisfying the constraints with slack of $\Omega(n)$, which means, $X$ must also be a feasible solution when $A_{\bH}$ is given as input when $\eps$ is small enough.
+
+	On the other hand, when $\bG$ is drawn from the null distribution, by Remark \ref{rem:violation-margin}, any PSD matrix $Y$ that has an all-ones diagonal violates the constraint
+	\begin{align}	\label{eq:constraint-hard}
+		\left\langle A_{\bG}^{(\ell)}, Y\right\rangle 
+		= \E_{A_{\bG},\sigma \sim\planted}\left\langle A_{\bG}^{(\ell)}, X_{\bm \sigma}\right\rangle \pm \delta n
+	\end{align}
+	by a margin of $\Omega(n)$, which means when $\bH$ is the input, \eqref{eq:constraint-hard} is still violated by $Y$ if $\eps$ is chosen to be small enough, and thus the local statistics SDP is infeasible.
+\end{proof}
+
+
+\begin{remark}
+    The parameter $\eps$ controlling the number of adversarial edge insertions and deletions made to random input $\bG$ that the level-$m$ $LocalStatistic$ SDP can tolerate can be seen to decrease with $m$, which is indicative of a tradeoff between how close to the threshold an algorithm in this hierarchy works and how robust it is to perturbations.
+\end{remark}
+
+\begin{corollary}
+	Algorithm \ref{alg:robust} correctly distinguishes between whether $\bG$ was drawn from the null distribution, or from the planted distribution, from input $\widetilde{\bH}$, with probability $1-o(1)$ when $f(n) = o(n)$.
+\end{corollary}

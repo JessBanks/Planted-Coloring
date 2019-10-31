@@ -1,0 +1,99 @@
+\section{Technical Overview}
+
+Denote by $\Null$ the uniform distribution on $n$-vertex $d$-regular graphs, and write $\Planted = \Planted_{d,k,M,\pi}$ the \model. We will use bold face font for random objects sampled from these distributions. Because we care only about the case when the number of vertices is very large, we will use \emph{with high probability (w.h.p)} to describe any sequence of events with probability $1 - o_n(1)$ in $\Null$ or $\Planted$ as $n\to \infty$. We will write $[n] = \{1,...,n\}$, and in general use the letters $u,v,w$ to refer to elements of $[n]$ and $i,j$ for elements of $[k]$. The identity matrix will be denoted by $\1$, and we will write $X^T$ for the transpose of a matrix $X$, $\langle X,Y \rangle = \Tr X^TY$ for the standard matrix inner product, and $\|X\|_F$ for the associated Frobenius norm. Positive semidefiniteness  will be indicated with the symbol $\succeq$. The standard basis vectors will be denoted $e_1,e_2,...$, the all-ones vector written as $e$, and the all-ones matrix as $\bbJ = ee^T$. Finally, let $\diag : \bbR^{n\times n} \to \bbR$ be the function extracting the diagonal of a matrix, and $\Diag: \bbR^n \to \bbR^{n\times n}$ be the one which populates the nonzero elements of a diagonal matrix with the vector it is given as input.
+
+\subsection{Detection, Refutation, and Sum-of-Squares} % (fold)
+\label{sub:detection_refutation_and_sum_of_squares}
+
+We will begin the discussion of the Local Statistics algorithm by briefly recalling Sum-of-Squares programming. Say we have a constraint satisfaction problem presented as a system of polynomial equations in variables $x = (x_1,...,x_n)$ that we are to simultaneously satisfy. In other words, we are given a set
+$$
+	\calS = \left\{ x \in \bbR^n : f_1(x),...,f_m(x) = 0\right\}
+$$
+and we need to decide if it is non-empty. Whenever the problem is satisfiable, any probability distribution supported on $\calS$ gives rise to an operator $\expected: \bbR[x] \to \bbR$ mapping a polynomial $x$ to its expectation. Trivially, $\expected$ obeys
+\begin{align}
+	\textit{Normalization} & &\expected 1 &= 1 \label{eq:exp-norm} \\
+	\textit{Satisfaction of $\calS$}& & \expected f_i(x)\cdot p(x) &= 0 & &\forall i\in[m], \forall p \in\bbR[x] \label{eq:exp-sat}\\
+	\textit{Positivity} & & \expected p(x)^2 &\ge 0 & &\forall p \in \bbR[x] \label{eq:exp-pos} 
+\end{align}
+In general, we will say that an operator mapping some subset of $\bbR[x]$ to the reals is \emph{normalized}, \emph{satisfies $\calS$}, or is \emph{positive} if it obeys \eqref{eq:exp-norm}, \eqref{eq:exp-sat}, or \eqref{eq:exp-pos}, respectively, on all polynomials in its domain.
+
+Proving that $\calS = \emptyset$, and thus that our problem is unsatisfiable, is equivalent to showing that no operator obeying \eqref{eq:exp-norm}-\eqref{eq:exp-pos} can exist. The key insight of SoS is that, at least sometimes, one can do this by focusing only on polynomials of some bounded degree. Writing $\bbR[x]_{\le D}$ for the polynomials of degree at most $D$, we call an operator $\pseudo : \bbR[x]_{\le D} \to \bbR$ a \emph{degree-$D$ pseudoexpectation} if it is normalized, and for every polynomial in its domain satisfies $\calS$ and is positive. It is well-known that one can search for a degree $D$ pseudoexpectation with a semidefinite program of size $O(n^d)$, and if this smaller, relaxed problem is infeasible, we've shown that $\calS$ is empty. This is the \emph{degree-$D$ Sum-of-Squares relaxation} of our CSP.
+
+A naive way to employ SoS for hypothesis testing or reconstruction problems such as community detection is to choose some statistic known to distinguish the planted and null distributions, and write down a relaxed sum-of-squares search algorithm for this statistic. In the case of the \model, a graph drawn from the planted model is guaranteed a partition of the vertices into groups of sizes $\pi(i)n$, with $\pi(i)M_{i,j}dn$ edges between groups $i$ and $j$. Let us refer to such a partition $\sigma : [n] \to [k]$ as \emph{$M$-good}. A routine first moment calculation shows that when $d$ is sufficiently large, uniformly random $d$-regular graphs from the null distribution, $\Null$, are exponentially unlikely to have an $M$-good partition.
+%
+\begin{proposition}
+	With probability $1 - o_n(1)$ (in fact, exponentially close to one) a graph $\bG$ from the null model has no $M$-good partitions whenever
+	\begin{equation}
+	    d-1 > \frac{H(\pi) + H(\pi,M)}{H(\pi) - H(\pi,M)},
+	\end{equation}
+	where $H(\pi) = -\sum_i\pi(i)\log\pi(i)$ is the standard Shannon entropy, and $H(\pi,M)$ is the average with respect to $\pi$ of the entropy of the rows of $M$.
+\end{proposition}
+
+Thus we can solve detection in exponential time above this first moment threshold by exhaustively searching for even one $M$-good division of the vertices. In other words, detection in this regime is no harder than \emph{refutation} of an $M$-good partition. This refutation problem can be encoded with $kn$ variables $x_{u,i}$, describing whether each vertex $u \in [n]$ is in group $i \in [k]$, subject to the polynomial constraints
+%
+\begin{align*}
+	\textit{Boolean} & & x_{u,i}^2 &= x_{u,i} & &\forall u\in[n] \text{ and } i\in [k] \\
+	\textit{Single Color} & & \sum_i x_{u,i} &= 1 & &\forall u\in[n] \\
+	\textit{Group size} & &\sum_u x_{u,i} &= \pi(i)n  & & \forall i\in[k]\\
+	\textit{$M$-good} & &\sum_{(u,v)\in E} x_{u,i}x_{v,j} &= \pi(i)M_{i,j}dn & &\forall i,j\in[k]
+\end{align*}
+%
+It will be useful later to denote by $\calB_k \subset \bbR^{nk}$ the set described by the Boolean and Single Color equations above. Each level of the SoS Hierarchy, applied to the polynomial system described above, immediately gives us a one-sided detection algorithm: if given a graph $\bG$ the degree-$D$ SoS relaxation is infeasible, we can be sure that there are no $M$-good partitions, and thus that graph came from the null model and not the planted one. However, as it is a relaxation, if this SDP is feasible we have not a priori learned anything at all. For a two-sided test we need to prove that with high probability there is no feasible solution for graphs drawn from the null model. 
+
+There are two fundamental limitations to this approach. First, statistics like existence of an $M$-good partition are in some cases not optimal for differentiating the null and planted distributions. Consider for simplicity a less constrained version of the symmetric \model, where for a parameter $\lambda<0$ we partition the vertices into $2$ equal sized groups, and sample a $d$-regular graph conditional on there being $(1-\lambda)dn/4$ edges among vertices in the same community, with the remaining $(1 + \lambda)dn/4$ connecting vertices in different groups. Both the information theoretic and Kesten-Stigum thresholds in this case occur when $\lambda > 1/\sqrt{d-1}$ [need a citation?]. Such graphs are guaranteed to have a maximum cut of at least $(1+\lambda)dn/4$, so we can distinguish the null and planted models for any $\lambda$ making this larger than the maximum cut in a $d$-regular random graph. However, we know from work of Dembo et al. [cite] that the maximum cut in $d$-regular random graphs is, with high probability,
+$$
+    \left(1 + \frac{2P_\ast}{\sqrt d} + o_d(\sqrt d)\right)\frac{dn}{4} + o_n(n),
+$$ 
+where $2P_\ast \approx 1.5264$ is twice the vaunted Parisi constant from statistical physics. Thus, when $d$ is large, the maximum cut cannot distinguish the null and planted distributions until roughly $\lambda > 2P_\ast/\sqrt{d-1}$, i.e $d > 4P_\ast^2 d_{KS}$. This same phenomenon holds in the irregular SBM with two groups.
+
+The second issue is that even in regimes where we know detection can be performed by exhaustive search for an $M$-good partition, low-degree SoS relaxations of this search problem are known to fail. In the case of the symmetric \model, with $m_{\text{in}} < m_{\text{out}}$, a similar first moment bound to the one above shows that at roughly the same threshold, random $d$-regular graphs are exponentially unlikely to have any $k$-way cut with the same total number of between-group \todo{between-group edges?} vertices as the hidden partition in the planted model. Banks et al. [cite] show that, for the degree-two SoS relaxation of $k$-way cut, detection is only possible once $d> 4d_{KS}$: for smaller degree, when $\bG$ is sampled from the null model, there exists a feasible degree-two pseudoexpectation. A similar result for a slightly weaker SDP holds in the case of \ER graphs with planted $k$-colorings [cite]. 
+
+This is not the only case where degree-two SoS for refutation---which usually coincides with a well-known SDP relaxation---does not succeed all the way down to the conjectured computational threshold for detection. \todo{drop the sentence fragment "which usually coincides with..." -- makes it more effective?}   Consider for instance the \emph{Rademacher-spiked Wigner model}, where our goal is to distinguish whether an observed matrix $X$ is either (Null) an $n\times n$ Wigner matrix $W$, with $W_{i,j} \sim \calN(0,1/n)$ and $W_{i,i} \sim \calN(0,2/n)$, or (Planted) of the form $X = \lambda n^{-1} \sigma\sigma^T + W$ for some uniformly random hypercube vector $\sigma \in \{\pm 1\}^n$. Results of Feral and Peche, and Banayach-Georges and Nadakuditi \todo{Correct ref?} tell us that detection is possible simply be examining the spectrum of $X$, whenever $\lambda > 1$, and Perry et al. [cite] show that this is in fact the information-theoretic threshold. On the other hand, the planted model satisfies $\sigma^T X \sigma \approx \lambda n$, so we can  could try and solve detection by refuting the existence of a hypercube vector with a large quadratic form. Unfortunately, in the null model $X = W$, degree-two SoS can only refute the existence of some $\tau \in \{\pm 1\}^n$ satisfying $\tau^T X \tau >2$ [cite]. [cite] provide evidence, using ideas of Hopkins and Steurer regarding low-degree test statistics, that there is a fundamental computational barrier to outperforming degree-two SoS at this refutation task; quite recently, [cite] show that this gap persists for degree-four SoS, and conjecture that refutation of any smaller maximum is impossible for SoS of constant degree.
+
+These results fit into a broader current in the literature probing the nature and origin of computational barriers in random refutation problems [citations]. In the preceding discussion, we were attempting to solve detection in the \model, for $d$ in the conjectured computationally feasible regime, by refuting the existence of some combinatorial structure in the observed graph. However, refutation is essentially a prior-free task! 
+There are, at least potentially, many planted distributions for producing graphs with $M$-good partitions---just as there are many ways to produce a Gaussian random matrix whose maximum quadratic form over the hypercube is atypically large---and \emph{they need not all have the same computational phase transition}. The idea is that refutation in the null model is hard exactly when it would allow us to solve \emph{detection} in the computationally hard or information-theoretically impossible regime of some `quietly' planted distribution, whose low degree moments mimic those of the null model (see [cite], for example). \todo{did not follow this sentence}
+
+All of this is bad news for refutation, but not necessarily for detection.  The problem of detection and the related one on reconstruction are in a Bayesian setting, where the prior distribution is completely specified.
+Yet, the semi-definite programs described above use little information from the prior distribution in their formulation.  Why not include information about the prior distribution in our SDP?
+
+
+% subsection detection_refutation_and_sum_of_squares (end)
+
+\subsection{The Local Statistics Hierarchy} % (fold)
+\label{sub:the_local_statistics_hierarchy}
+
+Let us regard the planted model as a joint distribution on random variables $\bx = \{\bx_{u,i}\}$ encoding the group labels, and $\bG = \{\bG_{u,v}\}$ indexed by $\{u,v\} \subset [n]$ and describing which edges of the graph are present.  Instead of our somewhat ad-hoc SDP relaxing the problem of searching for an $M$-good partition, we will try and find a pseudoexpectation on the variables $x_{u,i}$ which (i) satisfies $\calB_k$---the Boolean and Single-Color constraints---and (ii) matches certain low-degree moments of the planted distribution. To a first approximation, we will add constraints of the form
+$$
+	\pseudo p(G,x) \simeq \expected_{(\bG,\bx)\sim \calP} p(\bG,\bx),
+$$
+for a restricted class of polynomials $p$ in variables $x = \{x_{u,i}\}_{u\in [n], i \in [k]}$ and $G = \{G_{u,v}\}_{u,v\in[n]}$. The exact meaning of $\simeq$ will depend on the concentration of $p(\bG,\bx)$ with respect to the randomness in $\bx$ and $\bG$; we will make it precise below.
+
+The \model has a natural symmetry: we can freely permute the vertices, and the distribution is unchanged. This gives us an action of $\frS_n$, the symmetric group on $n$ elements, on the random variables $\bx = \{\bx_{u,i}\}$ and $\bG = \{\bG_{u,v}\}$ describing our random graphs, and their non-random counterparts $x = \{x_{u,i}\}$ and $G = \{G_{u,v}\}$ appearing in the polynomials in the domain of $\pseudo$. In particular, $\theta\in\frS_n$ acts as $\theta : x_{u,i} \mapsto x_{\theta(u),i}$ and $\theta : G_{u,v} \mapsto G_{\theta(u),\theta(v)}$. It is only meaningful to consider polynomials in $x$ and $G$ that are fixed under this action; these roughly correspond to counting the instances of subgraphs of $G$ with vertices constrained to have particular labels. See [planted clique?] for a discussion of a similar nature. Note that unless we are in the case of the symmetric \model, the community labels do not have a similar symmetry.
+
+Since the random variables $\bG$ are all zero-one indicators, we only need consider polynomials $p(x,G)$ that are multilinear in $G$. We claim that every such polynomial in $\bbR[x,G]$ fixed under this action, and with degrees $D_1$ ad $D_2$ in the $x$ and $G$ variables respectively, is of the following form. Let $H = (V(H),E(H))$ be a graph with at most $D_2$ edges, $S\subset V(H)$ a designated subset of at most $D_1$ vertices, and $\tau: S \to [k]$ a set of labels on these distinguished vertices. Write $\Phi_H$ for the set of all injective homomorphisms $\varphi: H \to \bG$, i.e. maps for which (1) $\varphi(a)\neq\varphi(b)$ for every distinct $a,b\in V(H)$ and (2) $(a,b)\in E(H)$ implies $(\varphi(a),\varphi(b)) \in E(\bG)$. The image of each $\varphi \in \Phi_H$ is a copy of $H$ inside $\bG$. For each, there is a corresponding polynomial
+\begin{equation} \label{eq:graph-poly}
+	p_{H,S,\tau}(x,G) = \sum_{\varphi\in\Phi_H}\prod_{u\in S} x_{\varphi(u),\tau(u)},
+\end{equation}
+that counts occurrences $H$ in $G$ which conform, on the vertices in $S$, to the labels specified by $\tau$. One can check that these polynomials are a basis for the vector space of polynomials in $\bbR[x,G]$ fixed under the action above.
+
+\begin{definition}
+    The degree $(D_1,D_2)$ level of the Local Statistics hierarchy is the following SDP: find a degree-$D_1$ pseudoexpectation $\pseudo$ satisfying $\calB_k$, such that
+    \begin{align} \label{eq:lost-sdp}
+    	\pseudo p_{H,S,\tau}(x,G) \approx \expected_{(\bx,\bG)\sim \Planted} p_{H,S,\tau}(\bx,\bG)
+    \end{align}
+    for every $|S| \le D_1$ and $|E(H)| \le D_2$.
+\end{definition}
+
+Note that, among many new constraints that this this SDP imposes on $\pseudo$, it recovers the conditions on group size and $M$-good-ness from our earlier SoS relaxation, as
+$$
+	\sum_i x_{u,i}\qquad \text{and} \qquad \sum_{(u,v)\in E} x_{u,i}x_{v,j}
+$$
+are both of the form \eqref{eq:graph-poly}. We obtain the first when $H$ is the graph on one vertex with label $i$, and the second when $H$ is a single edge, with endpoints labeled $i$ and $j$. Note also that, although we have stated it in the specific context of the \model, this framework extends readily to any planted problem involving a joint distribution $\mu$ on pairs $(\bx,\bG)$ of a hidden structure and observed signal, if we take appropriate account of the natural symmetries in $\mu$.
+
+The remainder of the paper will be laid out as follows. In section [ref] we will collect some preliminary results, including several standard and useful observations on non-backtracking walks and reversible Markov chains. Section [ref] contains the proof that our SDP can distinguish the null and planted models above the KS threshold, and Section [ref] adapts this proof to show that spectral distinguishing is possible in this regime as well. In Section [ref] we prove the other half of Theorem [ref], namely that no constant level of our hierarchy succeeds below this threshold, as well as Theorem [ref], that there planted models \textit{below} the KS threshold for which arbitrarily many rounds are required to distinguish. Section [ref] concerns the robustness guarantees of our algorithm. Finally, in Appendix [ref], we will perform several calculations on the \model, including the first moment bound of Lemma [ref], and the explicit computation of the local statistics appearing in the \text{LoSt} hierarchy.
+
+% subsection the_local_statistics_hierarchy (end)
+
+
+
+

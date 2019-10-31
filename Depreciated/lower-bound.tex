@@ -1,0 +1,181 @@
+\section{Lower Bounds Against Local Statistics SDPs}
+\label{sec:lower bound}
+
+In this section, we prove that with high probability that every round of the local statistics SDP fails to distinguish between $\Null$ and $\planted_{k,\lambda}$ when $\lambda^2 > (d-1)$. In other words, we construct a candidate solution to the $m$-th level distinguishing SDP \eqref{eq:full-sdp} which is w.h.p. feasible on a $d$-regular random graph. Such a solution is a matrix $X \succeq 0$ with ones on its diagonal, and $\langle X, \nb{s}{\bG}) \rangle \simeq \lambda^s \|q_s\|^2 n$ for every $s = 0,...,m$; similar to the proof of the upper bound, we'll take $X$ to be a polynomial in the adjacency matrix, together with a small additive correction term.
+
+Specifically, we will choose an even $p\gg m$ and set $X = \Phi_p(A_{\bG})$, where
+$$
+    \Phi_p = \sum_{s = 0}^p q_s \lambda^s
+$$
+is the polynomial that we defined in the previous section. It is immediate that
+$$
+    \langle \Phi_p,\nb{s}{\bG} \rangle \simeq \lambda^s\|q_s\|_{\km}^2 n 
+$$
+It remains (i) to check for which $\lambda$ the $\Phi_p(A)$ is nonnegative on the spectrum of $A_{\bG}$ and (ii) to verify that $X$ or a small perturbation of it satisfies the hard constraint $X_{i,i} = 1$.
+
+The intuition behind (i) is that $\lambda^2(d-1)<1$ is exactly the condition ensuring that
+$$
+    \Phi_p \to_p \frac{1 - \lambda^2}{(d-1)\lambda^2 - \lambda x + 1},
+$$
+a strictly positive function on $(-2\sqrt{d-1},2\sqrt{d-1})$ when $\lambda^2(d-1) < 1$ and $d \ge 3$. To make this precise, taking $p$ sufficiently large we can ensure $\Phi_p$ is as well strictly positive on this set, and thus by continuity nonnegative if we extend it by some $\epsilon$ on either side. It is a standard calculation, employing the recurrence relation on the polynomials $q_s$, that
+\begin{align*}
+    \Phi_p(x) = \frac{1 - \lambda^2 + \lambda^{p+2}(d-1)q_p(x) - \lambda^{p+1}q_{p+1}(x)}{(d-1)\lambda^2 - \lambda x + 1};
+\end{align*}
+we need only show that $\lambda^2(d-1)<1$ ensures $\lambda^{p+2}(d-1)q_p - \lambda^{p+1}q_{p+1} \to_p 0$. This follows immediately from Lemma \ref{lem:NBW-poly-bound}, as $|q_p| \le 2p\sqrt{d(d-1)^p}$. We need to check also that $\Phi_p(d) \ge 0$. When $\lambda > 0$, this is immediate if we recall that $q_s(d) \ge 0$. When $\lambda < 0$, we can note that the denominator is positive whenever $\lambda < -(d-1)^{-1}$, and that the numerator is
+$$
+    1 - \lambda^2 + \lambda^{p+1}d(d-1)^{p}(\lambda - 1) \ge 0,
+$$
+as $\lambda \in (-1,0)$ and $p+1$ is odd.
+
+% Towards this, we give a solution to the $m$-th level SDP **MAKE REFERENCE TO SDP** that satisfies the constraints on a random $d$-regular graph $\bG$ on $n$ vertices with high probability.  Let $\delta > 0$ be any constant, and let $s$ be an even number chosen to be bigger than $m$.
+
+% We begin with a first candidate solution for the SDP, expressed in terms of the adjacency matrix $A_{\bG}$,
+% \[
+% 	M^{(1)} := \sum_{i=0}^{s} \alpha^i q_i(A_{\bG})
+% \]
+% where
+% \[
+% 	\alpha := -\frac{1-\delta}{\sqrt{d-1}}
+% \]
+
+% \begin{proposition}
+% 	$M^{(1)}$ is positive semidefinite.
+% \end{proposition}
+% \begin{proof}
+% 	Note that $M^{(1)} = F(A_{\bG})$ for some polynomial $F$.  To show that $M^{(1)}$ is PSD, it suffices to show that $F$ is nonnegative on the spectrum of $A_{\bG}$.  By Friedman's theorem \cite{friedman2008proof}, the spectrum of $A_{\bG}$ is contained in $[-2\sqrt{d-1}-o(1),2\sqrt{d-1}+o(1)]\cup\{d\}$.  Thus, it is sufficient to prove that $F(x)$ is lower bounded by some $\eps > 0$ on $[-2\sqrt{d-1},2\sqrt{d-1}]\cup\{d\}$, since it would follow from continuity of $F$ that
+% 	\[F(x)\ge 0 \text{ on }
+% 	\left[-2\sqrt{d-1}-o(1),2\sqrt{d-1}+o(1)\right]\cup\{d\}\]
+% 	Towards this, we first gain an understanding of $F(x)$ by expanding out
+% 	\[
+% 		F(x) - x\alpha F(x) + \alpha^2(d-1)F(x)
+% 	\]
+% 	and applying the recurrence on the polynomials $q_i$ (see \pref{sec:nbw-poly})\textbf{}, and obtain
+% 	\[
+% 		F(x) = \frac{(1-\alpha^2) + \alpha^{s+2}(d-1)q_{s}(x) - \alpha^{s+1}q_{s+1}(x)}{(1+\alpha^2(d-1))-x\alpha}
+% 	\]
+% 	where $s := \max\{T, m'\}$.
+% 	**CITE BOUNDS ON ABSOLUTE VALUE OF $q_s$**
+% 	Since $|q_t(x)|\le 2t\sqrt{d(d-1)^{t-1}}$,
+% 	\[
+% 		F(x) \in \left[\frac{(1-\alpha^2) - (1-\delta)^{s+2}2s - (1-\delta)^{s+1}2(s+1)}{(1+\alpha^2(d-1))-x\alpha}, \frac{(1-\alpha^2) + (1-\delta)^{s+2}2s + (1-\delta)^{s+1}2(s+1)}{(1+\alpha^2(d-1))-x\alpha}\right]
+% 	\]
+% 	We can choose $s$ large enough so that $2(s+1)(1-\delta)^{s}$ can be arbitrarily small.  Further, notice that $\displaystyle\frac{1-\alpha^2}{(1+\alpha^2(d-1))-x\alpha}$ is strictly greater than $0$ on $[-2\sqrt{d-1},2\sqrt{d-1}]$ if $0 < \delta < 1$ and $d \ge 3$.  It remains to show that $F$ is bounded away from $0$ at $d$.  First observe that since $\alpha$ is negative, the denominator of $F$ is positive.  Next, observe that $q_s(d)$ and $q_{s+1}(d)$ are both positive since all the $q_t$ are monic polynomials.  By evenness of $s$, $\alpha^{s+2}$ is positive, and $\alpha^{s-1}$ is negative, which means
+% 	\[
+% 		\alpha^{s+2}(d-1)q_s(x) - \alpha^{s+1}q_{s+1}(x)
+% 	\]
+% 	is positive, and hence $F(x) > 0$ at $d$.  Thus, there exists $\eps > 0$ such that
+% 	\[
+% 		F(x) \ge \eps \text{ on } [-2\sqrt{d-1}, 2\sqrt{d-1}]
+% 	\]
+% 	and thus we are done.
+% \end{proof}
+
+Unfortunately, unless $p < \girth(G)$, the diagonal of $X$ does not satisfy the hard constraints. Writing $\gamma : u \overset{s}\to v$ to mean that $\gamma$ is a non-backtracking walk of length $s$ connecting $u$ and $v$, we can write its $u,u$ entry as
+$$
+    X_{u,u} = \sum_{s \le m} \sum_{\gamma : u \overset{s}\to u} \lambda^m.
+$$
+Denote by $S$ the collection of $(2m + 1)$-bad vertices in $\bG$, which by Lemma \ref{lem:L-bad-bound} has size $O(\log n)$. We will amend $X$ to a matrix $X'$ by replacing the entries of all submatrices $X_{S,[n]\setminus S}$ by zero and the submatrix $X_{S,S}$ by an identity matrix of appropriate size. This operation preserves PSD-ness, so we need only to check that $X'$ satisfies the linear constraints of the SDP. For $s>0$, each row of $\nb{s}{G}$ (even if it belongs to a bad vertex) has $1$-norm $d(d-1)^{s-1}$, so the $1$-norm of the submatrix $X_{S,[n]}$ is at most $m d(d-1)^{m-1} O(\log n)$, and 
+$$
+    \left|\langle \nb{s}{G}, X \rangle - \langle \nb{s}{G}, X' \rangle \right| \le O(\log n)
+$$
+as desired.
+
+
+% For every $t \le m$,
+% $$
+%     \langle \nb{s}{A_\bG}, M' \rangle = \sum_{v \in V(\bG)} \sum_{u: d(u,v) = t} M'_{u,v}.
+% $$
+% If either of $u$ or $v$ is $(2m+1)$-bad, then $M'_{u,v}$ is zero; otherwise $u$ and $v$ are distance $t\le m$ apart, and thus connected by a unique non-backtracking walk of length at $t$. In this second case $M'_{u,v} = \alpha^t$.
+
+% Unfortunately, $M^{(1)}$ ends up not satisfying the constraints completely.  In particular, due to the prevalence of short cycles in the graph, the diagonal is not all ones.  Thus, we need to amend $M^{(1)}$ to satisfy the constraints.
+
+% \begin{definition}
+% 	We say a vertex $v\in V(\bG)$ is $L$-bad if there is a cycle in the neighborhood of radius $L$ around $v$. 
+% \end{definition}
+
+% The following lemma is an easy consequence of the standard result that the expected number of cycles of length $C$ in a random $d$-regular graph in random graphs literature is a constant depending on $C$ (see e.g. Theorem 2.5 of Wormald survey INSERT CITATION).
+% \begin{lemma}	\label{lem:L-bad-bound}
+% 	With probability $1-o(1)$, $\bG$ has only $O(\log n)$ vertices that are $L$-bad for constant $L$.
+% \end{lemma}
+
+% Let $S$ be the collection of $(2m+1)$-bad vertices in $\bG$.  Let $M^{(2)}$ be an amendment of $M^{(1)}$ constructed by replacing all entries of the submatrices $\left(M^{(1)}\right)_{S,[n]\setminus S}$ and $\left(M^{(1)}\right)_{[n]\setminus S, S}$ with 0 and the submatrix $M^{(1)}_{S,S}$ with the identity matrix.  This operation preserves PSDness and hence $M^{(2)}$ is PSD too.
+
+% It remains to check that $M^{(2)}$ satisfies the constraints of the SDP.  For $t\le m$, we have
+% \begin{align*}
+% \langle q_t\left(A_{\bG}\right), M^{(2)} \rangle = \sum_{v\in V(\bG)} \sum_{u:d(u,v)=t} \left(M^{(2)}\right)_{uv}
+% \end{align*}
+% Each term in the above sum is either $\alpha^t$ or $0$.  This is because if $u$ and $v$ are distance $t\le m$ apart and neither of the two vertices are $(2m+1)$-bad, there is a unique nonbacktracking walk of length at most $m$ between $u$ and $v$.  Whereas if either $u$ or $v$ is $(2m+1)$-bad, $\left(M^{(2)}\right)_{uv}$ is 0.
+
+% Towards understanding the above quantity, we give upper and lower bounds on the number of nonzero terms of the summation.  A trivial upper bound on the number of nonzero terms of the summation is the total number of terms, $nd(d-1)^{t-1}$.  One can obtain a lower bound by only considering $(v,u)$ pairs such that $v$ is not $(4m+2)$-bad, since if $v$ is not $(4m+2)$-bad and $u$ is distance at most $m$ from $u$, $u$ cannot be $(2m+1)$-bad, which means $\left(M^{(2)}\right)_{uv}$ must be nonzero.  The number of such pairs is
+% \[
+% 	(\text{\# of vertices that are not $(4m+2)$-bad})\cdot d(d-1)^{t-1}
+% \]
+% which by \pref{lem:L-bad-bound} is at least
+% \[
+% 	(n-O(\log n))d(d-1)^{t-1}
+% \]
+% with probability $1-o(1)$.  Hence, based on the construction of $M^{(2)}$, we can conclude
+\begin{theorem} \label{thm:lower-bound}
+	For each $1\le s\le m$ and for all $\delta > 0$, with probability $1-o_n(1)$, there is a PSD matrix $X$, which satisfies
+	\[
+		\langle X,\nb{s}{\bG} \rangle = (1\pm o(1)) \left(\frac{1-\delta}{\sqrt{d-1}}\right)^{t} \|q_s\|^2_{\km}n
+	\]
+	and $X_{uu} = 1$ for all $u\in V(\bG)$.
+\end{theorem}
+
+\begin{remark}
+For every $\delta > 0$ and $m > 0$, suppose $\lambda^2(d-1)=1-\delta$ and $\lambda < 0$, the level-$m$  SDP \eqref{eq:full-sdp} is feasible with probability $1-o(1)$ when the input $\bG$ is drawn from the null distribution.  Hence, we show that constant levels of the hierarchy given by SDP \eqref{eq:full-sdp} fail to solve the $\Null$ vs. $\planted_{k,\lambda}$ distinguishing problem, providing evidence for the conjectured hardness at the Kesten-Stigum threshold.
+\end{remark}
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\iffalse
+\section{ATTEMPT: DELETE THIS BEFORE SUBMISSION}
+
+Let $\alpha = (1+\delta)/\sqrt{d-1}$ and let $C$ be a constant.  We will pick $\delta, C$ later.
+
+Fix $h(s) =  \sum_{i = 1}^s \frac{\delta}{(1+C\delta)^{s}} $.
+
+Consider 
+
+$$ F(x) = \sum_{s = 0}^N \alpha^{s} e^{-h(s)}  q_s(x) $$
+
+Consider 
+
+\begin{align*}
+    F(x) -\alpha x F(x) + \alpha^2 d F(x)
+    & = \alpha^{h(0)} +  \sum_{s =0}^{N-2} \alpha^{s+2} e^{-h(s+2)} ( (e^{-h(s+1) - 1 + h(s+2)}-1) q_{s+1}  
+    \\
+    &+ (e^{-h(s)-2 + h(s+2)}-1) q_s)) + (-\alpha^{N+1} xe^{-h(N)}q_N(x) + \alpha^{N+2}e^{-h(N-1)} d q_{N-1}(x) \\
+    &+ \alpha^{N+2}e^{-h(N)} d q_{N}(x)
+\end{align*}
+
+To show that $F(x) \geq 0$ for all $x$ in the right interval.
+
+Note that $h(s+1) + 1 - h(s+2) = (1+C\delta)^{-(s+2)}$ and so 
+$$e^{h(s+1)+1 - h(s+2)} \leq \frac{\delta}{(1+C\delta)^{s+2}}$$
+Similarly,
+$$e^{h(s)+2 - h(s+2)} \leq \frac{\delta}{(1+C\delta)^{s+1}}+\frac{\delta}{(1+C\delta)^{s+2}}$$
+
+Note that $\alpha^{s} q_s(x) \leq (1+\delta)^s$ for all $s$.
+
+We get that the two error terms are at most
+
+$$ \sum_{s = 0}^{\infty} \frac{\delta}{(1+C\delta)^s} \leq \delta + 1/(C-1)$$
+
+For $N = \frac{100}{C \delta} \log(1/\delta)$, $h(N) \geq \frac{1}{C} - \delta^{100}$
+
+The final error term is 
+
+$$ \alpha^N q_N e^{-h(N)} = (1+\delta)^N e^{-h(N)} = e^{1000/C \cdot \log(1/\delta)} e^{-1/C} $$
+
+\fi

@@ -1,0 +1,145 @@
+\section{Distinguishing with Local Statistics}    \label{sec:algo}
+
+Throughout this section, fix the parameters $(d,k,M,\pi)$ of a planted model $\Planted$. We'll prove half of our main theorem, namely that for any $\epsilon > 0$, if
+$$
+    \lambda_2^2(d-1) = 1 + \epsilon
+$$
+then there exists some $m$ so that the $\LS(2,m)$ SDP can distinguish the planted and null models. When $(\bx,\bG) \sim \Planted$, the SDP is surely feasible as we can simply set
+$$
+    \pseudo p(x,G) = p(\bx,\bG)
+$$
+for any polynomial we choose. We will thus be done if we can show \textit{infeasibility} when $\Planted$ is above the KS threshold, $m$ is sufficiently large, and $\bG\sim \Null$. Our strategy will be to first reduce to the problem of designing a univariate polynomial with particular properties, and then to solve this design problem using some elementary results from Section [ref].
+
+Let $\bG \sim \Planted$, and assume we had a viable pseudoexptation $\pseudo$ for the $\LS(2,m)$ SDP. Write $X \succeq 0$ for the $nk\times nk$ matrix whose $(u,i),(v,j)$ entry is $\pseudo x_{u,i}x_{v,j}$ (it is routine that $\pseudo \succeq 0$ implies positive semidefiniteness of $X$; we refer the reader to [ref]). It will at times be useful to think of $X$ as a $k\times k$ matrix of $n\times n$ blocks $X_{i,j}$, and at others as an $n\times n$ matrix of $k\times k$ blocks $X_{u,v}$. Recall also the matrices $\sa{s}{\bG}$ from Section [] that count self-avoiding walks of length $s$. Our strategy will be to first write the moment-matching constraints on $\pseudo$ as affine constraints of the form $\langle X_{i,j}, Y \rangle \simeq C$, and then combine these affine constraints to contradict feasibility of $X$.
+
+\begin{lemma}
+    For any $i,j$, and any $s = 0,...,m$, recalling that $\nb{s}{G}$ is the matrix counting non-backtracking walks of length $s$, and $\bbJ$ is the all-ones matrix,
+    \begin{align*}
+        \langle X_{i,j}, \nb{s}{\bG} \rangle &\simeq \pi(i) M_{i,j}^s \|q_s\|^2_{\km} n \\
+        \langle X_{i,j}, \bbJ \rangle &= \pi(i)\pi(j)n^2.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+    For the first assertion, let $(H,S,\tau)$ be the path of length $s$ whose endpoints are labelled $i,j\in[k]$. Each \textit{self-avoiding} walk of length $s$ in $G$ is an occurrence of $H$, so from Lemma [ref]
+    $$
+        \langle X_{i,j},\sa{s}{\bG}\rangle = \pseudo p_{H,S,\tau}(x,\bG) \imeq \pi(i)M_{i,j}^s \|q_s\|^2_{\km}.
+    $$
+    We can now use Lemma [ref] to replace the self-avoiding walk matrices $\sa{s}{\bG}$ with their non-backtracking counterparts. The matrix $X$ has diagonal elements $X_{(u,i),(u,i)} = \pseudo x_{u,i}^2 = \pseudo x_{i,u}$ by the Boolean constraint, and $\pseudo (x_{u,1} + \cdots + x_{u,k}) = 1$ by the Single Color constraint. By PSD-ness of $X$, every $\pseudo x_{u,i}^2 = \pseudo x_{u,i}$ is nonnegative, so each is between zero and one. It is a standard fact that the off-diagonal entries of such a PSD matrix have magnitude at most one, so from Lemma [ref]
+    $$
+        \langle X_{i,j}, \nb{s}{\bG} \rangle = \langle X_{i,j}, \sa{s}{\bG} \rangle + \langle X_{i,j} \sa{s}{\bG} - \nb{s}{\bG}\rangle = \langle X_{i,j}, \sa{s}{\bG} \rangle \pm O(\log n) \simeq \pi(i)M^s_{i,j} \|q_s\|^2_{\km}
+    $$
+    \todo{something off in the previous equation}
+    for $s = 0,...,m$. For the second assertion, when $i\neq j$ take $(H,S,\tau)$ to be the partially labelled graph on two disconnected vertices, with labels $i$ and $j$ respectiveely. From Remark [ref] we have
+    $$
+        \langle X_{i,j},\bbJ \rangle = \pseudo p_{H,S,\tau}(x,\bG) = \pi(i)\pi(j)n^2.
+    $$
+    When $i=j$, take $(H,S,\tau)$ as above and $(H',S',\tau')$ to be a single vertex labelled $i$.
+\end{proof}
+
+We will now apply a fortuitous change of basis furnished to us by the parameter matrix $M$. Recall that $F$ is the matrix whose columns are the right eigenvectors of $M$, satisfying $MF = F\Lambda$ and $F^T\Diag(\pi)F = \1$. Now define a matrix $\check X \triangleq (F^T \otimes \1) X (F\otimes \1)$, by which we mean that 
+$$
+    \check X = \begin{pmatrix} F_{1,1}\1 & \cdots & F_{1,k}\1 \\
+    \vdots & \ddots & \vdots \\
+    F_{k,1}\1 & \cdots & F_{k,k}\1 
+    \end{pmatrix} 
+    \begin{pmatrix} X_{1,1} & \cdots & X_{1,k} \\
+    \vdots & \ddots & \vdots \\
+    X_{k,1} & \cdots & X_{k,k} 
+    \end{pmatrix}
+    \begin{pmatrix} F_{1,1}\1 & \cdots & F_{1,k}\1 \\
+    \vdots & \ddots & \vdots \\
+    F_{k,1}\1 & \cdots & F_{k,k}\1 
+    \end{pmatrix}.
+$$
+We will think of $\check X$, analogous to $X$, as a $k\times k$ matrix of $n\times n$ blocks $\check X_{i,j}$. Note that we can also think of this as as a change of basis $x \mapsto F^T x$ directly on the variables appearing in polynomials accepted by our pseudoexpectation.
+
+\begin{lemma}
+    For any $s=0,...,m$, if $i\neq j$ $\langle \check X_{i,j} \nb{s}{\bG} \rangle \simeq 0$, and
+    $$
+        \langle \check X_{i,i}, \nb{s}{\bG} \rangle \simeq \lambda_i^s \|q_s\|^2_{k}n.
+    $$
+    Furthermore, 
+    $$
+        \langle \check X_{i,j}, \bbJ \rangle = \begin{cases} n^2 & i=j=1 \\ 0 & \text{else} 
+        \end{cases}.
+    $$
+\end{lemma}
+
+\begin{proof}
+    Our block-wise change of basis commutes with taking inner products between the blocks $X_{i,j}$ and the non-backtracking walk matrices. In other words,
+    \begin{align*}
+        \begin{pmatrix} \langle \check X_{1,1},\nb{s}{\bG}\rangle & \cdots & \langle \check X_{1,k},\nb{s}{\bG}\rangle \\
+        \vdots & \ddots & \vdots \\
+        \langle \check X_{k,1},\nb{s}{\bG}\rangle & \cdots & \langle \check X_{k,k},\nb{s}{\bG}\rangle 
+        \end{pmatrix}
+        &= F^T\begin{pmatrix}
+        \langle X_{1,1},\nb{s}{\bG}\rangle & \cdots & \langle X_{1,k},\nb{s}{\bG}\rangle \\
+        \vdots & \ddots & \vdots \\
+        \langle X_{k,1},\nb{s}{\bG}\rangle & \cdots & \langle X_{k,k},\nb{s}{\bG}\rangle 
+        \end{pmatrix} F \\
+        &\simeq F^T \Diag(\pi)M^s F \cdot \|q_s\|^s_{\KM} n \\
+        &= F^T\Diag(\pi)F\Lambda^s \cdot \|q_s\|^s_{\KM}n \\
+        &= \Lambda^s \cdot \|q_s\|^s_{\km}n
+    \end{align*}
+    A parallel calculation gives us 
+    \begin{align*}
+        \begin{pmatrix} \langle \check X_{1,1},\bbJ\rangle & \cdots & \langle \check X_{1,k},\bbJ\rangle \\
+        \vdots & \ddots & \vdots \\
+        \langle \check X_{k,1},\bbJ\rangle & \cdots & \langle \check X_{k,k},\bbJ\rangle 
+        \end{pmatrix}
+        &= F^T\begin{pmatrix}
+        \langle X_{1,1},\bbJ\rangle & \cdots & \langle X_{1,k},\bbJ\rangle \\
+        \vdots & \ddots & \vdots \\
+        \langle X_{k,1},\bbJ\rangle & \cdots & \langle X_{k,k},\bbJ\rangle 
+        \end{pmatrix} F \\
+        &= F^T \pi\pi^T F \cdot n^2\\
+        &= e_1 e_1^T n^2,
+    \end{align*}
+    where $e_1$ is the first standard basis vector. The final line comes since $\pi$, being the left eigenvector associated to $\lambda_1 = 1$, is (up to scaling) the first row of $F^{-1}$.
+\end{proof}
+
+The remainder of the proof will amount to combining the constraints on the diagonal blocks of $\check X$. As $X$ is PSD, $\check X$ is as well, so any PSD linear combination $0 \preceq c_0\1 + \cdots + c_m \nb{s}{\bG}$ must satisfy
+$$
+    0 \le \frac{1}{n}\langle \sum_{s=0}^m c_s \nb{s}{\bG}, \check X_{i,i} \rangle \simeq \sum_{s=0}^m c_s \lambda_i^s \|q_s\|^2_{\km}.
+$$
+We can show that no $\check X$ satisfying the given constraints, and thus that the SDP is infeasible, by producing such constants $c_s$ as to make the right hand side of the above equation negative for at least one of $\lambda_1,...,\lambda_k$. Notice also
+$$
+    \sum_{s=0}^m c_s \nb{s}{\bG} = \sum_{s=0}^m c_s q_s(A_{\bG}) \triangleq f(A_{\bG})
+$$
+for some polynomial $f \in \bbR[x]$ of degree $m$. Because $f(A_{\bG})$ is a scalar polynomial in $A_{\bG}$, its eigenvalues are $f$ applied to those of $A_{\bG}$, and we get $f(A_{\bG}) \succeq 0$ with high probability \todo{no need for high probability here?} when $f$ is nonnegative on $\Spec A_{\bG}$. By Friedman's Theorem [ref], this spectrum consists of the `trivial' eigenvalue $d$, together with $n-1$ remaining eigenvalues whose magnitudes with high probability are at most $2\sqrt{d-1} + \eta$ for any $\eta > 0$. In fact, it is not necessary even that $f(d) > 0$. To see this, note that from our discussion above,
+$$
+    \langle f\left(A_{\bG} - \tfrac{d}{n}\bbJ\right),\check X_{i,i} \rangle = \langle f(A_{\bG}) - \tfrac{f(d)}{n}\bbJ, \check X_{i,i} \rangle = \langle f(A_{\bG}), \check X_{i,i} \rangle
+$$
+for $i = 2,...,k$. Since $A_{\bG} - \tfrac{d}{n}\bbJ$ is the projection of $A$ away from the eigenspace corresponding to $d \in \Spec A_{\bG}$, $f(A_{\bG} - \tfrac{d}{n}\bbJ) \succeq 0$ whenever $f$ is positive on the remainder of the spectrum.
+
+From our discussion in Section [ref] of the preliminaries, for any $\lambda$
+\begin{align*}
+    \sum_{s=0}^m c_s \|q_s\|^2_{\km}\lambda^s 
+    &= \sum_{s=0}^m \frac{\langle f,q_s \rangle_{km}}{\|q_s\|^2_{km}}\|q_s\|^2_{\km}\lambda^s \\
+    &= \langle f, \sum_{s=0}^m \lambda^s q_s \rangle_{\km} \\
+    &\triangleq \langle f, \phi_{m,\lambda} \rangle_{\km}.
+\end{align*}
+Thus we've reduced the proof to the construction of a degree $m$ polynomial $f$, strictly positive on $(-2\sqrt{d-1},2\sqrt{d-1})$---so that by continuity it is nonnegative on a slightly larger interval to which Friedman's theorem applies---and satisfying $\langle f, \phi_{m,\lambda}\rangle_{\km} < 0$. The following extremely simple choice of $f$ will finish things up.
+
+Call $\mu$ the largest even number less than or equal to $m$, and take 
+$$
+    f(x) = -q_\mu(x) + 2\mu\|q_\mu\|_{\km} + \epsilon
+$$
+which by Lemma [ref] is nonnegative on the desired interval. This choice of $f$ satisfies
+$$
+    \langle f(x),\Phi_{\mu,\lambda}\rangle = -\|q_\mu\|^2_{\km}|\lambda|^\mu + 2\mu\|q_\mu\|_{\km} + \epsilon,
+$$
+which is negative when
+$$
+    |\lambda| > \left(\frac{2\mu + \epsilon/\|q_\mu\|_{\km}}{\|q_\mu\|_{\km}}\right)^{1/\mu} \to_\mu \frac{1}{\sqrt{d-1}}.
+$$
+
+\begin{remark}  \label{rem:violation-margin}
+    We can choose constants $a$ and $b$ such that the $LocalStatistic$ SDP \eqref{eq:full-sdp} is infeasible on $\bG$ drawn from $\Null$ if we choose $(\eps, \delta) = (a, b)$, and also if we choose $(\eps, \delta) = (a, 2b)$.  In particular, this means that when $\delta = b$, for any PSD matrix $X$ with an all-ones diagonal, there is a polynomial $f$ such that the constraint
+    \[
+        \langle f(A_{\bG}), X\rangle = \|q_s\|^2_{\km}\lambda^s n \pm \delta n
+    \]
+    is violated by a margin of $\Omega(n)$. \todo{Rephrase for the new context}
+\end{remark}
+

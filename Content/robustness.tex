@@ -1,0 +1,36 @@
+\section{A Robust Algorithm for the Distinguishing Problem} \label{sec:robust}
+
+In this section, again fix a planted model $\planted$ with parameters $(d,k,M,\pi)$, and let $\kappa(n)$ be some slowly growing function of $n$. Assume that we observe a graph $\widetilde\bH$ on $n$ vertices, which we are promised was drawn from one of $\Null$ or $\Planted$ and then corrupted by $\kappa(n)$ adversarial edge insertions or deletions. Our goal is to decide, upon seeing $\widetilde\bH$, from which model the unperturbed graph $\bG$ was was sampled. We present an algorithm below that works for an appropriate regime of $\kappa$. 
+
+\begin{algorithm}	\label{alg:robust}
+	Given a graph $\widetilde{\bH}$ and $m \in \bbN$ as input, do the following.  Delete all edges incident to vertices that have degree greater than $d$ in $\widetilde{\bH}$, and then greedily add edges connecting any vertices with degree less than $d$ to obtain a $d$-regular graph $\bH$. Run the distinguishing SDP \eqref{eq:full-sdp} at level $m$ on $\bH$ and output \textsc{null} if the SDP is infeasible, and \textsc{planted} otherwise.
+\end{algorithm}
+
+\begin{theorem}
+    Let $\delta$ be any positive constant. Supposing $\lambda^2_2(d-1) = 1+\delta$, there exist $\eps > 0$ satisfying $\kappa(n)\le\eps n$, and $m \in \bbN$, such that Algorithm \ref{alg:robust}, on input $\widetilde{\bH}$ and $m$, correctly distinguishes whether $\bG$ was drawn from $\Null$, or from $\planted$ with probability $1-o(1)$.
+\end{theorem}
+\begin{proof}
+	Note that $\bH$ is can be obtained by taking $\bG$ and making up to $\beta\eps n$ edge insertions and deletions for an absolute constant $\beta$. It suffices to show that (i) the SDP is feasible on $\bH$ as input if $\bG$ is drawn from the planted distribution, and (ii) the SDP is infeasible on $\bH$ as input if $\bG$ is drawn from the null distribution.
+
+	Call a vertex $v \in [n]$ \emph{corrupted} if its $(m+1)$-neighborhood in $\bH$ differs from its $(m+1)$-neighborhood in $\bG$.  We begin by analyzing the difference $\nb{s}{\bG} -\nb{s}{\bH}$ for $s\in[m]$. Suppose $v$ is not a corrupted vertex, then $\nb{s}{\bG}$ and $\nb{s}{\bH}$ agree on the $v$-th row and column, which means $(\nb{s}{\bG}-\nb{s}{\bH})_{v,-} = 0$. On the other hand, if $v$ is a corrupted vertex,
+	\begin{align*}
+		\left\|\left(\nb{s}{\bG}-\nb{s}{\bH}\right)_{v,-}\right\|_1 &\le \left\|\nb{\bG}{s}\right\|_1 + \left\|\nb{\bH}{s}\right\|_1\\
+		&\le 2d(d-1)^{s-1}
+	\end{align*}
+	In particular, this means the entrywise 1-norm of $\nb{\bG}{s}-\nb{\bH}{s}$, is bounded by $2\beta\epsilon n\cdot 2d(d-1)^{\ell-1}$ since there are at most $2\beta\eps n$ corrupted vertices (i.e. if all corrupted edges had disjoint endpoints).
+	
+	By our discussion in the prior section, if $\bG$ is drawn from the planted distribution, the matrices $Y(\lambda_i)$ are PSD and satisfy the affine constraints regarding inner products with the $\nb{s}{\bG}$ matrices with slack $\Omega(n)$. Every diagonal entry of $Y(\lambda_i)$ is one, so by PSDness their off-diagonal entries have modulus at most one. Thus
+	$$
+        \left|\langle \nb{\bG}{s} Y(\lambda_i) \rangle - \langle \nb{\bH}{s}\rangle \right| = \left|	\langle \nb{\bG}{s} - \nb{\bH}{s}\rangle\right| \le \left\|\nb{\bG}{s} - \nb{\bH}{s}\right\|_1 \le 2\beta\epsilon d(d-1)^{s-1}.
+	$$
+    Because of the $\Omega(n)$ slack, if we construct $Y(\lambda_i)$ from $\bH$ instead of $\bG$, the constraints will \emph{still} be satisfied for small enough $\epsilon$. We can then use these $Y(\lambda_i)$ to build the full feasible solution as before.
+    
+    On the other hand, when $\bG$ is drawn from the null model, any pseudoexpectation satisfying the Boolean and Single Color constraints violates some linear combination of the above affine constraints by a margin of $\Omega(n)$, and this constraint will still be violated for $\epsilon$ sufficiently small.
+    \end{proof}
+\begin{remark}
+    The parameter $\eps$ controlling the number of adversarial edge insertions and deletions made to random input $\bG$ that the level-$m$ $LocalStatistic$ SDP can tolerate can be seen to decrease with $m$, which is indicative of a tradeoff between how close to the threshold an algorithm in this hierarchy works and how robust it is to perturbations.
+\end{remark}
+
+\begin{corollary}
+	Algorithm \ref{alg:robust} correctly distinguishes between whether $\bG$ was drawn from the null distribution, or from the planted distribution, from input $\widetilde{\bH}$, with probability $1-o(1)$ when $\kappa(n) = o(n)$.
+\end{corollary}

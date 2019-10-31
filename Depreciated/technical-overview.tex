@@ -1,0 +1,159 @@
+\section{Technical Overview} % (fold)
+
+We will describe the construction of the SDP relaxation in the setting of stochastic block model with two communities.
+%
+Recall that in the stochastic block model with two communities, the joint probability distribution $\mu$ on $x \in \{-1,+1\}^n$ and a graph $G \in \{0,1\}^{\binom{n}{2}}$ is specified by the following sampling procedure:
+%
+\begin{enumerate}
+  \item Sample a balanced partition $(S, \bar{S})$ of $[n]$ with $|S| = |\overline{S}| = n/2$.  Let $x \in \sbits^n$ be the $\{\pm 1\}$ vector that represents the partition $(S,\overline{S})$.
+  \item Sample a graph $G = ([n],E)$ by independently including each edge $(i,j) \in E$ with probability 
+
+\[ \Pr[(i,j) \in E]= \begin{cases} a/n & \text{ if } x_i = x_j \\ b/n & \text{otherwise}\end{cases}\]
+\end{enumerate}
+%
+Given the graph $G$ generated as above, the goal is to estimate the hidden communities namely the vector $x \in \sbits^n$.
+%
+
+%The literature on stochastic block models spans close to three decades, we refer the reader to \cite{DBLP:conf/stoc/MoitraPW16} for a more detailed survey.
+%
+%More recently, Decelle \etal \cite{decelle2011asymptotic} posed fascinating conjectures regarding the threshold at which partial recovery is possible for two communities.  
+%
+%Specifically, if there are two equal sized communities with intra-community edges sampled with probability $\frac{a}{n}$ and inter-community edges sampled with probability $\frac{b}{n}$, then Decelle \etal conjectured that {\it partial recovery} is possible if and only if $(a-b)^2 > 2(a+b)$.  Here partial recovery corresponds to recovering two subsets of vertices that have non-negligible correlation to the original communities.
+%
+%Mossel, Neeman and Sly \cite{mossel2015reconstruction} showed that for $(a-b)^2 < 2(a+b)$, partial recovery is information theoretically impossible.  For $(a-b)^2 > 2(a+b)$, two independent works \cite{mossel2013proof,massoulie2014community} obtained efficient algorithms for partial recovery.
+%
+%We refer the reader to \cite{moore2017computer} for a survey on the topic.
+For concreteness, let us consider the case of $a > b$ for two constants $a, b \in \N$ for which partial recovery is feasible.
+%
+Given the graph $G$, the Maximum a posteriori (MAP) estimate $x^*$ which maximizes the conditional probability $\mu_{|G}$ is given by,
+%
+\begin{align*} &\text{MAP:} &  x^* = \argmax_{x \in \sbits^n, \sum_u x_u = 0} \sum_{(u,v) \in E} x_u x_v \mper \end{align*}
+%
+Equivalently, $x^*$ is the solution to the {\it minimum bisection} problem on the graph $G$.
+%
+By virtue of being a combinatorial optimization problem, the above formulation readily admits semidefinite programming relaxations.
+%
+For instance, the simplest of these SDP relaxations would associate a unit vector $\theta_u$ for each $u \in [n]$ and be written as
+%
+$$ \text{GW-SDP: Maximize } \sum_{(u,v) \in E} \iprod{\theta_u, \theta_v} \text{ subject to } \norm{\theta_u}^2 = 1 \mper$$
+%
+This is the SDP studied in \cite{guedon2016community,montanari2015semidefinite}, but despite their considerable effort, its efficacy in recovering the two communities is still not completely understood.
+%
+
+One issue in particular is that the result of Montanari and Sen \cite{montanari2015semidefinite} is far from validating the above choice of SDP:
+%
+this relaxation does not distinguish graphs all the way to the information theoretic threshold unlike other algorithms such as those in \cite{mossel2018proof,massoulie2014community}.
+
+%but more importantly, the optimal solution to the SDP relaxation does not directly correspond to the hidden parameter $x$ from which $G$ was generated.
+%
+%To see this, notice that the value of the objective function $\sum_{(i,j) \in E} x_i x_j$ for the true hidden parameter $x$ is $(a-b)/4 \cdot n$ with high probability.
+%
+%But even an Erdos-Renyi random graph $G(n, \frac{a+b}{2n})$ of the same degree has a better minimum bisection than the planted bisection $x^*$ in the planted distribution!
+%
+%The work of Dembo \etal \cite{dembo2017extremal} showed that if we look at the minimum bisection in a random Erdos-Renyi graph with degree $(a+b)/2$, the value of the objective function is $ \approx 1.5 \cdot \sqrt{(a+b)/8}$.
+%
+%Close to the recovery threshold of $(a-b) = \sqrt{2(a+b)}$, this value is about $1.5 \cdot (a-b)/4$.
+%
+%Therefore, an exponential time algorithm that solves the MAP optimization problem exactly is not known to distinguish between Erdos-Renyi graphs and two-community block models close to the recovery threshold.
+%
+More importantly, even if we solved the underlying MAP optimization problem in exponential time, it is not known whether one can use it to distinguish between Erdos-Renyi graphs and two community block models close to threshold.
+%
+Counterintuitively, by the work of Montanari and Sen \cite{montanari2015semidefinite}, even though the MAP optimization is not known to distinguish the two models its SDP relaxation can!
+%
+Clearly, the SDP optimum is only higher than the true optimum of MAP for every graph, since the SDP admits {\it cheating} solutions that do not correspond to a bisection.
+%
+Montanari and Sen prove that the value of the {\it cheating} SDP solutions is higher for a graph from the stochastic block model, than the value of {\it cheating} solutions for a random graph.  
+%
+The above discussion suggests that MAP problem and its SDP relaxations are not the canonical choice for inference in stochastic block models.
+
+
+\paragraph{What good is a prior for an SDP?}
+%
+A key conecptual drawback of the GW-SDP for estimation is just how little it depends on the prior distribution $\mu$.
+%
+Specifically, the SDP only uses the fact that $a > b$ and could in principle apply to any prior where there are fewer inter-community edges than intra-community edges.
+%
+If the SDP we use to distnguish is an optimization procedure, it is natural that the SDP formulation is prior-free, and not encode much information about the prior distribution.
+%
+On one hand, SDP based algorithms tend to be robust against model mismatch and existence of outliers precisely because they are mostly agnostic to the prior distribution.
+%
+However, this robustness comes at the cost of the algorithm's ability to solve statistical estimation in the model at hand.  
+%
+
+It is natural to ask how best SDP relaxations can exploit information about the prior distribution available in a statistical estimation problem.
+%
+This is a fundamental and quite general issue issue arising when SDP or spectral algorithms are used for statistical estimation.
+%
+Ideally, one would construct a family of SDP relaxations that progressively encode more and more information about the prior distribution.
+%
+The family of SDP relaxations can then be utilized at any recovery vs robustness tradeoff that is desired.
+%
+%In this proposal, we propose two approaches to encode information about the prior distribution into the SDP relaxation.
+%
+The key here is that the SDP relaxation would not be to recover the MAP estimate $x^*$, but to recover the low-degree moments of the posterior distribution $\mu_{|G}$.
+%
+\paragraph{Local Statistics SDP}
+
+For a pair $(x,G)$ sampled from the joint distribution $\mu$, the number of intracluster edges is roughly $a/2 \cdot n$ while the number of intercluster edges is $b/2 \cdot n$.
+%
+By a simple concentration bound, the counts of these subgraphs is roughly the same on the posterior distribution $\mu_{|G}$ after sampling the graph $G$.  
+%
+Formally, the number of inter-cluster edges is given by $\frac{1}{4}\sum_{(u,v)\in E} (x_u - x_v)^2$.  
+%
+With high probability over the choice of the graph $G$,
+%
+\[  \E_{x \sim \mu_{|G}} \left[ \frac{1}{4}\sum_{(u,v)\in E} (x_u - x_v)^2 \right] \approx \E_{(x,G) \sim \mu_G}\left[\frac{1}{4}\sum_{(u,v)\in E} (x_u - x_v)^2\right] \pm o(n) \approx \frac{b}{2} \cdot n \pm o(n) \mper \] 
+Similarly, for intra-cluster edges one would have,
+\[  \E_{x \sim \mu_{|G}} \left[ \frac{1}{4}\sum_{(u,v)\in E} (x_u + x_v)^2 \right] \approx \E_{(x,G) \sim \mu_G}\left[\frac{1}{4}\sum_{(u,v)\in E} (x_u + x_v)^2\right] \pm o(n) \approx \frac{a}{2} \cdot n \pm o(n) \mper \] 
+%
+The above equations can be thought of linear constraints on the degree $2$-moments of the unknown distribution $\mu_{|G}$ matrix.  The local statistic SDP would find a pseudo-expectation functional whose corresponding inter-cluster and intracluster edge counts satisfy the above constraints, i.e.,
+$$ \pE \left[ \frac{1}{4}\sum_{(u,v)\in E} (x_u - x_v)^2 \right] \in  \left[\frac{b}{2} \cdot n - \delta n, \frac{b}{2} \cdot n + \delta n\right] , \quad
+ \pE \left[ \frac{1}{4}\sum_{(i,j)\in E} (x_u + x_v)^2 \right] \in  \left[\frac{a}{2} \cdot n - \delta n, \frac{a}{2} \cdot n + \delta n\right] $$
+for some small constant $\delta$.  The local SDP would solve a feasibility SDP to find a pseudo-expectation functional $\pE$ satisfying these constraints.
+%
+
+
+The above schema can be extended to a hierarchy of SDP relaxations {\sc $LocalStatistic_{D_1,D_2}$} indexed by integers $D_1, D \in \N$.
+%
+Roughly speaking, $LocalStatistic_{D_1,D_2}$ solves a feasibility SDP in order to match the number of copies of every partially labelled subgraph with at most $D$ edges.
+%
+Formally, let $H = (V(H), E(H))$ be a graph with $|E(H)| \leq D_2$ edges and let $S \subset V(H)$ be a designated subset of size $|S| \leq D_1$.
+%
+Let $\Pi_H$ denote the set of all homomorphisms $\pi: H \to G$, i.e., maps $\pi: V(H) \to V(G)$ such that $\pi(u) \neq \pi(v) \forall u \neq v$ and $(u,v) \in E(H) \implies (\pi(u), \pi(v)) \in E(G)$.
+%
+The image of each $\pi \in \Pi_H$ is a copy of the graph $H$ within graph $G$.  
+%
+Consider the polynomial 
+$$ p_{H,S}(x,G) = \sum_{\pi \in \Pi_H} \prod_{u \in S} x_{\sigma(v)} \mper $$
+The constraint corresponding to $H$ and $S$ is given by:
+\begin{align}
+    \pE[ p_{H,S}(x,G)] \approx \E_{(x,G) \sim \mu} [p_{H,S}(x,G)] \pm \delta n
+\end{align}
+%
+
+In addition to these constraints, the local SDP would include polynomial constraints that identify the domain of $x$.  For example, in case of SBM with two communities, the domain of $x$ is a $\{-1,+1\}^n$ vector, and therefore the SDP would include the booleanness constraints $\{x_u^2 = 1\}$. 
+%
+For SBM with $k$ communities, the underlying communities can be expressed as a vector $x \in \bbR^{nk}$ where for each $u \in [n]$ and $\alpha \in [k]$, $x_{u,a}$ indicates whether vertex $i$ belongs to community $\alpha$.  In particular, the domain of $x$ can be specified by a set of polynomial constraints,
+$$ x_{u\alpha}^2 = x_{u\alpha} \qquad \sum_{\alpha} x_{u\alpha} = 1  $$
+
+It is clear that as $D_1, D_2 \in \N$ grow, one gets a hierarchy of  increasingly stronger SDP relaxations.
+%
+While the SDP relaxation used in \cite{hopkins2017efficient} is also closely tied to pseudocalibration, the $LocalStatistic$ SDP hierarchy is different.  In Hopkins and Steurer \cite{hopkins2017efficient}, the algorithm uses a high degree polynomial to directly computes a very good approximation $\hat{X}$ to the degree $2$ moment matrix of $x$, albeit with some error.  
+%
+The semidefinite programming algorithm uses this approximation $\hat{X}$ to effectively extract the all the top eigenvectors $\hat{X}$ of this matrix.
+%
+In our case, the semidefinite program is the workhorse that finds a candidate psd matrix $X$ which has the correct expectations for every low-degree polynomials.
+%
+The $LocalStatistic$ SDP yields a hierarchy of SDP relaxations of which the basic Goemans-Williamson SDP is effectively the first level of the hierarchy.  
+%
+In particular, the $LocalStatistics$ SDP inherits robustness properties that hold for typical SDP relaxations, while the SDP used in Hopkins-Steurer \cite{hopkins2017efficient} is closer to eigenvalue computations, and is not immediately robust.
+
+
+
+Towards analyzing the performance of the $LocalStatistic$ SDP in the setting of RSBM, it is useful to specialize the SDP hierarchy to only consider the subgraphs that are paths.  
+%
+The resulting SDP hierarchy can be equivalently expressed using the non-backtracking walk matrix associated with the graph.
+%
+We will appeal to the non-backtracking walk polynomials associated with a $d$-regular graphs
+
+% section technical_overview (end)

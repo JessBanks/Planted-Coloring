@@ -1,0 +1,50 @@
+\section{The Regular Stochastic Block Model}
+
+This appendix is devoted to several results on the RSBM, including the first moment calculation from the first section and the expectation and concentration of non-backtracking walk counts between vertices of different types. We begin with some standard results on the asymptotics of various combinatorial quantities we'll encounter. 
+
+From Stirling's approximation
+$$
+    \sqrt{2\pi n}\exp(n\log n - n) \le n! \le \sqrt{4\pi n}\exp(n\log n - n),
+$$
+and the identity $(2n-1)!! = \tfrac{(2n)!}{2^n n!}$, we immediately get
+$$
+    \exp(n\log 2n - n) \le (2n - 1)!! \le 2\exp(n\log 2n - n).
+$$
+For some nonnegative vector $\alpha = (\alpha_1,...,\alpha_k)$ with $\sum\alpha_i = 1$, write ${n \choose \alpha n}$ for the multinomial coefficient enumerating the ways to divide $n$ into sets of size $\alpha_1 n,...,\alpha_k n$. Then
+$$
+    {n \choose \alpha n} = \frac{n!}{\prod_i (\alpha_i n)!} \le \frac{\sqrt{4\pi n}}{\prod_i \sqrt{2\pi \alpha_i n}} \exp n H(\alpha)
+$$
+where $H(\alpha) \triangleq -\sum_i \alpha_i \log \alpha_i$ is the entropy of the distribution described by $\alpha$.
+
+Fix the parameters $(d,k,M,\pi)$. For ease of analysis, we will work in a version of the configuration model, where a graph $\bG$ is sampled as follows.
+\begin{enumerate}
+    \item Randomly and uniformly select one of the ${n\choose \pi n}$ $\pi$-balanced partitions of the vertices, and adorn each vertex with $d$ `stubs' or `half-edges.'
+    \item For each $i \in [k]$, randomly and uniformly select which of the $\pi(i)dn$ stubs will connect with every group $j$; there are ${\pi(i)dn \choose \pi(i)M_{i,-} dn}$ such partitions of each group's stubs.
+    \item For each $i<j$, randomly and uniformly chose one of the $(\pi(i)M_{i,j}dn)!$ matchings of the stubs between groups $i$ and $j$.
+    \item For each $i\in[k]$, randomly and uniformly choose one of the $(\pi(i)M_{i,i}dn-1)!!$ perfect matchings on the group $i$ stubs.
+\end{enumerate}
+The result will be a simple graph with probability $1- o_n(1)$, so any results that hold with high probability in this model will hold with the same guarantee if we choose $\bG$ uniformly from all graphs with an $M$-good partition. To sample in the null model, we simply adorn each vertex with $d$ stubs, and choose one of the $(dn-1)!!$ perfect matchings uniformly at random.
+
+\begin{proof}[First Moment Bound]
+    Let $\Xi$ be the random variable counting the number of $M$-good partitions in a graph $\bG$ from the null model. There are ${n \choose \pi n}$ possible ways to partition the vertices in accordance with $\pi$, and we can read off the probability that a uniformly random matching on the $dn$ half-edges makes each one $M$-good from the sampling procedure above. In particular, using the fact that $M$ is stocahstic with $\pi^T M = \pi$, we have
+    \begin{align*}
+        \bbP[\Xi > 0] 
+        &\le \expected\Xi \\
+        &= \frac{1}{(dn-1)!!} {n\choose \pi n} \prod_i {\pi(i)dn \choose \pi(i)M_{i,-}dn} \prod_{i<j}(\pi(i)M_{i,j}dn)! \prod_i (\pi(i)M_{i,i}dn - 1)!! \\
+        &\le\poly(n) \exp\left(-\frac{dn}{2}\log dn + \frac{dn}{2} + nH(\pi) + \sum_i \pi(i)dn H(M_{i,-}) \right. \\
+        &\qquad\qquasd\qquad \left. +\, \frac{1}{2}\sum_{i,j}\left(\pi(i)M_{i,j}dn\log\pi(i)M_{i,j}dn - \pi(i)M_{i,j}dn\right)\right) \\
+        &=\poly(n)\exp n\left(\left(1-\frac{d}{2}\right)H(\pi) + \frac{d}{2}H(\pi,M)\right)
+    \end{align*} 
+    where $H(M,\pi) = \sum_i \pi(i)H(M_{i,-})$ is the average row entropy of $M$, under the stationary distribution. Thus, the probability that $\Xi >0$, i.e. that $\bG$ has any $M$-good partitions, is exponentially small whenever
+    $$
+       d > \frac{2H(\pi)}{H(\pi) - H(\pi,M)}
+    $$
+\end{proof}
+
+\begin{remark}
+    As a sanity check, when $M$ has zero on the diagonal and $\tfrac{1}{k-1}$ elsewhere, $\pi$ is the uniform distribution with entropy $\log k$, and the average row entropy of $M$ is $\log(k-1)$, so we have a first moment bound of
+    $$
+        d>\frac{2\log k}{\log k - \log(k-1)} \approx 2k\log (k-1)-\log k + 2.
+    $$
+    An $M$-good partition is, in this case, a coloring---although not all colorings are $M$-good, since they might have atypically many edges between each group---and this bound matches roughly the first moment bound for coloring in \ER and $d$-regular random graphs.
+\end{remark}

@@ -1,0 +1,497 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{microtype}
+\usepackage{mathrsfs}
+\usepackage{euler}
+\usepackage{amsthm,amsfonts,amscd,amsmath,amssymb}
+\usepackage[margin=1in]{geometry}
+\usepackage[english]{babel}
+% \usepackage{tmathtools}
+\usepackage{bbm}
+\usepackage{libertine}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{prettyref}
+\usetikzlibrary{cd}
+\usepackage{todonotes}
+\usepackage{changepage}
+
+% {{{ common }}}
+
+\usepackage{xspace}
+
+\setlength{\parindent}{1em}
+\setlength{\parskip}{1em}
+
+% Mathbb
+\newcommand{\bbA}{\mathbb{A}}
+\newcommand{\bbB}{\mathbb{B}}
+\newcommand{\bbC}{\mathbb{C}}
+\newcommand{\bbD}{\mathbb{D}}
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\bbF}{\mathbb{F}}
+\newcommand{\bbG}{\mathbb{G}}
+\newcommand{\bbH}{\mathbb{H}}
+\newcommand{\bbI}{\mathbb{I}}
+\newcommand{\bbJ}{\mathbb{J}}
+\newcommand{\bbK}{\mathbb{K}}
+\newcommand{\bbL}{\mathbb{L}}
+\newcommand{\bbM}{\mathbb{M}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbO}{\mathbb{O}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbS}{\mathbb{S}}
+\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\bbU}{\mathbb{U}}
+\newcommand{\bbV}{\mathbb{V}}
+\newcommand{\bbW}{\mathbb{W}}
+\newcommand{\bbX}{\mathbb{X}}
+\newcommand{\bbY}{\mathbb{Y}}
+\newcommand{\bbZ}{\mathbb{Z}}
+
+% Linear Algebra
+\newcommand{\1}{\mathbbm{1}}
+\DeclareMathOperator{\Tr}{tr}
+\newcommand{\innerprod}[2]{\big\langle #1 \big| #2 \big\rangle}
+\newcommand{\outerprod}[2]{#1 \otimes #2}
+\newcommand{\quadform}[2]{\big\langle #1 \big| #2 \big| #1 \big\rangle}
+\newcommand{\bra}[1]{\big\langle #1 \big|}
+\newcommand{\ket}[1]{\big| #1 \big\rangle}
+\DeclareMathOperator{\Span}{Span}
+\newcommand{\ad}{\textup{ad}}
+\renewcommand{\vec}[1]{\underline{\smash{#1}}}
+\DeclareMathOperator{\Rank}{Rank}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Diag}{Diag}
+\DeclareMathOperator{\Range}{Range}
+\DeclareMathOperator{\Conv}{Conv}
+
+
+% Probability
+\DeclareMathOperator*{\expected}{\mathbb{E}}
+\DeclareMathOperator{\avg}{avg}
+\newcommand{\indicator}[1]{\boldsymbol{1} \left[ {#1} \right]}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\cov}{cov}
+\newcommand{\dee}{\,\textup{d}}
+\newcommand{\tod}{\overset{d}\to}
+\newcommand{\toas}{\overset{a.s}\to}
+\newcommand{\topr}{\overset{p}\to}
+\newcommand{\towk}{\overset{w}\to}
+\newcommand{\tov}{\overset{v}\to}
+\newcommand{\eqd}{\overset{d}=}
+\newcommand{\eqas}{\overset{a.s.}=}
+\newcommand{\falling}[2]{{#1}^{\underline{#2}}}
+\DeclareMathOperator{\Pois}{Pois}
+\DeclareMathOperator{\Bern}{Bern}
+\newcommand{\iid}{\text{i.i.d.}}
+\def\bangle{ \atopwithdelims \langle \rangle}
+\newcommand{\io}{\,\textup{i.o.}\,}
+\newcommand{\ult}{\,\textup{ult.}\,}
+\newcommand{\independent}{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+% Other
+\DeclareMathOperator*{\argmin}{arg min}
+\DeclareMathOperator*{\argmax}{arg max}
+\newcommand{\ER}{\text{Erd\H{o}s-R\'{e}nyi\,}}
+\newcommand{\bm}[1]{\boldsymbol{#1}}
+
+% Theorems
+\theoremstyle{plain}
+  \newtheorem{theorem}{Theorem}[section]
+  \newtheorem{claim}[theorem]{Claim}
+  \newtheorem{corollary}[theorem]{Corollary}
+  \newtheorem{proposition}[theorem]{Proposition}
+  \newtheorem{lemma}[theorem]{Lemma}
+  \newtheorem{question}[theorem]{Question}
+  \newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+  \newtheorem{definition}[theorem]{Definition}
+  \newtheorem{exercise}{Exercise}
+  \newtheorem{example}{Example}
+  \newtheorem{counterexample}{Counterexample}
+  \newtheorem{remark}[theorem]{Remark}
+  \newtheorem{algorithm}[theorem]{Algorithm}
+
+
+% \numberwithin{claim}{section}
+
+
+
+% Algebra
+\newcommand{\normal}{\triangleleft}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Inn}{Inn}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Coker}{Coker}
+\DeclareMathOperator{\Image}{Im}
+\newcommand{\nequiv}{\not\equiv}
+\DeclareMathOperator{\Quot}{Quot}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Irr}{Irr}
+\newcommand{\sep}{\textup{sep}}
+\DeclareMathOperator{\ch}{char}
+\newcommand{\Gal}{\textup{Gal}}
+\DeclareMathOperator{\Perm}{Perm}
+\newcommand{\surj}{\twoheadrightarrow}
+\newcommand{\inj}{\hookrightarrow}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Ann}{Ann}
+\newcommand{\implied}{\Leftarrow}
+\DeclareMathOperator{\Len}{Len}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\Supp}{Supp}
+\newcommand{\cyclic}[1]{\Z/#1\Z}
+\newcommand{\bij}{\lhook\joinrel\twoheadrightarrow}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\newcommand{\cat}[1]{(\textbf{#1})}
+\DeclareMathOperator{\colim}{colim}
+\newcommand{\ilim}{\varprojlim}
+\newcommand{\Stab}{\textup{Stab}}
+\newcommand{\GL}{\textup{GL}}
+\DeclareMathOperator{\Fix}{Fix}
+\newcommand{\SYT}{\textup{SYT}}
+\newcommand{\SSYT}{\textup{SSYT}}
+\DeclareMathOperator{\Yan}{Yan}
+\newcommand{\gr}[1]{\textup{gr}_{ #1 }}
+\newcommand{\bl}[1]{\textup{bl}_{ #1 }}
+\newcommand{\init}{\textsc{i}}
+\DeclareMathOperator{\Codim}{Codim}
+
+
+% Mathfrak
+\newcommand{\fra}{\mathfrak{a}}
+\newcommand{\frb}{\mathfrak{b}}
+\newcommand{\frc}{\mathfrak{c}}
+\newcommand{\frd}{\mathfrak{d}}
+\newcommand{\fre}{\mathfrak{e}}
+\newcommand{\frf}{\mathfrak{f}}
+\newcommand{\frg}{\mathfrak{g}}
+\newcommand{\frh}{\mathfrak{h}}
+\newcommand{\fri}{\mathfrak{i}}
+\newcommand{\frj}{\mathfrak{j}}
+\newcommand{\frk}{\mathfrak{k}}
+\newcommand{\frl}{\mathfrak{l}}
+\newcommand{\frm}{\mathfrak{m}}
+\newcommand{\frn}{\mathfrak{n}}
+\newcommand{\fro}{\mathfrak{o}}
+\newcommand{\frp}{\mathfrak{p}}
+\renewcommand{\frq}{\mathfrak{q}} % This might break everything
+\newcommand{\frr}{\mathfrak{r}}
+\newcommand{\frs}{\mathfrak{s}}
+\newcommand{\frt}{\mathfrak{t}}
+\newcommand{\fru}{\mathfrak{u}}
+\newcommand{\frv}{\mathfrak{v}}
+\newcommand{\frw}{\mathfrak{w}}
+\newcommand{\frx}{\mathfrak{x}}
+\newcommand{\fry}{\mathfrak{y}}
+\newcommand{\frz}{\mathfrak{z}}
+
+\newcommand{\frA}{\mathfrak{A}}
+\newcommand{\frB}{\mathfrak{B}}
+\newcommand{\frC}{\mathfrak{C}}
+\newcommand{\frD}{\mathfrak{D}}
+\newcommand{\frE}{\mathfrak{E}}
+\newcommand{\frF}{\mathfrak{F}}
+\newcommand{\frG}{\mathfrak{G}}
+\newcommand{\frH}{\mathfrak{H}}
+\newcommand{\frI}{\mathfrak{I}}
+\newcommand{\frJ}{\mathfrak{J}}
+\newcommand{\frK}{\mathfrak{K}}
+\newcommand{\frL}{\mathfrak{L}}
+\newcommand{\frM}{\mathfrak{M}}
+\newcommand{\frN}{\mathfrak{N}}
+\newcommand{\frO}{\mathfrak{O}}
+\newcommand{\frP}{\mathfrak{P}}
+\newcommand{\frQ}{\mathfrak{Q}} % This might break everything
+\newcommand{\frR}{\mathfrak{R}}
+\newcommand{\frS}{\mathfrak{S}}
+\newcommand{\frT}{\mathfrak{T}}
+\newcommand{\frU}{\mathfrak{U}}
+\newcommand{\frV}{\mathfrak{V}}
+\newcommand{\frW}{\mathfrak{W}}
+\newcommand{\frX}{\mathfrak{X}}
+\newcommand{\frY}{\mathfrak{Y}}
+\newcommand{\frZ}{\mathfrak{Z}}
+
+% Mathcal
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calE}{\mathcal{E}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\calI}{\mathcal{I}}
+\newcommand{\calJ}{\mathcal{J}}
+\newcommand{\calK}{\mathcal{K}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calO}{\mathcal{O}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calT}{\mathcal{T}}
+\newcommand{\calU}{\mathcal{U}}
+\newcommand{\calV}{\mathcal{V}}
+\newcommand{\calW}{\mathcal{W}}
+\newcommand{\calX}{\mathcal{X}}
+\newcommand{\calY}{\mathcal{Y}}
+\newcommand{\calZ}{\mathcal{Z}}
+
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\bdelta}{\boldsymbol{\delta}}
+\newcommand{\bepsilon}{\boldsymbol{\epsilon}}
+\newcommand{\blambda}{\boldsymbol{\lambda}}
+\newcommand{\bomega}{\boldsymbol{\omega}}
+\newcommand{\bpi}{\boldsymbol{\pi}}
+\newcommand{\bnu}{\boldsymbol{\nu}}
+\newcommand{\bphi}{\boldsymbol{\phi}}
+\newcommand{\bvphi}{\boldsymbol{\varphi}}
+\newcommand{\bpsi}{\boldsymbol{\psi}}
+\newcommand{\brho}{\boldsymbol{\rho}}
+\newcommand{\bsigma}{\boldsymbol{\sigma}}
+\newcommand{\btau}{{\boldsymbol{\tau}}}
+\newcommand{\btheta}{\boldsymbol{\theta}}
+\newcommand{\bzeta}{\boldsymbol{\zeta}}
+\newcommand{\ba}{\boldsymbol{a}}
+\newcommand{\bb}{\boldsymbol{b}}
+\newcommand{\bc}{\boldsymbol{c}}
+\newcommand{\bd}{\boldsymbol{d}}
+\newcommand{\be}{\boldsymbol{e}}
+\newcommand{\boldf}{\boldsymbol{f}}
+\newcommand{\bg}{\boldsymbol{g}}
+\newcommand{\bh}{\boldsymbol{h}}
+\newcommand{\bi}{\boldsymbol{i}}
+\newcommand{\bj}{\boldsymbol{j}}
+\newcommand{\bk}{\boldsymbol{k}}
+\newcommand{\bell}{\boldsymbol{\ell}}
+\newcommand{\bp}{\boldsymbol{p}}
+\newcommand{\bq}{\boldsymbol{q}}
+\newcommand{\br}{\boldsymbol{r}}
+\newcommand{\bs}{\boldsymbol{s}}
+\newcommand{\bt}{\boldsymbol{t}}
+\newcommand{\bu}{\boldsymbol{u}}
+\newcommand{\bv}{\boldsymbol{v}}
+\newcommand{\bw}{\boldsymbol{w}}
+\newcommand{\bx}{{\boldsymbol{x}}}
+\newcommand{\by}{\boldsymbol{y}}
+\newcommand{\bz}{\boldsymbol{z}}
+\newcommand{\bA}{\boldsymbol{A}}
+\newcommand{\bB}{\boldsymbol{B}}
+\newcommand{\bC}{\boldsymbol{C}}
+\newcommand{\bD}{\boldsymbol{D}}
+\newcommand{\bE}{\boldsymbol{E}}
+\newcommand{\bF}{\boldsymbol{F}}
+\newcommand{\bG}{\boldsymbol{G}}
+\newcommand{\bH}{\boldsymbol{H}}
+\newcommand{\bI}{\boldsymbol{I}}
+\newcommand{\bJ}{\boldsymbol{J}}
+\newcommand{\bL}{\boldsymbol{L}}
+\newcommand{\bM}{\boldsymbol{M}}
+\newcommand{\bP}{\boldsymbol{P}}
+\newcommand{\bQ}{\boldsymbol{Q}}
+\newcommand{\bR}{\boldsymbol{R}}
+\newcommand{\bS}{\boldsymbol{S}}
+\newcommand{\bT}{\boldsymbol{T}}
+\newcommand{\bU}{\boldsymbol{U}}
+\newcommand{\bV}{\boldsymbol{V}}
+\newcommand{\bW}{\boldsymbol{W}}
+\newcommand{\bX}{\boldsymbol{X}}
+\newcommand{\bY}{\boldsymbol{Y}}
+\newcommand{\bZ}{\boldsymbol{Z}}
+\newcommand{\bone}{\boldsymbol{1}}
+
+\newcommand{\eps}{\varepsilon}
+
+
+% Document Specific
+
+\DeclareMathOperator{\girth}{girth}
+\newcommand{\nb}[2]{A^{(#1)}_{#2}}
+\newcommand{\sa}[2]{A^{\langle #1 \rangle}_{#2}}
+\newcommand{\km}{\textsc{km}}
+\newcommand{\nbarrow}[1]{\overset{#1}\rightsquigarrow}
+\newcommand{\comment}[1]{{\color{purple}[{#1}]}}
+\newcommand{\st}{\text{s.t.}}
+\newcommand{\fall}[1]{\underline{#1}}
+\newcommand{\rise}[1]{\overline{#1}}
+\DeclareMathOperator{\Hess}{Hess}
+\DeclareMathOperator{\Sch}{Sch}
+\newcommand{\pin}{p_{\textup{in}}}
+\newcommand{\pout}{p_{\textup{out}}}
+\newcommand{\Planted}{\mathcal{P}}
+\newcommand{\Null}{\mathcal{N}}
+\DeclareMathOperator{\LS}{LoSt}
+\newcommand{\pseudo}{\widetilde{\expected}\,}
+\DeclareMathOperator{\poly}{poly}
+\DeclareMathOperator{\dist}{dist}
+
+\newcommand{\N}{\mathbb{N}}
+
+% punctuation at the end of a displayed formula
+\newcommand{\mper}{\,.}
+\newcommand{\mcom}{\,,}
+
+% norm
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\Norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\bignorm}[1]{\big\lVert#1\big\rVert}
+\newcommand{\Bignorm}[1]{\Big\lVert#1\Big\rVert}
+% 2-norm
+\newcommand{\normt}[1]{\norm{#1}_2}
+\newcommand{\Normt}[1]{\Norm{#1}_2}
+\newcommand{\bignormt}[1]{\bignorm{#1}_2}
+\newcommand{\Bignormt}[1]{\Bignorm{#1}_2}
+% 2-norm squared
+\newcommand{\snormt}[1]{\norm{#1}^2_2}
+\newcommand{\Snormt}[1]{\Norm{#1}^2_2}
+\newcommand{\bigsnormt}[1]{\bignorm{#1}^2_2}
+\newcommand{\Bigsnormt}[1]{\Bignorm{#1}^2_2}
+% norm squared
+\newcommand{\snorm}[1]{\norm{#1}^2}
+\newcommand{\Snorm}[1]{\Norm{#1}^2}
+\newcommand{\bigsnorm}[1]{\bignorm{#1}^2}
+\newcommand{\Bigsnorm}[1]{\Bignorm{#1}^2}
+% 1-norm
+\newcommand{\normo}[1]{\norm{#1}_1}
+\newcommand{\Normo}[1]{\Norm{#1}_1}
+\newcommand{\bignormo}[1]{\bignorm{#1}_1}
+\newcommand{\Bignormo}[1]{\Bignorm{#1}_1}
+% infty-norm
+\newcommand{\normi}[1]{\norm{#1}_\infty}
+\newcommand{\Normi}[1]{\Norm{#1}_\infty}
+\newcommand{\bignormi}[1]{\bignorm{#1}_\infty}
+\newcommand{\Bignormi}[1]{\Bignorm{#1}_\infty}
+
+
+% inner product
+\newcommand{\iprod}[1]{\langle#1\rangle}
+\newcommand{\Iprod}[1]{\left\langle#1\right\rangle}
+\newcommand{\bigiprod}[1]{\big\langle#1\big\rangle}
+\newcommand{\Bigiprod}[1]{\Big\langle#1\Big\rangle}
+
+
+% {{{ probability }}}
+% expectation, probability, variance
+\newcommand{\Esymb}{\mathbb{E}}
+\newcommand{\Psymb}{\mathbb{P}}
+\newcommand{\Vsymb}{\mathbb{V}}
+
+\DeclareMathOperator*{\E}{\Esymb}
+\DeclareMathOperator*{\Var}{\Vsymb}
+\DeclareMathOperator*{\ProbOp}{\Psymb}
+\DeclareMathOperator*{\pE}{{\tilde\Esymb}}
+
+
+\usepackage{hyperref}
+\usepackage{prettyref}
+% prettyref stuff -- also copied from a paper of James Lee
+\newcommand{\savehyperref}[2]{\texorpdfstring{\hyperref[#1]{#2}}{#2}}
+
+\newrefformat{eq}{\savehyperref{#1}{\textup{(\ref*{#1})}}}
+\newrefformat{lem}{\savehyperref{#1}{Lemma~\ref*{#1}}}
+\newrefformat{def}{\savehyperref{#1}{Definition~\ref*{#1}}}
+\newrefformat{thm}{\savehyperref{#1}{Theorem~\ref*{#1}}}
+\newrefformat{cor}{\savehyperref{#1}{Corollary~\ref*{#1}}}
+\newrefformat{cha}{\savehyperref{#1}{Chapter~\ref*{#1}}}
+\newrefformat{sec}{\savehyperref{#1}{Section~\ref*{#1}}}
+\newrefformat{app}{\savehyperref{#1}{Appendix~\ref*{#1}}}
+\newrefformat{tab}{\savehyperref{#1}{Table~\ref*{#1}}}
+\newrefformat{fig}{\savehyperref{#1}{Figure~\ref*{#1}}}
+\newrefformat{hyp}{\savehyperref{#1}{Hypothesis~\ref*{#1}}}
+\newrefformat{alg}{\savehyperref{#1}{Algorithm~\ref*{#1}}}
+\newrefformat{rem}{\savehyperref{#1}{Remark~\ref*{#1}}}
+\newrefformat{item}{\savehyperref{#1}{Item~\ref*{#1}}}
+\newrefformat{step}{\savehyperref{#1}{step~\ref*{#1}}}
+\newrefformat{conj}{\savehyperref{#1}{Conjecture~\ref*{#1}}}
+\newrefformat{fact}{\savehyperref{#1}{Fact~\ref*{#1}}}
+\newrefformat{prop}{\savehyperref{#1}{Proposition~\ref*{#1}}}
+\newrefformat{prob}{\savehyperref{#1}{Problem~\ref*{#1}}}
+\newrefformat{claim}{\savehyperref{#1}{Claim~\ref*{#1}}}
+\newrefformat{relax}{\savehyperref{#1}{Relaxation~\ref*{#1}}}
+\newrefformat{rem}{\savehyperref{#1}{Remark~\ref*{#1}}}
+\newrefformat{red}{\savehyperref{#1}{Reduction~\ref*{#1}}}
+\newrefformat{part}{\savehyperref{#1}{Part~\ref*{#1}}}
+\newrefformat{ex}{\savehyperref{#1}{Exercise~\ref*{#1}}}
+\newrefformat{property}{\savehyperref{#1}{Property~\ref*{#1}}}
+%
+%
+\newcommand{\Sref}[1]{\hyperref[#1]{\S\ref*{#1}}}
+
+
+
+
+
+\newcommand{\cD}{\mathcal{D}}
+
+
+\let\pref=\prettyref
+
+
+
+%\usepackage[options ]{algorithm2e}
+
+%\usepackage{content/planted}
+
+\newcommand{\fullmodel}{Degree Regular Block Model}
+\newcommand{\model}{DRBM}
+
+
+\begin{document}
+
+% Declarations for Front Matter
+\title{Local Statistics, Semidefinite Programming, and Community Detection}
+\author{Jess Banks \thanks{University of California, Berkeley} \and Sidhanth Mohanty \thanks{University of California, Berkeley} \and Prasad Raghavendra\thanks{University of California, Berkeley}}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+    We propose a new hierarchy of semidefinite programming relaxations for inference problems, inspired by recent ideas of `pseudocalibration' in the Sum-of-Squares literature. As a test case, we consider the problem of community detection in a distribution of random regular graphs we'll call the \fullmodel, wherein the vertices are partitioned into $k$ communities, and a graph is sampled conditional on a prescribed number of inter- and intra-community edges. The problem of \emph{detection}, where we are to decide with high probability whether a graph was drawn from this model or the uniform distribution on regular graphs, is conjectured to undergo a computational phase transition at a point called the Kesten-Stigum (KS) threshold, and we show (i) that sufficiently high constant levels of our hierarchy can perform detection arbitrarily close to this point, (ii) that our algorithm is robust to $o(n)$ adversarial edge perturbations, and (iii) that below Kesten-Stigum no level constant level can do so.
+    
+    In the more-studied case of the (irregular) Stochastic Block Model, it is known that efficient algorithms exist all the way down to this threshold, although none are robust to adversarial perturbations of the graph when the average degree is small. More importantly, there is little complexity-theoretic evidence that detection is hard below Kesten-Stigum. In the RSBM with more than two groups, it has not to our knowledge been proven that any algorithm succeeds down to the KS threshold, let alone that one can do so robustly, and there is a similar dearth of evidence for hardness below this point.
+    
+    Our SDP hierarchy is highly general and could potentially be useful for a wide range of hypothesis testing problems.
+\end{abstract}
+
+\thispagestyle{empty}
+\setcounter{page}{0}
+\newpage
+
+%\tableofcontents
+%\clearpage
+
+\input{Content/intro.tex}
+\input{Content/technical.tex}
+\input{Content/preliminaries.tex}
+\input{Content/distinguishing.tex}
+\input{Content/spectral.tex}
+\input{Content/non-distinguishing.tex}
+\input{Content/robustness.tex}
+%\pagestyle{headings}
+
+
+
+
+
+
+
+\bibliographystyle{amsalpha}
+\bibliography{bib/mr,bib/dblp,bib/bibliography,bib/plantedcoloring,bib/listDecoding}
+
+\appendix
+\input{Content/planted.tex}
+\input{Depreciated/prob-exp-calculation.tex}
+
+%\printbibliography
+
+\end{document}

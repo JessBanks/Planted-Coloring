@@ -1,0 +1,113 @@
+\section{Preliminaries}
+\label{sec:prelims}
+
+Denote by $\Null$ the uniform distribution on $n$-vertex $d$-regular graphs, and $\planted = \planted_{k,\lambda}$ the symmetric SBM for some $k$ and $\lambda$. We will use bold face font for random objects sampled from these distributions. Because we care only about the case when the number of vertices is very large, we will use \emph{with high probability (w.h.p} to describe any sequence of events with probability $1 - o_n(1)$ in $\Null$ or $\planted$ as $n\to \infty$. We will write $[n] = \{1,...,n\}$, and in general use the letters $u,v,w$ to refer to elements of $[n]$ and $i,j$ for elements of $[k]$.
+
+\paragraph{Nonbacktracking Walks and Orthogonal Polynomials}  \label{sec:nbw-poly}
+ Our  analysis of the $LocalStatistics$ SDP will make extensive use of \emph{non-backtracking walks} on a graph $G$; these are walks which are forbidden from returning immediately along an edge that they have just traversed. Let's write $A_G$ for the adjacency matrix of $G$, and $\nb{s}{G}$ for the $n\times n$ matrix whose $(i,j)$ entry counts the length-$s$ non-backtracking walks from vertex $i$ to vertex $j$. One can check that the $\nb{s}{G}$ satisfy the following two-term linear recurrence,
+\begin{align*}
+	\nb{0}{G} &= \1 \\
+	\nb{1}{G} &= A_{G} \\
+	\nb{2}{G} &= A^2_{G} - d\1 \\
+	\nb{s}{G} &= A\nb{s-1}{G} - (d-1)\nb{s-2}{G} \qquad s > 2.
+\end{align*}
+since to enumerate non-backtracking walks of length $s$, we can first extend each such walk of length $s-1$ in every possible way, and then remove those extensions that backtrack.
+
+Because the graphs are $d$-regular, the above recurrence immediately shows that $\nb{s}{G} = q_s(A_{G})$ for a family of monic, scalar `non-backtracking polynomials' $\{q_s\}_{s\ge 0}$, where $\deg q_s = s$. These polynomials are an orthogonal polynomial sequence with respect to the Kesten-McKay measure
+\[
+	\frac{\dee\mu_{\km}}{\dee x} = \frac{1}{2\pi} \frac{d}{\sqrt{d-1}} \frac{\sqrt{4(d-1) - x^2}}{d^2 - x^2}\,\indicator{|x|< 2\sqrt{d-1}},
+\]
+and its associated inner product 
+$$
+    \langle f,g \rangle_{\km} \triangleq \int f(x)g(x) d\mu_{\km}
+$$
+on square integrable functions on $(-2\sqrt{d-1},2\sqrt{d-1})$. One can again check that
+\[
+	\|q_s\|_\km^2 \triangleq \int q_s(x)^2\dee\mu_{\km} = q_s(d) =  \begin{cases} 1 & s = 0 \\ d(d-1)^{s-1} & s \ge 1 \end{cases} = \frac{1}{n}\left(\text{\# length-$s$ n.b. walks on $G$}\right)
+\]
+in the normalization we have chosen \cite{alon2007non}. In fact, the $q_s$ are an orthogonal basis for this vector space, so that any $f$ can be expanded as
+$$
+    f = \sum_{s \ge 0} \frac{\langle f, q_s \rangle_{\km}}{\|q_s\|^2_{\km}} q_s.
+$$
+We will also need the following lemma of Alon et al. \cite[Lemma 2.3]{alon2007non} bounding the size of the polynomials $q_s$:
+\begin{lemma}   \label{lem:NBW-poly-bound}
+    For any $\epsilon>0$,
+    $$
+        |q_s(x)| \le 2(s+1)\sqrt{d(d-1)^{s-1}} = 2(s+1)\|q_s\|_{\km}
+    $$
+\end{lemma}
+
+The behavior of the non-backtracking polynomials with respect to the inner product $\langle \cdot,\cdot \rangle_{\km}$ idealizes that of the $\nb{s}{G} = q_s(A_{G})$ under the trace inner product $\langle X,Y \rangle = \Tr XY^T = \sum_{i,j}X_{i,j}Y_{i,j}$ and associated Frobenius norm $\|X\|_F^2 = \langle X,X \rangle$. We observed already that
+$$
+    \|\nb{s}{G}\|_F^2 = \left(\text{\# length-$s$ n.b. walks on $G$}\right) = n\|q_s\|_{\km}^2,
+$$
+and furthermore if $s + t < \girth(G)$,
+$$
+    \langle \nb{s}{G},\nb{t}{G} \rangle = 0 = \langle q_s,q_t \rangle_{\km}.
+$$
+This is because the diagonal entries of $\nb{s}{G}\nb{t}{G}$ count pairs of non-backtracking walks with length $s$ and $t$ respectively, and if $s\neq t$ any such pair induces a cycle of length at most $s+t$. Above the girth, if we can control the number of cycles, we can quantify how far the $\nb{s}{G}$ are from orthogonal in the trace inner product.
+
+Luckily for us, sparse random graphs have very few cycles. Let $\bm{G} \sim \Null$ be a random $d$-regular graph; throughout the paper we will use bold face font for random variables. It is a standard result that, for any constant $C$, the expected umber of cycles of length $C$ in $\bm G$ is a constant depending only on $C$. Call a vertex $v$ \emph{$L$-bad} whenever it is possible to reach $v$ in at most $L$ non-backtracking steps from a cycle---such vertices are exactly those for which the diagonal entries of $\nb{s}{\bm G}\nb{t}{\bm G}$ are nonzero in the case $s + t < \girth(\bm G) + L$. 
+
+\begin{lemma}[see Theorem 2.5 of \cite{wormald1999models}]    \label{lem:L-bad-bound}
+    For constant $L$, with probability $1 - o(1)$, $\bm G$ has only $O(\log n)$ vertices that are $L$-bad.
+\end{lemma}
+
+\noindent This lemma immediately shows that
+$$
+    \langle \nb{s}{\bm G},\nb{t}{\bm G} \rangle = O(\log n)
+$$
+for any $s,t = O(1)$; we will use it in a more sophisticated way later on.
+
+\paragraph{The SDP for Community Detection in symmetric RSBM}
+
+For the case of community detection over a symmetric RSBM, the $LocalStatistic_{2,m}$ SDP can be equivalently written in a much simpler form.
+%
+We will describe this simplified SDP here, and defer the proof of equivalence of the two relaxations to the appendix.
+
+%
+Given any community assignment $\sigma: [n] \to [k]$, we can assign each vertex one of the $k$ vectors pointing to the corners of a unit $(k-1)$-simplex: these are vectors with unit norm and inner product $-(k-1)^{-1}$. The Gram matrix $X_\sigma$ of these vectors is a rank-$(k-1)$ positive semidefinite matrix which is $n/(k-1)$ times the projector onto the subspace spanned by the indicator vectors for the $k$ communities and orthogonal to the vector of all ones. If $G$ is a $d$-regular graph containing a $k$-way cut with $\pin d n$ within-group edges and $(k-1)\pout d n$ between group edges, 
+$$
+    \langle A_{G}, X_\sigma \rangle = \pin d n - \frac{1}{k-1}(k-1)\pout d n = (\pin - \pout)dn;
+$$
+we will show in the sequel that when $(\bm G, \bm \sigma) \sim \planted_{k,\lambda}$ the planted partition satisfies $\langle A_{\bm G}, X_{\bm \sigma}\rangle = \lambda d n + o(n)$. This motivates a basic distinguishing SDP:
+\begin{align} \label{eq:basic-sdp}
+    \text{Find  } X &\succeq 0 & &\st & X_{i,i} &= 1  & & \forall i\\ 
+    & & & & \langle A_{\bm G}, X \rangle &= \lambda d n + o(n) & & \noindent
+\end{align}
+
+In the planted model, with planted community assignment $\bm \sigma$ the Gram matrix $X_{\bm \sigma}$ is a feasible solution to \eqref{eq:basic-sdp}. However, in the null model, it is a theorem of Friedman \cite{friedman2003proof} that for $\bm G \sim \calN$ and any $\epsilon$, the spectrum of $A_{\bm G}$ w.h.p. consists of the trivial eigenvalue at $d$, and a bulk contained in the interval $(-2\sqrt{d-1} - \epsilon,2\sqrt{d-1} + \epsilon)$. Thus for any $X$ satisfying the constraints of SDP \eqref{eq:basic-sdp},
+\[
+	0 \le \langle  (2\sqrt{d-1} + \epsilon)\1 + A_{\bm G}, X \rangle = \left(2\sqrt{d-1} + \epsilon +d\lambda\right)n.
+\]
+When
+\[
+	\lambda < -\frac{2\sqrt{d-1} + \epsilon}{d}
+\]
+SDP \eqref{eq:basic-sdp} is w.h.p. infeasible in the null model, and can therefore distinguish between $\planted$ and $\Null$. It is shown in \cite{banks2017lov} that this is essentially tight.
+
+This basic SDP is endowed only with the knowledge of, on average, how many neighbors each vertex ought to have in its own community versus a different one. However, we are free to include this same flavor of information about the probabilities that a pair of vertices at greater distance share the same community label. In particular, the following holds for our models, and is proven in detail for the special case of planted $k$-coloring in Appendix \ref{sec:exp-calc}.  The calculations for the general case are similar in flavor.
+\begin{proposition} \label{prop:model}
+    With high probability in $\planted_{k,\lambda}$, 
+    $$
+        \langle \nb{s}{\bm G},X_{\bm \sigma} \rangle = \lambda^s \|q_s\|^2_{\km} n + o(n),
+    $$
+\end{proposition}
+We can now add these constraints to SDP \eqref{eq:basic-sdp}. Specifically, set some error tolerance $\delta>0$, and write $\simeq$ to mean `equal up to $\pm \delta n$'. Then our \emph{level-$m$ local statistics SDP} is
+\begin{align} \label{eq:full-sdp}
+    \text{Find  } X &\succeq 0 & &\st & \langle \nb{s}{G},X \rangle &\simeq \|q_s\|^2_{\km}\lambda^s n & & \forall s = 0,...,m \\
+    & & & & X_{i,i} &= 1 & &\forall i \nonumber
+\end{align}
+Because the non-backtracking polynomials are a basis, this full SDP demands that $\langle X, f(A) \rangle \approx \expected\langle X_\sigma, f(A) \rangle$ for any polynomial $f$ of degree at most $m$.
+
+Let's get a feel for Proposition 3.3. Because random regular graphs w.h.p. have only constantly many cycles of constant size, most pairs of vertices connected by a length-$s$ non-backtracking walk are indeed at shortest-path distance $s$ from one another. To calculate the above expectation, we need to know the distribution on community labels after we follow a non-backtracking random walk in the graph. Recalling $M$, the $k\times k$ doubly stochastic matrix which has $\pin$ on the diagonal and $\pout$ otherwise, we can as a heuristic calculation say that the sequence vertex labels along a non-backtracking random walk should be distributed roughly according to the Markov chain described by $M$: as we move along each edge, with probability $\pin$ we keep the same label and with the remaining probability we choose a different one. The reader may verify that $M = \lambda\1 + (1-\lambda)\bbJ/k$, so if $i$ and $j$ are at distance $s$,
+\begin{align*}
+    \expected (X_{\bm \sigma})_{i,j} 
+    &= \bbP[\bm \sigma(i) = \bm \sigma(j)] - \frac{1}{k-1}\bbP[\bm \sigma(i) \neq \bm \sigma(j)] \\
+    &= \sum_{a} \bbP[\bm \sigma(i) = \bm \sigma(j) = a] - \frac{1}{k-1}\sum_{a\neq b} \bbP[\bm \sigma(i) = a \text{ and } \bm \sigma(j) = b] \\
+    &\approx \langle M^s, \1 - \frac{1}{k-1} \bbJ \rangle \\
+    &= \langle(\lambda\1 + (1-\lambda)\bbJ/k)^s, \1 - \frac{1}{k-1} \bbJ\rangle \\
+    &= \lambda^s
+\end{align*}
+
+\noindent Thus the conclusion of Proposition 3.3 is a quite natural property for a planted model to have; we prove it for a particular choice of the model $\planted$, but our results will extend to any planted model where it holds.

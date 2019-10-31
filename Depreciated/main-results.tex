@@ -1,0 +1,49 @@
+\section{Main Results} % (fold)
+\label{sec:main_results}
+
+We define a new hierarchy of semidefinite programming relaxations for inference problems that we refer to as the \emph{Local Statistics} hierarchy, denoted $\LS(D_1,D_2)$ and indexed by parameters $D_1,D_2 \in \N$. This family of SDPs is inspired by the technique of pseudocalibration in proving lower bounds for sum-of-squares (SoS) relaxations, as well as subsequent work of Hopkins and Steurer \cite{hopkins2017efficient} extending it to an SoS SDP based approach to inference problems. The $\LS$ hierarchy can be defined for a broad range of inference problems involving a joint distribution $\mu$ on an observation $G$ and hidden parameter $\sigma$. 
+
+As a test case, we apply our SDP relaxations to community detection in the \emph{regular stochastic block model (RSBM)}, a family of distributions over degree regular graphs with planted community structure. The degree-regularity will simplify some aspects of our analysis, allowing us to illustrate key features of the $\LS$ hierarchy without a proliferation of technicalities. We will comment later on about the possibilities for extension to the irregular case. As an aside, we cannot help but editorialize briefly that, although the RSBM is less useful in practice than the standard block model discussed above, its combinatorics are intricate and beautiful in their own right, and the special sub-case of $d$-regular graphs with planted colorings have been quite well-studied [citations].
+
+We will specify the RSBM on $n$ vertices in full generality by the number of communities $k$, degree $d$, and a $k\times k$ transition matrix $M$ for a reversible Markov chain, with stationary distribution $\pi$. In other words, $M$ has row sums equal to one, and $\Diag(\pi) M$ is a symmetric matrix. To sample a graph $\bG = (\bV, \bE)$, we first partition the $n$ vertices randomly into $k$ groups $\bV_1,...,\bV_k$ with $|\bV_i| = \pi(i)n$, and then choose a $d$-regular random graph conditional on there being $\pi(i)M_{i,j} d n$ edges between groups $i$ and $j$. As $\Diag(\pi) M$ is symmetric, this process is well-defined. 
+
+\begin{remark}
+	This differs from the model in [cite], also called the RSBM, in which each vertex has a prescribed number of neighbors in every community. Although superficially similar, the behavior of this `equitable' model is quite different from ours.	For instance, [cite] show that whenever detection is possible, one can recover the community labels \emph{exactly}. This is not true for our RSBM. \todo{Sketch why. Also should we change the name?}
+\end{remark}
+
+The RSBM contains many well-studied problems as special cases, and the reader is welcome to focus on her favorite for concreteness. When $\pi(i) = 1/k$ for every $i$, we have the RSBM with equal groups. Setting $M_{i,i} = 0$ and $M_{i,j} = \tfrac{1}{k-1}$, we are in a somewhat restrictive case of the planted $k$-coloring model, where each pair of color classes has the same number of edges between them. When $M_{i,i} = m_{\textup{in}}$ and $m_{\textup{out}}$ otherwise, we refer to the model as the \emph{symmetric RSBM}. This symmetric case will play a special role in our analysis later on. As $M$ describes a reversible Markov chain, its spectrum is real, and we will write its eigenvalues as $1 = \lambda_1 \ge |\lambda_2| \ge \cdots \ge |\lambda_k|$. The second eigenvalue $\lambda_2$ can be thought of as a kind of signal-to-noise ratio, and will be repeatedly important to our analysis. One can verify, for instance, that in the case of the symmetric RSBM, $\lambda_2 = \cdots = \lambda_n = m_{\textup{in}} - m_{\textup{out}}$.
+
+It is widely believed that the threshold phenomenology of the RSBM is similar to that of the SBM, though the inhomogeneities in group size and edge density we allow for make the situation somewhat more complicated than in the symmetric case discussed earlier. This includes an information-theoretic threshold $d_{IT} \approx \frac{\log k}{k\lambda_2^2}$ for the symmetric RSBM (and a more complicated characterization in general that will not be relevant to us here). In the general model, the Kesten-Stigum threshold for \emph{detection} is $d_{KS} = 1\lambda_2^2 + 1$, and we expect recovery of \emph{all} communities once $d> 1/\lambda_k^2 + 1$. However, most formal treatment in the literature has been limited to the distribution of $d$-regular graphs conditional on having a planted $k$-coloring, a case not fully captured by our model [citations]. Characterization of the information-theoretic threshold, even for the symmetric RSBM remains largely folklore, and we will for good measure provide a few rigorous pieces of the picture. 
+
+Our main theorem is that the the Local Statistics hierarchy can robustly solve the detection problem on the RSBM whenever $d > d_{KS}$.
+
+\begin{theorem} \label{thm:main}
+	For every $\epsilon > 0$, and set of parameters $d,k,M,\pi$ satisfying $d > d_{KS} + \epsilon = 1/\lambda_2^2 + 1 + \epsilon$, there exists $m \in \bbN$ sufficiently large so that with probability $1-o_n(1)$ the $\LS(2,m)$ SDP, given an input graph $\bG$, can distinguish in time [need] whether
+	\begin{itemize}
+		\item $\bG$ is a uniformly random $d$-regular graph
+		\item $\bG$ is sampled from the RSBM with parameters $d,k,M,\pi$
+	\end{itemize}
+	and is robust to adversarial addition or deletion of $o(n)$ edges. Finally, a slightly restricted form of $\LS(2,m)$ \todo{what exactly do we mean here?} fails with probability $1-o_n(1)$ to distinguish if $d<d_{KS}$.
+\end{theorem}
+
+In fact, we prove that each level of the Local Statistics hierarchy is robust to $O(n)$ adversarial edge perturbations, although its tolerance for edge noise decreases as we move up the hierarchy. This creates a trade-off between robustness, which we lose as added information is incorporated to the SDP at each successive level, and fidelity to the threshold, which we approach as $m\to\infty$.
+
+\begin{theorem}
+For every $\epsilon > 0$, there exists $\delta > 0$ and $m$ sufficiently large, so that even given a graph $\tilde{\bG}$ which is a $\delta|E|$-perturbation of the edges of some $\bG$, $\LS(2,m)$ can distinguish whether $\bG$ is a uniformly random $d$-regular graph or was drawn from an RSBM $\epsilon$-away from the threshold.
+\end{theorem}
+
+Along the way we will inadvertently prove that standard spectral detection using the adjacency matrix succeeds above $d_{KS}$, but cannot have the same robustness guarantee. \todo{Discuss robustness. Can we show that spectral fails below KS?} It is a now-classic result of Friedman that, with probability $1 - o_n(1)$, the spectrum of a uniformly random $d$-regular graph is within $o_n(1)$ of $(-2\sqrt{d-1},2\sqrt{d-1})\cup\{d\}$. Conversely, we show:
+
+\begin{corollary}
+	Let $\bG$ be drawn from the RSBM with parameters $d,k,M,\pi$, and set $\epsilon > 0$. There exists some $\delta = \delta(\epsilon)$ such that, for each eigenvalue $\lambda$ of $M$ satisfying $|\lambda| > 1/\sqrt{d-1} + \epsilon$, the adjacency matrix $A_{\bG}$  is guaranteed one eigenvalue $\mu$ satisfying $|\mu| > 2\sqrt{d-1} + \delta$.
+\end{corollary}
+
+Regrettably, we do not resolve to similar satisfaction the issue of efficient or robust recovery above Kesten-Stigum. The eigenvectors guaranteed to us by Theorem [ref] are certainly correlated to the community structure, and we can prove that the Local Statistics hierarchy can robustly approximate them. However, the remaining and technically challenging ingredient is a proof that graphs drawn from the planted model do not accumulate \emph{additional}, spurious eigenvalues outside the bulk.
+
+\paragraph{Related Work.}
+
+Semidefinite programming approaches have been most studied in the dense, irregular case, where exact recovery is possible (for instance \cite{abbe2016exact,abbe2015community}), and it has been shown that an SDP relaxation can achieve the information-theoretically optimal threshold \cite{hajek2016achieving}. However, in the sparse regime we consider, the power of SDP relaxations for weak recovery remains unclear. Guedon and Vershynin \cite{guedon2016community} show upper bounds on the estimation error of a standard SDP relaxation in the sparse, two-community case of the SBM, but only when the degree is roughly $10^4$ times the information theoretic threshold. More recently, in a tour-de-force,  Montanari and Sen \cite{montanari2015semidefinite} showed that for two communities, the SDP of Guedon and Vershynin achieves the information theoretically optimal threshold for large but constant degree, in the sense that the performance approaches the threshold if we send the number of vertices, and then the degree, to infinity. \todo{Is this the correct characterization of their results?} Semi-random graph models have been intensively studied in \cite{blum1995coloring, feige2000finding, feige2001heuristics,coja2004coloring,krivelevich2006semirandom,coja2007solving, makarychev2012approximation, chen2014clustering,guedon2016community} and we refer the reader to \cite{makarychev2016learning} for a more detailed survey. In the logarithmic-degree regime, robust algorithms for community detection are developed in \cite{cai2015robust, kumar2010clustering, awasthi2012improved}.
+
+Less is known in the case of regular graphs. However, \cite{banks2017lov} show that the Lov\`{a}sz $\vartheta$ function---a strengthening of the SDP we will consider---can distinguish between graphs drawn from the symmetric RSBM and the uniformly random model when $d > 4d_{KS}$.
+
+% section main_results (end)

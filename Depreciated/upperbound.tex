@@ -1,0 +1,100 @@
+\section{Distinguishing Algorithm}    \label{sec:algo}
+
+Throughout this section let $\calP_{k,\lambda}$ be a planted distribution such that the conclusion of Proposition \ref{prop:model} holds, and let $\lambda \triangleq \pin - \pout$ be fixed.
+\begin{theorem} \label{thm:main-upper-bound}
+    For any $\epsilon > 0$, there exists an $m$ such that the level-$m$ $LocalStatistic$ SDP (SDP \eqref{eq:full-sdp}) solves the $\Null$ vs. $\planted_{k,\lambda}$ distinguishing problem when $\lambda^2(d-1)=1+\epsilon$.
+\end{theorem}
+\begin{proof}
+By Proposition \ref{prop:model}, when $\bG\sim\planted$, it satisfies the constraints of SDP \eqref{eq:full-sdp} with high probability.  To complete the proof, we need to show that, when $\bm G \sim \Null$ and $m$ is large enough, SDP \eqref{eq:full-sdp} admits no feasible solution. As is usual in such proofs, we will do so by producing a feasible solution to the dual program, whose form we will for the reader's benefit derive explicitly. If $X$ is any feasible solution to the level-$m$ SDP \eqref{eq:full-sdp}, and $0 \preceq \alpha_0\1 + \cdots + \alpha_m \nb{m}{G}$ is some positive semidefinite linear combination of the $\nb{s}{G}$, then
+$$
+    0 \le \langle X,\alpha_0\1 + \cdots + \alpha_m \nb{m}{G}\rangle \simeq \sum_{s= 0}^m \alpha_s \|q_s\|^2_{\km}\lambda^s;
+$$
+we can thus show that the SDP is infeasible by producing such constants $\alpha_s$ as to make the above quantity negative. In other words, the dual of \eqref{eq:full-sdp} is
+\begin{align} \label{eq:full-dual}
+	\text{Find}\,\,\, \alpha_0,...,\alpha_\ell \qquad \st \qquad
+		0 &\preceq\sum_{s=0}^m \alpha_s \nb{s}{\bG} \\
+		0 &> \sum_{s=0}^m \alpha_s \|q_s\|^2_{\km} \lambda^s + \delta n. \nonumber
+\end{align}
+for appropriately chosen $\delta$, which, recall, is a parameter of SDP \eqref{eq:full-sdp}.  We can simplify substantially by noting
+\[
+	\sum_{s=0}^\ell \alpha_s \nb{s}{\bG} = \sum_{s=0}^m \alpha_s q_s(A_{\bG}) \triangleq f(A_{\bG}),
+\]
+for some $f\in \bbR[x]$ of degree $\ell$; because $f(A_{\bG})$ is a scalar polynomial in $A_{\bG}$, its eigenvalues are $f$ applied to those of $A_{\bG}$, and we get $f(A_{\bG}) \succeq 0$ with probability $1-o_n(1)$ when $f$ is nonnegative on $\Spec A \subset (-2\sqrt{d-1} - \eps,2\sqrt{d-1} + \eps)\cup\{d\}$ where $\eps$ is a small enough constant that we choose. Observe also that
+\begin{align*}
+	\sum_{s=0}^m \alpha_s \|q_s\|^2_{\km}\lambda^s
+	&= \sum_{s=0}^m \frac{\langle f,q_s \rangle_\km}{\|q_s\|^2_\km}\|q_s\|^2_{\km}\lambda^s \\
+	&= \langle f, \sum_{s=0}^m \lambda^s q_s \rangle_\km \\
+	&\triangleq \langle f, \Phi_m \rangle_\km,
+\end{align*}
+and thus our dual SDP may be replaced by the univariate polynomial optimization problem
+\begin{align}
+    \text{Find } f \in \bbR[x] \qquad \st \qquad \deg f &= m \\
+    f(x) &\ge 0 \text{ for $|x| \le 2\sqrt{d-1} + \eps$ and $x = d$} \nonumber \\
+    \langle f,\Phi_m \rangle_{\km} &< 0. \nonumber
+\end{align}
+
+Call $\mu$ the largest odd number less than or equal to $m$; one feasible solution is
+$$
+    f(x) = q_\mu(x) + 2\mu\|q_{\mu}\|_{\km} + \eps,
+$$
+which by Lemma \ref{lem:NBW-poly-bound} is nonnegative on the desired interval, and furthermore satisfies
+$$ 
+    \langle f(x), \Phi_\mu \rangle_{\km} = \|q_\mu\|^2_{\km}\lambda^\mu + 2\mu\|q_\mu\|_{\km} + \eps,
+$$
+negative when
+$$ 
+    |\lambda| > \left(\frac{2\mu + \eps/\|q_\mu\|_{\km}}{\|q_{\mu}\|_{\km}}\right)^{1/\mu} \to_m \frac{1}{\sqrt{d-1}}.
+$$
+We need also to check that $f(d) \ge 0$, which follows since $q_\mu(d) = \|q_\mu(d)\|^2_{\km} \ge 0$ for every $\mu$.
+\end{proof}
+
+
+\begin{remark}  \label{rem:violation-margin}
+    We can choose constants $a$ and $b$ such that the $LocalStatistic$ SDP \eqref{eq:full-sdp} is infeasible on $\bG$ drawn from $\Null$ if we choose $(\eps, \delta) = (a, b)$, and also if we choose $(\eps, \delta) = (a, 2b)$.  In particular, this means that when $\delta = b$, for any PSD matrix $X$ with an all-ones diagonal, there is a polynomial $f$ such that the constraint
+    \[
+        \langle f(A_{\bG}), X\rangle = \|q_s\|^2_{\km}\lambda^s n \pm \delta n
+    \]
+    is violated by a margin of $\Omega(n)$.
+\end{remark}
+
+% \begin{claim}
+% 	For any $\epsilon > 0$ there is some constant $M_\epsilon$ and a $\delta > 0$ so that $m > M_\epsilon$ implies $|(x^2 - 4(d-1))q_m(x)| \le (1 + \epsilon)^m(d-1)^{m/2}$ on $(-2\sqrt{d-1}-\delta,2\sqrt{d-1}+\delta)$. In particular, 
+% 	\[
+% 		f(x) \triangleq (x^2 - 4(d-1))q_m(x) + (1 + \epsilon)^m(d-1)^{m/2} \ge 0.
+% 	\]
+% \end{claim}
+
+% \begin{proof}
+% 	Call $\Delta(x) = x^2 - 4(d-1)$ the discriminant of $z^2 - xz + d - 1$, and let $r_{\pm}(x) = (x \pm \sqrt{\Delta(x)}$ be its two roots. When $\Delta(x) \neq 0$, one can check that
+% 	\[
+% 		q_m(x) = \frac{x + \sqrt{\Delta(x)}}{4(d-1)}\frac{2d - x^2 + x\sqrt{\Delta(x)}}{\sqrt{\Delta(x)}} r_-(x)^m + \frac{1}{x + \sqrt{\Delta(x)}}\frac{2d - x^2 + x\sqrt{\Delta(x)}}{\sqrt{\Delta(x)}} r_+(x)^m.	
+% 	\]
+% 	Multiplying through by $\Delta(x)$ gives
+% 	\[
+% 		|\Delta(x) q_m(x)| = |\alpha_-(x)r_-(x)^m + \alpha_+(x)r_+(x)^m| \le \sqrt{|\alpha_-(x)|^2 + |\alpha_+(x)|^2}\sqrt{|r_-(x)|^{2m} + |r_+(x)|^{2m}} 
+% 	\]
+% 	for two bounded functions $\alpha_\pm(x)$. When $\Delta(x) > 0$, $|r_-(x)| = |r_+(x)| = (d-1)$; otherwise the roots move continuously in $x$, so by taking $\delta$ small and $m$ large we can ensure that the RHS is bounded on $(-2\sqrt{d-1} - \delta, 2\sqrt{d-1} + \delta)$ by $(1+\epsilon)^m(d - 1)^{m/2}$ for any $\epsilon$ we like.
+% \end{proof}
+
+% With this bound in hand, we can use $f(x)$ as our feasible solution; it remains only to calculate $\langle f,\Phi_{m+2} \rangle$. Using the recurrence relation on the $q$ polynomials repeately, we get
+% \begin{align*}
+% 	(x^2 - 4(d-1))q_m(x)
+% 	&= x\left(q_{m+1}(x) + (d-1)q_{m-1}(x)\right) - 4(d-1)q_m(x) \\
+% 	&= q_{m+2}(x) + (d-1)q_m(x) + (d-1)\left(q_m(x) + (d-1)q_{m-2}(x)\right) - 4(d-1)q_m(x) \\
+% 	&= q_{m+2}(x) - 2(d-1)q_m(x) + (d-1)^2 q_{m-2}(x).
+% \end{align*}
+% Finally, then,
+% \begin{align*}
+% 	\langle f(x),\Phi_{m+2}(x) \rangle 
+% 	&= (1+\epsilon)^m(d-1)^{m/2} + d(d-1)^{m-1}\left(\frac{-1}{k-1}\right)^{m-2} \\
+% 	&\qquad - 2d(d-1)^m\left(\frac{-1}{k-1}\right)^m + d(d-1)^{m+1}\left(\frac{-1}{k-1}\right)^{m+2} \\
+% 	&= (1+\epsilon)^m(d-1)^{m/2} + d(d-1)^{m-2}\left(\frac{-1}{k-1}\right)^{m-2}\left(\frac{d-1}{(k-1)^2} - 1\right)^2,
+% \end{align*}
+% giving an asymptotic condition of
+% \[
+% 	k < \frac{\sqrt{d-1}}{1 + \epsilon} + 1
+% \]
+% as $m\to\infty$.
+
+% \newpage
+

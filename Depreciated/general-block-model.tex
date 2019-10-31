@@ -1,0 +1,79 @@
+\section{The Local Statistics SDP for General Planted Models} \label{sec:generalmodel}
+
+
+The $LocalStatistic$ SDP hierarchy can also be directly applied in the setting of the fully general RSBM.
+%
+Recall that this model is controlled by the number of communities $k$, and a symmetric and doubly stochastic $k\times k$ matrix $M$, whose entries give the probabilities of edges conditional on the labels of their endpoints. $M$ is a symmetric matrix, so we can orthogonally diagonalize as $M = V \Lambda V^{T}$, calling $1 = \lambda_1 \ge |\lambda_2| \ge |\lambda_3| \ge \cdots \ge |\lambda_k|$ its eigenvalues and $v_1,...,v_k$ the corresponding eigenvectors. 
+
+Given a partition $\sigma  : [n] \to [k]$, let $Y_\sigma = (Y_{i,j})_{i,j\in [k]}$ be an $nk \times nk$ block matrix, where $(Y_{i,j})_{u,v} = 1$ if $\sigma(u) = i$ and $\sigma(v) = j$; this matrix is positive semidefinite, and for every $u$, $\sum_i (Y_{i,i})_{u,u} = 1$. Then 
+$$
+    \langle \nb{s}{G}, Y_{i,j} \rangle = \text{\# length-$s$ n.b. walks from community $i$ to $j$},
+$$  
+and by a similar---and similarly technical---calculation to that in Appendix \ref{sec:exp-calc}, this quantity's expectation is
+$$
+    \E_{(\bG,\bm \sigma)\sim \planted}  \langle \nb{s}{G}, Y_{i,j} \rangle = \frac{1}{k} \cdot M^s_{i,j} \|q_s\|_{KS}^2 n;
+$$
+it enjoys concentration up to an additive $o(n)$. To define the fully generic local statistics SDP, again set an error tolerance $\delta$ and a `level' $m \in \bbN$ and, and maintaining the $\simeq$ notation from the main text, 
+\begin{align}
+    \text{Find } Y = (Y_{i,j})_{i,j \in [k]} &\succeq 0 & &\st & Y &\succeq 0 \label{eq:gen-sdp-pos} \\
+    & & & &\langle Y_{i,j}, \nb{s}{G} \rangle &\simeq \frac{1}{k}M^s_{i,j}\|q_s\|^2_{\km} n & \forall & i,j \text{ and }s=0,...,m \label{eq:gen-sdp-counts} \\ 
+    & & & & (Y_{i,j})_{u,u} &= 0 & \forall & i\neq j, u \label{eq:gen-sdp-diag} \\
+    & & & & \sum_{i = 1}^k (Y_{i,i})_{u,u} &= 1 & \forall &  u \label{eq:gen-sdp-trace}
+\end{align}
+
+Although the meaning of the SDP is clearest in the above form, it will be easiest to analyze if we perform a natural change of basis. Since $V$ is orthogonal
+$$
+    V \otimes \1 = \begin{pmatrix} v_{1,1}\1 & \cdots & v_{1,k}\1 \\ \vdots & & \vdots \\ v_{k,1}\1 & \cdots & v_{i,i}\1 \end{pmatrix}
+$$
+is as well, and so we may change basis and consider instead the matrix $(V \otimes \1)^T Y (V\otimes \1) = \check Y = (\check Y_{i,j})_{i,j \in [k]}$. Since $V$ is orthogonal, $\check Y \succeq 0$ if and only if $Y \succeq 0$. Moreover, as $V$ contains as its rows the eigenvectors $v_1,...,v_k$, SDP constraint \eqref{eq:gen-sdp-counts} is equivalent to the condition
+\begin{equation} \label{eq:Y-check-cond}
+    \langle \check Y_{i,j}, \nb{s}{G} \rangle \simeq \frac{1}{k} v_i^T M^s v_j \, \|q_s\|^2_{\km} n = \frac{1}{k}\lambda^s\|q_s\|^2_{\km} n \cdot \indicator{i=j}.
+\end{equation}
+Conditions \eqref{eq:gen-sdp-diag} and \eqref{eq:gen-sdp-trace} concern the $k\times k$ submatrices $Y_u \triangleq ((Y_{i,j})_{u,u})_{i,j\in[k]}$ for every $u$; they require that these are diagonal and have trace $k$. Changing basis sends $Y_u \mapsto V^T Y_u V \triangleq \check Y_u$, so \eqref{eq:gen-sdp-trace} is equivalent to $\Tr \check Y_u = 1$, but \eqref{eq:gen-sdp-diag} does not have a clean equivalent form. Observe for later use, though, that a \emph{sufficient} condition to imply \eqref{eq:gen-sdp-diag} is that $\check Y_u = \tfrac{1}{k}\1$.
+
+\paragraph{Distinguishing Algorithm}
+To show that the SDP \eqref{eq:gen-sdp-pos}-\eqref{eq:gen-sdp-trace} distinguishes between the two distributions, we need to exhibit a dual proof of infeasibility when $G \sim \mathcal{N}$.
+%
+%
+Since $\check Y$ is positive semidefinite, so are every $\check Y_{i,i}$, telling us that, if $0 \preceq \alpha_0 \1 + \cdots + \alpha_m \nb{m}{G},$
+$$
+    0 \le \langle \check Y_{i,i}, \alpha_0 \1 + \cdots + \alpha_m \nb{m}{G} \rangle \simeq \left(\alpha_0\lambda_i^0 + \cdots + \alpha_m \lambda_i^m\right) \|q_s\|^2_{\km} n.
+$$
+Thus if any $|\lambda_i|^2(d-1) > 1$, we can use the same coefficients $\alpha_0,...,\alpha_m$ as in Section 4 to conclude no such $\check Y_{i,i}$ can exist.
+
+\paragraph{Lower Bound}
+On the other hand, assume that $\lambda_i^2(d-1) < 1 - \epsilon$ for $i=2,...,k$. We'd like to show that for any $m$ and w.h.p. over $\bG \sim \mathcal{N}$ we can find a feasible SDP solution $Y$. Equivalently, we can use the discussion surrounding \eqref{eq:Y-check-cond} to produce $\check Y$. Recalling the function 
+$$
+    \Phi_p(A_{\bG},\lambda) = \sum_{s=0}^p \nb{s}{\lambda} 
+$$
+from Section 5, it would be ideal to set
+$$
+    \check Y = \frac{1}{k}\sum_{s = 0}^p \begin{pmatrix} \nb{s}{\bG}\lambda_1^s & & \\ & \ddots & \\ & & \nb{s}{\bG}\lambda_k^s \end{pmatrix} = \sum_{s = 0}^p \Lambda^s \otimes \nb{s}{\bG}
+$$
+so that, applying $(V \otimes \1)$ on both sides,
+\begin{align*}
+    Y 
+    &= \frac{1}{k}(V\otimes \1) \check Y (V \otimes \1)^T \\
+    &=\frac{1}{k}\sum_{s = 0}^p (V\otimes \1) (\Lambda^s \otimes \nb{s}{\bG})(V \otimes \1)^T \\
+    &= \frac{1}{k}\sum_{s=0}^p M^s \otimes \nb{s}{\bG}.
+\end{align*}
+
+This construction has two issues. First, as in Section 5 we need to subtract a multiple of the all-ones matrix from $\Phi_p(A_{\bG},\lambda)$ to ensure positivity. Second, $\lambda_1 = 1$, and our analysis of the positivity of $\Phi_p(A_{\bG},\lambda)$ was contingent on $\lambda^2(d-1) < 1$, and as $M$ is doubly stochastic, this fails for $\lambda_1 = 1$. One can check that $\Phi_p(A_{\bG},1)$ is poorly behaved (and in particular need not be PSD). To resolve this second issue, we can observe that $\Phi_p(A_{\bG},1) = \sum_{s=0}^p \nb{s}{\bG}$ is in some sense approximating the all-ones matrix. In particular, for every $0 \le s \le p$, we have $\langle \nb{s}{\bG},\Phi_p(A_{\bG},1) \rangle \simeq \langle \nb{s}{\bG},\bbJ \rangle \simeq \|q_s\|^2_{\km}n$.
+
+Thus, we will set
+\begin{align*}
+    \check Y 
+    &= \frac{1}{k} 
+    \begin{pmatrix} \bbJ & \\
+     & \sum_{s=0}^p \begin{pmatrix} \nb{s}{\bG}\lambda_2^s & & \\ & \ddots & \\ & & \nb{s}{\bG}\lambda_k^s \end{pmatrix}
+     \end{pmatrix}.  
+\end{align*}
+We've now ensured that $\check Y \succeq 0$ and
+$$
+    \langle \check Y_{i,j}, \nb{s}{\bG} \rangle \simeq \frac{1}{k}\lambda^s \|q_s\|^2_{\km} n \cdot \indicator{i=j}.
+$$
+To take care of the basis-changed equivalents of SDP conditions \eqref{eq:gen-sdp-diag} and \eqref{eq:gen-sdp-trace}, note that if the girth is sufficiently large so that $\nb{s}{\bG}$ has empty diagonal, then the submatrices $\check Y_u$ that we discussed earlier will all be $\tfrac{1}{k}\1$. If the girth is too small, we can perform some clean-up analogous to the symmetric case in the main text. The general proof of robustness is similar to that case as well. We have thus proved the following theorem characterizing the power of the $LocalStatistics$ SDP in the general RSBM.
+
+\begin{theorem}
+    Fix the parameters $k$, $d$, and $M$ of the RSBM, and call $1 = \lambda_1 \ge |\lambda_2| \ge \cdots \ge |\lambda_k|$ the eigenvalues of $M$. If $\lambda_2^2 \le (d-1)^{-1}$, no level $m \in \bbN$ of  SDP \eqref{eq:gen-sdp-pos}-\eqref{eq:gen-sdp-trace} can distinguish $\Planted_{M,k}$ from $\Null$. However, for any $\epsilon> 0$, if $\lambda_2^2 > (d-1)^{-1}$, then the $m$th level can distinguish for some sufficiently large $m$.
+\end{theorem}

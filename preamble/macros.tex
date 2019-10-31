@@ -1,0 +1,262 @@
+% Document Specific
+
+\DeclareMathOperator{\girth}{girth}
+\newcommand{\nb}[1]{A^{(#1)}}
+\newcommand{\km}{\textsc{km}}
+\newcommand{\nbarrow}[1]{\overset{#1}\rightsquigarrow}
+%\newcommand{\comment}[1]{{\color{purple}[{#1}]}}
+\newcommand{\st}{\text{s.t.}}
+\newcommand{\fall}[1]{\underline{#1}}
+\newcommand{\rise}[1]{\overline{#1}}
+\DeclareMathOperator{\Hess}{Hess}
+\DeclareMathOperator{\Sch}{Sch}
+
+\newcommand{\1}{\mathbbm{1}}
+
+
+
+%My favorite commands
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\lni}{\lim_{n\rightarrow \infty}}
+\newcommand{\rw}{\rightarrow}
+\newcommand{\hu}{\hat{\mu}}
+\newcommand{\pe}{\tilde{\mathbb{E}}}
+
+\newcommand{\calA}{\mathcal A}
+\newcommand{\calB}{\mathcal B}
+\newcommand{\calC}{\mathcal C}
+\newcommand{\calD}{\mathcal D}
+\newcommand{\calE}{\mathcal E}
+\newcommand{\calF}{\mathcal F}
+\newcommand{\calG}{\mathcal G}
+\newcommand{\calH}{\mathcal H}
+\newcommand{\calI}{\mathcal I}
+\newcommand{\calJ}{\mathcal J}
+\newcommand{\calK}{\mathcal K}
+\newcommand{\calL}{\mathcal L}
+\newcommand{\calM}{\mathcal M}
+\newcommand{\calN}{\mathcal N}
+\newcommand{\calO}{\mathcal O}
+\newcommand{\calP}{\mathcal P}
+\newcommand{\calQ}{\mathcal Q}
+\newcommand{\calR}{\mathcal R}
+\newcommand{\calS}{\mathcal S}
+\newcommand{\calT}{\mathcal T}
+\newcommand{\calU}{\mathcal U}
+\newcommand{\calV}{\mathcal V}
+\newcommand{\calW}{\mathcal W}
+\newcommand{\calX}{\mathcal X}
+\newcommand{\calY}{\mathcal Y}
+\newcommand{\calZ}{\mathcal Z}
+
+\newcommand{\bone}{\boldsymbol{1}}
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\bdelta}{\boldsymbol{\delta}}
+\newcommand{\bepsilon}{\boldsymbol{\epsilon}}
+\newcommand{\blambda}{\boldsymbol{\lambda}}
+\newcommand{\bomega}{\boldsymbol{\omega}}
+\newcommand{\bpi}{\boldsymbol{\pi}}
+\newcommand{\bnu}{\boldsymbol{\nu}}
+\newcommand{\bphi}{\boldsymbol{\phi}}
+\newcommand{\bvphi}{\boldsymbol{\varphi}}
+\newcommand{\bpsi}{\boldsymbol{\psi}}
+\newcommand{\brho}{\boldsymbol{\rho}}
+\newcommand{\bsigma}{\boldsymbol{\sigma}}
+\newcommand{\btau}{{\boldsymbol{\tau}}}
+\newcommand{\btheta}{\boldsymbol{\theta}}
+\newcommand{\bzeta}{\boldsymbol{\zeta}}
+\newcommand{\ba}{\boldsymbol{a}}
+\newcommand{\bb}{\boldsymbol{b}}
+\newcommand{\bc}{\boldsymbol{c}}
+\newcommand{\bd}{\boldsymbol{d}}
+\newcommand{\be}{\boldsymbol{e}}
+\newcommand{\boldf}{\boldsymbol{f}}
+\newcommand{\bg}{\boldsymbol{g}}
+\newcommand{\bh}{\boldsymbol{h}}
+\newcommand{\bi}{\boldsymbol{i}}
+\newcommand{\bj}{\boldsymbol{j}}
+\newcommand{\bk}{\boldsymbol{k}}
+\newcommand{\bell}{\boldsymbol{\ell}}
+\newcommand{\bp}{\boldsymbol{p}}
+\newcommand{\bq}{\boldsymbol{q}}
+\newcommand{\br}{\boldsymbol{r}}
+\newcommand{\bs}{\boldsymbol{s}}
+\newcommand{\bt}{\boldsymbol{t}}
+\newcommand{\bu}{\boldsymbol{u}}
+\newcommand{\bv}{\boldsymbol{v}}
+\newcommand{\bw}{\boldsymbol{w}}
+\newcommand{\bx}{{\boldsymbol{x}}}
+\newcommand{\by}{\boldsymbol{y}}
+\newcommand{\bz}{\boldsymbol{z}}
+\newcommand{\bA}{\boldsymbol{A}}
+\newcommand{\bB}{\boldsymbol{B}}
+\newcommand{\bC}{\boldsymbol{C}}
+\newcommand{\bD}{\boldsymbol{D}}
+\newcommand{\bE}{\boldsymbol{E}}
+\newcommand{\bF}{\boldsymbol{F}}
+\newcommand{\bG}{\boldsymbol{G}}
+\newcommand{\bH}{\boldsymbol{H}}
+\newcommand{\bI}{\boldsymbol{I}}
+\newcommand{\bJ}{\boldsymbol{J}}
+\newcommand{\bL}{\boldsymbol{L}}
+\newcommand{\bP}{\boldsymbol{P}}
+\newcommand{\bQ}{\boldsymbol{Q}}
+\newcommand{\bR}{\boldsymbol{R}}
+\newcommand{\bS}{\boldsymbol{S}}
+\newcommand{\bT}{\boldsymbol{T}}
+\newcommand{\bU}{\boldsymbol{U}}
+\newcommand{\bV}{\boldsymbol{V}}
+\newcommand{\bW}{\boldsymbol{W}}
+\newcommand{\bX}{\boldsymbol{X}}
+\newcommand{\bY}{\boldsymbol{Y}}
+\newcommand{\bZ}{\boldsymbol{Z}}
+
+% bold calligraphic
+\newcommand{\bcalA}{\boldsymbol{\calA}} \newcommand{\calbA}{\bcalA}
+\newcommand{\bcalG}{\boldsymbol{\calG}} \newcommand{\calbG}{\bcalG}
+\newcommand{\bcalH}{\boldsymbol{\calH}} \newcommand{\calbH}{\bcalH}
+\newcommand{\bcalQ}{\boldsymbol{\calQ}} \newcommand{\calbQ}{\bcalQ}
+\newcommand{\bcalR}{\boldsymbol{\calR}} \newcommand{\calbR}{\bcalR}
+\newcommand{\bcalX}{\boldsymbol{\calX}} \newcommand{\calbX}{\bcalX}
+\newcommand{\bcalY}{\boldsymbol{\calY}} \newcommand{\calbY}{\bcalY}
+\newcommand{\bcalZ}{\boldsymbol{\calZ}} \newcommand{\calbZ}{\bcalZ}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+\usepackage{tikz}
+\newcommand{\squares}{\mathop{\textrm{squares}}}
+\newcommand{\hx}{{\hat x}}
+\newcommand{\eu}{{=_{u}}}
+\newcommand{\eo}{{=_{o}}}
+\newcommand{\neu}{{\neq_{u}}}
+\newcommand{\neo}{{\neq_{o}}}
+\newcommand{\deql}{{\cE_{d=}}}
+\newcommand{\dneq}{{\cE_{d\neq}}}
+\newcommand{\diso}{{\cE_{d\neq}^{(1c)}}}
+\newcommand{\ncyc}{\mathrm{\# cycles}}
+\newcommand{\nsurp}{\mathrm{\# new}}
+\newcommand{\nrecyc}{\mathrm{\# reused}}
+\newcommand{\nhigh}{\mathrm{\# high}}
+\newcommand{\nunf}{\mathrm{\# unforced}}
+\newcommand{\nshare}{\mathrm{\# share}}
+\newcommand{\nlone}{\mathrm{\# lonely}}
+\newcommand{\nret}{\mathrm{\# return}}
+\newcommand{\npair}{\mathrm{\# paired}}
+\newcommand{\ty}{t}
+\newcommand{\mnrcy}{{m}}
+\newcommand{\Rm}{{|_R}}
+\newcommand{\hght}{h}
+\newcommand{\wdth}{w}
+
+
+\newcommand{\onorm}[1]{\lVert#1\rVert_{\oplus}}
+\newcommand{\dnorm}[1]{\lVert#1\rVert_{0}}
+
+\usepackage{relsize}
+\usepackage[font=footnotesize]{caption}
+\setlength{\belowcaptionskip}{-7mm}
+
+\usepackage[flushleft,para]{threeparttable}
+% change font size of table notes to \footnotesize
+\makeatletter
+\g@addto@macro\TPT@defaults{\footnotesize}
+\makeatother
+
+%\setlength\extrarowheight{10pt}
+\renewcommand{\arraystretch}{1.2}
+
+% abbreviations and paper-specific macros
+
+
+
+
+
+% not math
+\DeclareUrlCommand\email{}
+\newcommand{\whp}{\text{w.h.p.}}
+\newcommand{\wovp}{\text{w.ov.p.}\xspace}
+\newcommand{\YES}{\textsc{yes}\xspace}
+\newcommand{\NO}{\textsc{no}\xspace}
+
+\newcommand{\wovple}{\hspace{-3mm}\stackrel{\text{\wovp}}{\le}}
+\newcommand{\wovpeq}{\hspace{-3mm}\stackrel{\text{\wovp}}{=}}
+\newcommand{\wovpge}{\hspace{-3mm}\stackrel{\text{\wovp}}{\ge}}
+\newcommand{\aasle}{\hspace{-1.5mm}\stackrel{\text{a.a.s.}}\le}
+
+\newcommand{\Pisymm}{\Pi_{\mathrm{symm}}}
+\newcommand{\Pisym}{\Pi_{\mathrm{sym}}}
+
+\renewcommand{\bf}{\textbf}
+\renewcommand{\it}{\em}
+
+% math
+\DeclareMathOperator{\basedeg}{{deg_{[n]}}}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\obj}{obj}
+\DeclareMathOperator{\CSP}{CSP}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+
+\newcommand{\Matching}{\problemmacro{matching}}
+\newcommand{\maxkxor}{\problemmacro{max $k$-xor}}
+
+\newcommand{\noiseop}{{\widehat{T}_\rho}}
+\newcommand{\noiseopt}{{\widehat{T}_{\rho^2}}}
+\newcommand{\Idsym}{{\Id_{\text{sym}}}}
+% not math
+\DeclareUrlCommand\email{}
+
+
+
+%added by TM
+\newcommand{\inner}[1]{\langle #1 \rangle}
+\newcommand{\sosle}{\preceq}
+\newcommand{\sosge}{\succeq}
+
+\DeclareMathOperator{\tE}{\tilde{\mathbb E}}
+
+\newcommand{\ot}{\otimes}
+\newcommand{\tr}{\textup{tr}}
+
+\let\pref=\prettyref
+
+\newcommand*{\transpose}[1]{{#1}{}^{\mkern-4mu\intercal}}
+\newcommand*{\vardyad}[1]{#1^{\vphantom{\intercal}}#1^{\intercal}}
+\newcommand*{\dyad}[1]{#1#1{}^{\mkern-4mu\intercal}}
+
+
+\newcommand{\rel}{\textrm{rel}}
+% span of subspace -- temporary
+
+\newcommand{\sspan}{\textup{span}}
+\newcommand{\sdpopt}{\mathop{\textrm{sdpOpt}}}
+
+
+
+%%%%%%%  Introducing the following macros to make it easier to switch notation, if needed.
+
+\newcommand{\pdist}{\mu}
+\newcommand{\udist}{\nu}
+\newcommand{\instN}{N}
+\newcommand{\sol}{x}
+\newcommand{\sols}{\cX}
+\newcommand{\success}{s}
+\newcommand{\mempty}{\mathbf{e}_{\emptyset,\emptyset}}
+\newcommand{\subs}{\rho}
+
+\newcommand{\subinst}{\downarrow}
+\newcommand{\subsetdist}{\Theta}
+
+\newcommand{\sE}{\cE}
+
+\newcommand{\M}{\cM}
+\newcommand{\nchoose}[1]{{{[n]} \choose {#1}}}
+
+\newcommand{\Qsub}{M}
+
+%fast planted
+%
+
+
+\renewcommand{\d}{\mathop{}\!\mathrm{d}}

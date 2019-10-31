@@ -1,0 +1,53 @@
+\section{Recovering the Planted Partition} % (fold)
+\label{sec:recovering_the_planted_partition}
+
+Let $G$ be drawn now from the planted coloring model; we want to show that it is possible to robustly recover labels correlated with the planted ones. Let $\vec s_1,...\vec s_k$ be the unit vectors pointing to the corners of a $(k-1)$ simplex, label each vertex with a vector according to its planted color, and write $X_0 \succeq 0$ as the Gram matrix of these vectors. From our earlier calculation, w.h.p. for every $s = O(1)$
+\[
+	\langle X_0,\nb{s} \rangle = n d(d-1)^{s-1} \left(\frac{-1}{k-1}\right)^s + o(n).
+\]
+Note that $X_0$ is the projector onto the subspace spanned by the indicator vectors for the color classes and orthogonal to the all-ones vector. Our goal now is to produce some vector $x$ so that $\|X_0 x\| \ge \eta = O(1)$, some absolute constant.
+
+Now, run SDP \eqref{full-sdp} up to distance $m$, and call $X \succeq 0$ the optimal solution. Because there is a planted coloring, we are guaranteed as well that $X_{i,i} = 1$ and
+$$
+	\langle X, \nb{s} \rangle = n d(d-1)^{s-1}\left(\frac{-1}{k-1}\right)^s + o(n) \qquad s = 1,...,m.
+$$
+Let $p$ be a polynomial, such as the one we produced in our distinguishing proof, with the property that $p(\alpha) \le 0$ for every $\alpha \in [-2\sqrt{d-1},2\sqrt{d-1}]$, but the SDP constraints imply $\langle p(A),X \rangle > \delta n$ for some absolute $\delta$. We'll show roughly that one of $X$ or $p(A)$ is correlated with $X_0$.
+
+Sample $v \sim \calN(0,X)$, noting that $\expected \|v\|^2 = \Tr X = n$, and let $x = p(A)v$. Because the coefficients of $p$ are indepenent of $n$, $\expected\|x\|^2 = O(1) n$. We will be done if we can show $\eta n \le \Tr X_0 p(A) X$ for some absolute $\eta$, since we can then apply Cauchy-Schwartz and get
+\[
+	\eta n \overset{\ast}\le \Tr X_0 p(A)X = \expected\bra{v}X_0 p(A)\ket{v} \le \sqrt{\expected\|v\|^2 \expected\|X_0 x\|^2}.
+\]
+Let's rewrite the term we want to lower bound as
+\[
+	\Tr X_0 p(A) X = \Tr p(A)X - \Tr(\1 - X_0)p(A)X_0 X - \Tr(\1 - X_0)p(A)(\1 - X_0)X,
+\]
+recalling that $\1 - X_0$ is the projector orthogonal to $X_0$. We know already that $\Tr p(A) X > \Omega(1) n$, so it will suffice to show that the remaining terms are small.
+
+First, assume on the contrary that the second term is $\ge \Omega(n)$. We'll need the following lemma:
+
+\begin{lemma}
+	Let $S$ and $T$ be $n\times n$ matrices, and denote by $\|\cdot\|_{p,\Sch}$ the Schatten $p$-norm. Then for any  $p,q$ satisfying $1/p + 1/q = 1$,
+	\[
+		\langle S,T \rangle \le \|S\|_{p,\Sch}\|T\|_{q,\Sch}.
+	\]
+\end{lemma}
+
+\begin{proof}
+	This follows immediately from the duality property of the Schatten norms, namely that for any $p,q$ as above,
+	\[
+		\|S\|_{p,Sch} = \sup_{\|T\|_{q,\Sch} = 1} \langle S,T \rangle.
+	\].
+\end{proof}
+
+Applying the lemma,
+\[
+	\Omega(n) \le \Tr (\1 - X_0)p(A)X_0 X \le \|(\1 - X_0)p(A)\|_{\infty,\Sch}\|X_0 X\|_{1,\Sch}
+\]
+The maximum singular value of $(\1 - X_0)p(A)$ is still only $O(1)$, since the coefficients of $p$ are constants, the spectrom of $A$ is $O(1)$, and $\1 - X_0$ is a projector. Thus $\|X_0X\|_{1,\Sch} \ge \Omega(n)$; since $X_0$ is rank $O(1)$, $X_0 X$ has at most $O(1)$ singular values, meaning that at least one of them is $\Omega(n)$, and therefore that $\Tr X_0 X^2 X_0 \ge \Omega(n^2)$. Now, sample $w \sim \calN(0,n^{-1}X^2)$, noting that $\expected\|w\|^2 = n^{-1}\|X^2\|_F \le n$. We've just shown that
+\[
+	\expected\|X_0w\|^2 = n^{-1} \Tr X_0 X^2 X_0 \ge \Omega(n),
+\]
+so $w$ is correlated to the planted coloring.
+
+[Still need to bound the final term]
+% section recovering_the_planted_partition (end)

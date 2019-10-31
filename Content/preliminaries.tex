@@ -1,0 +1,260 @@
+\section{Preliminaries}
+\label{sec:prelims}
+
+\subsection{Nonbacktracking Walks and Orthogonal Polynomials}  \label{sec:nbw-poly}
+The central tool in our proofs will be \emph{non-backtracking walks} on $G$---these are walks which on every step are forbidden from visiting the vertex they were at two steps previously. We will collect here some known results on these walks specific to the case of $d$-regular graphs. Write $\nb{s}{G}$ for the $n\times n$ matrix whose $(v,w)$ entry counts the number of length-$s$ non-backtracking walks between verties $v$ and $w$ in $G$. One can check that the $\nb{s}{G}$ satisfy a two-term linear recurrence,
+\begin{align*}
+	\nb{0}{G} &= \1 \\
+	\nb{1}{G} &= A_{G} \\
+	\nb{2}{G} &= A^2_{G} - d\1 \\
+	\nb{s}{G} &= A\nb{s-1}{G} - (d-1)\nb{s-2}{G} \qquad s > 2,
+\end{align*}
+since to enumerate non-backtracking walks of length $s$, we can first extend each such walk of length $s-1$ in every possible way, and then remove those extensions that backtrack.
+
+On $d$-regular graphs, the above recurrence immediately shows that $\nb{s}{G} = q_s(A_{G})$ for a family of monic, scalar `non-backtracking polynomials' $\{q_s\}_{s\ge 0}$, where $\deg q_s = s$. It is well known that these polynomials are an orthogonal polynomial sequence with respect to the Kesten-McKay measure
+\[
+	\frac{\dee\mu_{\km}}{\dee x} = \frac{1}{2\pi} \frac{d}{\sqrt{d-1}} \frac{\sqrt{4(d-1) - x^2}}{d^2 - x^2}\,\indicator{|x|< 2\sqrt{d-1}},
+\]
+with its associated inner product 
+$$
+    \langle f,g \rangle_{\km} \triangleq \int f(x)g(x) d\mu_{\km}
+$$
+on the vector space of square integrable functions on $(-2\sqrt{d-1},2\sqrt{d-1})$. One can again check that
+\[
+	\|q_s\|_\km^2 \triangleq \int q_s(x)^2\dee\mu_{\km} = q_s(d) =  \begin{cases} 1 & s = 0 \\ d(d-1)^{s-1} & s \ge 1 \end{cases} = \frac{1}{n}\left(\text{\# length-$s$ n.b. walks on $G$}\right)
+\]
+in the normalization we have chosen \cite{alon2007non}. Thus any function $f$ in this vector space can be expanded as
+$$
+    f = \sum_{s \ge 0} \frac{\langle f, q_s \rangle_{\km}}{\|q_s\|^2_{\km}} q_s.
+$$
+Moreover, every such family of orthogonal polynomials has a \emph{quadrature rule} (see [ref]):
+\begin{lemma}
+    For every $p$, let $r_1 < r_2 < \cdots < r_m$ be the roots of $q_p$. There exist positive weights $w_1,..,w_p$ with the property that
+    $$
+        \langle f,g \rangle_{\km} = \sum_{\ell\in[p]} w_\ell f(r_\ell)g(r_\ell)
+    $$
+    whenever $f$ and $g$ are polynomials with $\deg f + \deg g \le 2m - 1$. 
+\end{lemma}
+\noindent One key application of Lemma [ref] is that it is possible to approximate (in a certain useful sense) a $\delta$-function with nonnegative polynomials.
+\begin{lemma}
+    Fix $a \in (-2\sqrt{d-1},2\sqrt{d-2})$ and $m \in \bbN$. Then there exists a sequence of polynomials $\tilde \delta_p$ with the property that $\langle \tilde \delta_p, q_s \rangle_{\km} \to_p q_s(a)$ for each $s \le m$. 
+\end{lemma}
+\begin{proof}
+    As above write $r_1 < r_2 < \cdots < r_p$ for the roots of $q_p$, and call $C \subset [p]$ the indices of the $(m + 1)/2$ closest roots to $a$. Let
+    $$
+        \tilde\delta_p(x) = \frac{1}{\zeta}\prod_{\ell \notin C} (x - r_\ell)^2,
+    $$
+    where $\zeta$ is a (nonnegative) constant that ensures $\langle \tilde \delta_p, 1 \rangle_{\km} = 1$. Since $\deg \tilde\delta_p = 2p - m - 1$, we can use the quadrature rule to evaluate its inner product against any $q_s$ in the range we care about:
+    $$
+        \langle \tilde\delta_p, q_s \rangle_{\km} = \sum_{\ell \in C} w_\ell\tilde\delta_p(r_\ell) q_s(r_\ell).
+    $$
+    Since $q_0 = 1$, the normalizating factor $\zeta$ tells us that $\sum_{\ell \in C} w_\ell \tilde\delta_p(r_\ell) = 1$, so the inner products against other $q_s$ are simply an average of $q_s$ evaluated at the $(m + 1)/2$ closest quadrature points to $a$. It is well known that as $p\to \infty$, the roots interlace and fill out the interval [ref], and accordingly $\langle \tilde \delta_p, q_s \rangle_{\km} \to q_s(a)$.
+\end{proof}
+
+We will also need the following lemma of Alon et al. \cite[Lemma 2.3]{alon2007non} bounding the size of the polynomials $q_s$:
+\begin{lemma}   \label{lem:NBW-poly-bound}
+    For any $\epsilon>0$,
+    $$
+        |q_s(x)| \le 2(s+1)\sqrt{d(d-1)^{s-1}} = 2(s+1)\|q_s\|_{\km}
+    $$
+    \todo{$\epsilon$? is $x$ in some range here?}
+\end{lemma}
+
+The behavior of the non-backtracking polynomials with respect to the inner product $\langle \cdot,\cdot \rangle_{\km}$ idealizes that of the $\nb{s}{G} = q_s(A_{G})$ under the trace inner product. In particular, if $s + t < \girth(G)$
+$$
+    \langle \nb{s}{G},\nb{t}{G} \rangle = n\langle q_s,q_t \rangle_{\km} = \begin{cases} n (\text{\# length-$s$ n.b. walks on $G$}) & s=t \\ 0 & s \neq t \end{cases}.
+$$
+This is because the diagonal entries of $\nb{s}{G}\nb{t}{G}$ count pairs of non-backtracking walks with length $s$ and $t$ respectively: if $s\neq t$ any such pair induces a cycle of length at most $s+t$, or perhaps is a pair of identical walks in the case $s=t$. Above the girth, if we can control the number of cycles, we can quantify how far the $\nb{s}{G}$ are from orthogonal in the trace inner product.
+
+Luckily for us, sparse random graphs have very few cycles. To make this precise, call a vertex \emph{bad} if it is at most $L$ steps from a cycle of length at most $C$. These are exactly the vertices for which the diagonal entries of $\nb{s}{G}\nb{t}{G}$ are nonzero, when $s+t < C+L$.
+
+\begin{lemma}
+    For any constant $C$ and $L$, with high probability any graph $\bG \sim \Planted$ has at most $O(\log n)$ bad vertices.
+\end{lemma}
+
+We will defer the proof of this lemma to the appendix, but two nice facts follow from it immediately. First, from the above discussion,
+$$
+    \langle \nb{s}{\bG},\nb{t}{\bG} \rangle = O(\log n)
+$$
+for any $s,t=O(1)$. The second useful corollary is more or less that in random graphs we can use non-backtracking walks as a proxy for self-avoiding ones.
+
+\begin{lemma}
+    Write $\sa{s}{\bG}$ for the $n\times n$ matrix whose $i,j$ entry is a one exactly when $i$ and $j$ are connected by a self-avoiding walk of length $s$. Then with high probability, for any graph $\bG \sim \Planted$,
+    \begin{equation}
+        \left\| \sa{s}{\bG} - \nb{s}{\bG} \right\| = O(\log n)
+    \end{equation}
+\end{lemma}
+
+\subsection{Reversible Markov Chains}
+
+We will need standard fact about reversible Markov chains. Let us maintain the notation for $M$, its eigenvalues $1 = \lambda_1 \ge |\lambda_2| \ge \cdots \ge |\lambda_k|$, and its stationary distribution $\pi$. Recall from above that $Me = e$, $\pi^T M = \pi^T$, and the reversibility condition on $M$ means $\Diag(\pi)M$ is symmetric. 
+
+\begin{lemma}
+    Let $F$ be the matrix of right eigenvectors, normalized so that the columns have unit norm (note that the first column of $F$ is, up to scaling, the all-ones vector). Then $F^{-1}\Diag(\pi) F = \1$.
+\end{lemma}
+
+\begin{proof}
+    First, reversibility tells us $\Diag(\pi)^{1/2}M\Diag(\pi)^{-1/2}$ is symmetric, and thus by the spectral theorem that it satisfies 
+    $$
+        \Diag(\pi)^{1/2}M\Diag(\pi)^{1/2}O = O\Lambda
+    $$ 
+    for some orthogonal $O$. It is readily seen that $M\Diag(\pi)^{-1/2}O = \Diag(\pi)^{-1/2}O\Lambda$, so $\Diag(\pi)^{-1/2}O$ contains, up to scaling, the right eigenvectors of $M$.
+\end{proof}
+
+\subsection{Local Statistics in the Planted Model} % (fold)
+\label{sub:local_statistics_in_the_planted_model}
+
+The Local Statistics SDP that we are studying includes constraints that our pseudoexpectation match certain low-degree moments in the planted distribution. As we discussed in the technical overview, these correspond to the counts of partially labelled subgraphs in $G$. To set some notation, a \textit{partially labelled graph} $(H,S,\tau)$ is a graph $H = (V(H),E(H))$, together with a distinguished subset of vertices $S \subset V(H)$, and a labelling $\tau : S \to [k]$ of these distinguished vertices. We'll say a graph is \emph{unlabeled} or \textit{fully labelled} if $S = \emmptyset$ or $S = V(H)$, and in these cases abuse notation and simply refer to $H$ or $(H,\tau)$ respectively. An \textit{occurrence} of a partially labelled graph $(H,S,\tau)$ in a fully labelled one $(G,\sigma)$ is an injective homomorphism $H \to G$, that agrees on labels, i.e. vertices in $S$ are mapped to ones in $V(G)$ with the same label.
+
+The low-degree moment constraints in $\LS(2,m)$ are exactly the counts of occurrences of partially labelled subgraphs $(H,S,\tau)$ in a graph $\bG \sim \Planted$, for which $H$ has at most $m$ edges and $2$ distinguished vertices. The following theorem characterizes these counts in any planted model; we will discuss it briefly below and remit the proof to the appendix.
+
+\begin{theorem}[Local Statistics]
+    Let $C_{H,S,d}$ be the number of occurrences of $(H,S)$ in a rooted $d$-regular tree in which some vertex in $S$ is mapped to the root. Then, if $(H,S,\tau)$ is a partially labeled graph with $O(1)$ edges and at most two distinguished vertices, in any RSBM $\Planted_{d,k,M,\pi}$,
+    \begin{enumerate}
+        \item If $H$ is connected and unlabelled, i.e. $S = \emptyset$, then $ n^{-1}\expected p_{H,S,\tau}(\bx,\bG)  \to C_{H,S,d}.$
+        \item If $H$ is connected and $S = \{\alpha,\beta\}$, then 
+        $$
+            n^{-1} \expected p_{H,S,\tau}(\bx,\bG) \to \pi(\tau(\alpha)) M_{\tau(\alpha),\tau(\beta)}^{\dist(\alpha,\beta)} C_{H,S,d} n
+        $$
+        \item If $(H,S,\tau) = \bigsqcup_{s \in [\ell]} (H_s,S_s,\tau_s)$ is a decomposition of $(H,S,\tau)$ into partially labelled connected components, then
+        $$
+            n^{-\ell} \expected p_{H,S,\tau}(\bx,\bG) \to \prod_{s \in [\ell]} \lim_{n\to\infty} n^{-1} \expected p_{H_s,S_s,\tau_s}(\bx,\bG).
+        $$
+    \end{enumerate}
+    Furthermore, when $H$ has $\ell$ connected components, $p_{H,S,\tau}(\bx,\bG)$ enjoys concentration up to an additive $\pm o(n^\ell)$.
+\end{theorem}
+
+\begin{remark}
+    Note that if $H$ contains a cycle, $C_{H,S,d} = 0$, and that if $(H,S)$ is a path of length $s$ with endpoints distinguished, $C_{H,S,d} = \|q_s\|^2_{\km}$, the number of vertices at depth $s$ in a rooted $d$-regular tree. When $\bG \sim\Planted$, this theorem reduces to the well-known Benjamini-Schramm convergence of $d$-regular random graphs to the $d$-regular tree. \todo{right?}
+\end{remark}
+
+\begin{remark}
+    In our Local Statistics SDP [ref], we promised to formalize the symbol $\simeq$ appearing in the affine moment-matching constraints on the pseudoexpectation; let's do so now. Throughout the paper, fix a very small error tolerance $0 < \delta$, and write $\simeq_\ell$ to mean ``equal up to $\pm \delta n^\ell$''. Then the constraint for each partially labelled subgraph with $\ell$ connected components should read $\pseudo p_{H,S,\tau}(x,G) \simeq_\ell \expected p_{H,S,\tau}(\bx,\bG)$. We will write $\simeq$ instead of $\simeq_1$ whenever there is no chance for confusion. Finally, because we have defined our model quite rigidly, whenever $(H,S,\tau)$ consists of a single vertex with label $i\in [k]$, $p_{H,S,\tau}(\bx,\bG) = \pi(i)n$. Similarly when $(H,S)$ consists of two distinguished vertices with labels $i,j\in[k]$ respectively, $$
+        p_{H,S,\tau}(\bx,\bG) = \begin{cases} \pi(i)\pi(j)n^2 &i\neq j \\
+        \pi(i)^2n^2 - \pi(i)n &i=j \end{cases}
+    $$
+    and the moment-matching constraints in our SDP will accordingly include $=$ instead of $\simeq$.\todo{Should we restate the entire SDP here?}
+\end{remark}
+
+Let's take a moment and get a feel for Theorem [ref]. As a warm-up, consider the case when $(H,S,\tau)$ is a path of length $s \le m$ with the endpoints labelled as $i,j\in [k]$, and we simply need to count the number of pairs of vertices in $G$ with labels $i$ and $j$ respectively that are connected by a path of length $s$. As $d$-regular random graphs from models like $\Planted$ have very few short cycles, assume for simplicity that the girth is in fact much larger than $m$, so that the depth-$s$ neighborhood about every vertex is a tree. If we start from a vertex $i$ and follow a uniformly random edge, the parameter matrix $M$ from our model says that, on average at least, the probability of arriving at a vertex in group $j$ is roughly $M_{i,j}$, and similarly if we take $s$ (non-backtracking) steps, this probability is roughly $M^s_{i,j}$. There are $\pi(i) n$ starting vertices in group $i$, and $d(d-1)^{s-1}$ vertices at distance $s$ from any such vertex. 
+
+If $(H,S,\tau)$ is a tree in which the two distinguished vertices are at distance $s$, then we can enumerate occurrences of $(H,S,\tau)$ in $G$ by first choosing the image of the path connecting these two, and then counting the ways to place the remaining vertices. If we again assume that the girth is sufficiently large, it isn't too hard to see that the number of ways to do this second step is a constant independent of the number of ways to place the path, so we've reduced to the case above. The idea for the cases $|S| = 0,1$ is similar. We'll prove Theorem [ref] in Appendix [ref].
+
+
+% subsection local_statististics_in_the_planted_model (end)
+
+% \subsection{The $\LS(2,m)$ SDP} % (fold)
+% \label{sub:the_ls_2m_sdp}
+
+% We end this preliminaries section by deriving a more explicit form for the $\LS(2,m)$ SDP [ref]. Recall from above that this SDP requires us to find a degree-$2$ pseudoexpectation $\pseudo: \bbR[x]_{\le 2} \to \bbR$ which satisfies the set $\calB$ of Boolean and Single-Color constraints, and for which
+% $$
+%     \pseudo p_{H,S,\tau}(x,G) \simeq \expected_{(\bx,\bG)\sim\calP} p_{H,S\tau}(\bx,\bG).
+% $$
+% Such a pseudoexpectation is, by linearity, completely determined by its behavior on the monomials of degree at most two, which it is pleasant to arrange in a $(1 + nk)\times(1 + nk)$ matrix
+% $$
+%     \calE = \begin{pmatrix}
+%         \pseudo 1 & \pseudo x \\
+%         \pseudo x^T & \pseudo x^T x,
+%     \end{pmatrix} \triangleq \begin{pmatrix} 1 & \ell \\ \ell^T & X \end{pmatrix}
+% $$
+% where $\ell = \pseudo x$ is the vector $(\pseudo x_{u,i})_{u\in[n],i\in[k]}$, and $X = \pseudo x^T x$ is the matrix $(\pseudo x_{u,i}x_{v,j})_{u,v\in[n],i,j\in[k]}$. The \textit{normalization} constraint on $\pseudo$ requires that $\pseudo 1 = 1$. It will often be useful to regard the quadratic block $X$ either as a $k\times k$ matrix of $n\times n$ blocks $X_{i,j}$, or a $n\times n$ matrix of $k\times k$ blocks $X_{u,v}$. We will think of $\ell$ in analogous block form, as $\ell = (\ell_i)_{i\in[k]} = (\ell_u)_{u\in[n]}$.
+
+% Our pseudoexpectation is \textit{positive} if $\calE \succeq 0$ as a matrix, and the remaining constraints---that it \textit{satisfy} $\calB$ and match low-degree moments---amount to affine constraints that we'll now describe in detail. First, the Boolean constraint stipulates that
+% $$
+%     X_{(u,i),(u,i)} = \pseudo x_{u,i}^2 = \pseudo x_{u,i} = \ell_{u,i}
+% $$
+% for every $u \in[n]$ and $i\in [k]$. Note that positivity tells us that these diagonal elements are positive, so $\ell$ is a positive vector. Second, the Single Color constraint tells us
+% $$
+%     \pseudo p(x) \left(\sum_i x_{u,i}\right) = \pseudo p(x)
+% $$
+% for every $u$ and every linear polynomial $p$. We can make sure the second constraint holds by enforcing 
+% $$
+%     \sum_j (X_{u,v})_{i,j} = \pseudo x_{v,j}\sum_i x_{u,i} = \pseudo x_{v,j} = \ell_{v,j}
+% $$ 
+% for every $u,v\in[n]$ and $j\in [k]$. 
+
+% We will encode the moment constraints in the following way. For each graph $H$ and subset $\{\alpha\} = S \subset V(H)$ let us define a vector $a^{(H,S)} \in \bbR^n$ with
+% $$
+%     a^{(H,S)}_u = \text{ \# injective homomorphisms $\pi: H\to G$ with $\pi(\alpha) = u$ },
+% $$
+% for which
+% $$
+%     \pseudo p_{H,S,\tau}(x,G) = \innerprod{a^{(H,S)}}{\ell_{\tau(\alpha)}}.
+% $$
+% Similarly, for any graph $H$ and subset $\{\alpha,\beta\} = S \subset V(G)$, write $A^{(H,S)}$ for the $n\times n$ matrix with
+% $$
+%     A^{(H,S)}_{u,v} = \text{\# injective homomorphisms $\pi:H\to G$ with $\pi(\alpha) = u$ and $\pi(\beta)$ = v},
+% $$
+% for which
+% $$
+%     \pseudo p_{H,S,\tau}(x,G) = \langle A^{(H,S)}, X_{\tau(i),\tau(j)} \rangle.
+% $$
+% We can rewrite the $\LS(2,m)$ SDP, in terms of these vectors and matrices, as follows. Set an error tolerance $\delta$, and write $\simeq_q$ to mean `equal up to a multiplicative $(1 \pm \delta)$'. The program is:
+% \begin{align}
+%     \text{Find } \calE = \begin{pmatrix} 1 & \ell \\ \ell^T & X \end{pmatrix} \qquad \st \qquad \calE &\succeq 0 \\
+%     \Diag(X) &= \ell \\
+%     X_{u,v}e &= \ell_u & & \forall u,v\in [n] \\
+%     \innerprod{a^{(H,S)}}{\ell_{\tau(\alpha)}} &\simeq \expected p_{H,S,\tau}(\bx,\bG) & & \forall (H,S = \{\alpha\},\tau) \text{ on $\le m$ edges} \\
+%     \langle A^{(H,S)},X_{\tau(\alpha),\tau(\beta)}\rangle  &\simeq \expected p_{H,S,\tau}(\bx,\bG) & & \forall (H,S = \{\alpha,\beta\},\tau) \text{ on $\le m$ edges}
+% \end{align}
+
+
+
+% subsection: the_ls_2m_sdp (end)
+
+% \subsection{Local Path Statistics and Non-backtracking Walks} % (fold)
+% \label{sub:_ls}
+
+% The results of our paper concern a stripped-down version of $\LS(2,m)$, where $\pseudo$ is only required to satisfy a subset of the positivity and moment constraints. In particular, we will demand that $\pseudo$ is positive on polynomials that are homogeneous and quadratic in the $x$ variables, and ask that it match the moments of $p_{H,S,\tau}(x,G)$ where $H$ is a path with labeled endpoints. This will be enough to give us detection down to the KS threshold, and we conjecture that nothing is gained by considering the full $\LS(2,m)$ program, nor in fact by moving to $\LS(D_1,D_2)$ for any constant $D_1,D_2$. 
+
+% We can write this SDP in terms of an $nk \times nk$ block matrix $X$ with $X_{(u,i),(v,j)} = \pseudo x_{u,i}x_{v,j}$, which it will at times be useful to think of as a $k\times k$ matrix of blocks $X_{i,j}$, or a $n\times n$ block matrix of blocks $X_{u,v}$. The positivity condition on $\pseudo $ translates to $X \succeq 0$, and routine combinations of the Boolean and Single Color constraints defining $\calB_k$ give us that
+% \begin{align*}
+%     \Tr X_{u,u} &= \sum_i \pseudo x_{u,i}^2 = \sum_i \pseudo x_{u,i} = 1 \\
+%     e^T X_{u,u} e &= \sum_{i,j} \pseudo x_{u,i}x_{u,j} = \pseudo \left(\sum_i x_{u,i}\right)^2 = \pseudo \sum_i x_{u,i} = 1,
+% \end{align*} 
+% where $e \in \bbR^{k}$ is the vector of all ones. Finally, the restricted class of subgraph-counting polynomials that we have allowed ourselves count pairs of vertices with labels $i$ and $j$ connected by a self-avoiding walk of length $s \le m$. Writing $\sa{s}{G}$ for the $n\times n$ matrix whose $u,v$ entry is a one when two vertices are connected by such a path, these constraints give us
+% %
+% \begin{equation} \label{eq:sa-con}
+%     \langle \sa{s}{G} ,X_{i,j} \rangle \approx \expected_{(\bx,\bG)\sim \Planted} \langle \sa{s}{\bG}, \outerprod{\bx_{i}}{\bx_{j}}\rangle;
+% \end{equation}
+% %
+% here $x_{i} = (x_{1,i},...,x_{n,i})$ and $\langle M,N \rangle = \sum_{i,j} M_{i,j}N_{i,j}$ is the standard trace inner product. Note again that we are retaining the flexible notation $\approx$, as we need to account somehow for fluctuations in the right hand side.
+
+% As the matrices $\sa{s}{G}$ are hard to analyze, it would be ideal to work with \emph{non-backtracking walks}---which are forbidden from returning immediately along an edge they have just traversed---instead of self-avoiding ones. In particular, it is well-known in the $d$-regular case that the analogous matrices $\nb{s}{G}$ which count non-backtracking walks are polynomials in the adjacency matrix. We will use this fact extensively in our analysis, and it is the central simplifying feature of the RSBM in contrast to the standard SBM in our context. Using the fact that graphs from the RSBM have very few cycles, we can show that passing to non-backtracking walks accrues us an error of only $o(n)$ in the constraints of our SDP. It will turn out that this can be absorbed once we choose an appropriate explicit form for the $\approx$ in \eqref{eq:sa-con}.
+
+% \begin{lemma}
+%     For any constant $s$, and any setting $(d,k,M,\pi)$, the self-avoiding and non-backtracking walk matrices satisfy
+%     $$
+%         \left\| \nb{s}{G} - \sa{s}{G} \right\| \le O(\log^2 n)
+%     $$
+% \end{lemma}
+
+% \noindent In particular, using the fact that $|\pseudo x_{u,i}x_{v,j}| \le 1$, we immediately have that
+% $$
+%     \expected_{\Planted} \langle \sa{s}{G}, \outerprod{x_{i}}{x_{j}} \rangle = \expected_{(\bx,\bG)\sim \Planted} \langle \nb{s}{\bG}, \outerprod{\bx_{i}}{\bx_{j}} \rangle + O(\log^2 n)
+% $$
+% in the planted model, and thus we can freely pass to non-backtracking walks.
+% % \begin{proof}
+% %   Call a vertex $v$ \emph{bad} whenever it can reach a cycle of length $C$ in at most $L$ non-backtracking steps. The class of vertices contains every pair which can be connected by a non-backtracking walk of, say, length $2L + 2C$, but not by a self-avoiding one of the same length. We claim that for $C$, $L$ constant, there are at most $O(\log n)$ bad vertices, and thus that $\nb{s}{G}$ and $\sa{s}{G}$ differ in at most $O(\log^2 n)$ entries. Since $X$ is PSD with diagonal entries bounded by $1$, every entry of each block $X_{i,j}$ has entries of magnitude at most one, and modulo this claim we are done.
+
+% %   [proof of claim]
+% % \end{proof}
+
+% We need now to calculate $\expected_{\Planted} \langle \nb{s}{G}, \outerprod{x_{\cdot,i}}{x_{\cdot,j}} \rangle$ and understand the fluctuations about this expectation. To get a feel for this quantity, imagine starting at some vertex in group $i$, executing a non-backtracking random walk, and keeping track of the labels you encounter. As you follow each edge, the probability of finding a vertex in group $j$, conditional on starting at group $i$, is roughly $M_{i,j}$, where $M$ is the parameter matrix from the RSBM. Thus the probability of reaching a group $j$ vertex from group $i$ in $s$ steps is approximately $M_{i,j}^s$. There are $\pi(i)n$ possible starting vertices in group $i$, and $d(d-1)^{s-1}$ non-backtracking walks starting at each one, motivating:
+% \begin{lemma}
+%     The number of length-$s$ non-backtracking walks from group $i$ to group $j$ in the planted model satisfies 
+%     $$
+%         \expected_{\Planted}\langle \nb{s}{G}, \outerprod{x_{\cdot,i}}{x_{\cdot,j}} \rangle = \pi(i)M_{i,j}^s d(d-1)^{s-1} n \qquad s\ge 1
+%     $$
+%     and enjoys concentration up to an additive $\pm o(n)$.
+% \end{lemma}
+
+% \noindent Finally, then, we can state our hierarchy of detection SDPs explicitly. Set some error tolerance $\delta$, and write $\simeq$ to mean equality up to $\pm \delta n$. The \emph{Local Path Statistics} SDP at level $m$ is:
+% \begin{align}
+%     \text{Find $X = (X_{i,j})_{i,j\in [k]} = (X_{u,v})_{u,v \in [n]}$} \qquad \st & & & X \succeq 0 \\
+%     &&& \Tr X_{u,u} = 1 = e^TX_{u,u}e & &\forall u\in[n] \\
+%     &&& \langle \nb{s}{G}, X_{i,j} \rangle \simeq \pi(i)M_{i,j}^s d(d-1)^{s-1} n && \forall i,j\in[k]
+% \end{align}
+
+% % subsection _ls (end)
+
