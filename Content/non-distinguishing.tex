@@ -51,21 +51,18 @@ when $(H,S,\tau)$ is a path of length $0,...,m$ with labelled endpoints. Finally
     \begin{equation} \label{eq:poly-apx}
         \left\| n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}p_{P_s,i,j} - p_{H,S,\tau} \right\|_1 = o(n^\ell) \simeq_\ell 0
     \end{equation}
-    where here $\|\cdot \|$ means the coefficient-wise $L^1$ norm. Once we've shown this, it is a standard SoS calculation that the Boolean constraint implies $|\pseudo x_{u,i}x_{v,j}| \le 1$ for every $u,v,i,j$. Thus, using the local statistic constraints from Proposition [ref], we will have
+    where here $\|\cdot \|$ means the coefficient-wise $L^1$ norm. To get a feel for this, in the case when $H$ is connected and its two distinguished vertices are connected by a path of length $s$, $\tfrac{C_{H,S,d}}{C_{P_s,d}}$ counts the number of ways to place the remainder of $H$ in a $d$-regular tree (or locally-treelike graph), once we commit to the locations of the two distinguished vertices and the path between them. 
+
+    Once we've shown \eqref{eq:poly-apx}, it is a standard SoS calculation that the Boolean constraint implies $|\pseudo x_{u,i}x_{v,j}| \le 1$ for every $u,v,i,j$. Thus, using the local statistic constraints from Proposition [ref], we will have
     $$
         \pseudo p_{H,S,\tau} \simeq_\ell n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}} \pseudo p_{P_s,i,j} \simeq_\ell n^\ell \pi(i)M_{i,j}^s C_{d,H,S}
     $$
-    as desired.
-
-    To prove \eqref{eq:poly-apx}, we need to open up the subgraph counting polynomials $p_{H,S,\tau}$ a bit more, and we'll require some notation to do this cleanly. For each $(H,S,\tau)$, write $\Phi_{H,S,u,v}$ for the set of all injective homomorphisms $H \to \bG$ such that the distinguished vertices are mapped to the vertices $u$ and $v$ of $\bG$. Then
+    as desired. To prove \eqref{eq:poly-apx}, we need to open up the subgraph counting polynomials $p_{H,S,\tau}$ a bit more, and we'll require some notation to do this cleanly. For each $(H,S,\tau)$, write $\Phi_{H,S,u,v}$ for the set of all injective homomorphisms $H \to \bG$ such that the distinguished vertices are mapped to the vertices $u$ and $v$ of $\bG$. Then
     \begin{align*}
-        n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}} p_{P_s,i,j}(x) - p_{H,S,\tau}(x)
-        &= \sum_{u,v} \left(n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}|\Phi_{P_s,u,v}| - |\Phi_{H,S,\tau}| \right) x_{u,i}x_{v,j},
+        \left\|n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}} p_{P_s,i,j}(x) - p_{H,S,\tau}(x)\right\|
+        &= \left\|\sum_{u,v} \left(n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}|\Phi_{P_s,u,v}| - |\Phi_{H,S,\tau}| \right) x_{u,i}x_{v,j}\right\| \\
+        &= \sum_{u,v} \left|n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}|\Phi_{P_s,u,v}| - |\Phi_{H,S,u,v}| \right|.
     \end{align*}
-    and the quantity we care about is
-    $$
-        \left\| n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}} p_{P_s,i,j}(x) - p_{H,S,\tau}(x) \right\|_1 = \sum_{u,v} \left|n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}|\Phi_{P_s,u,v}| - |\Phi_{H,S,u,v}| \right|.
-    $$
 
     Let's first consider the case when $s < \infty$, so that the two distinguished vertices in $H$ are connected by some path of length at most $m$. Under this assumption $|\Phi_{H,S,u,v}| = O(n^{\ell - 1})$. Writing $U$ for the set of $m$-good vertices---which by Lemma [ref] has size at least $n - O(\log n)$---and recalling that every vertex has at most $O(1)$ vertices in its depth-$m$ neighborhood, we can restrict the above sum to run over only $u,v \in U$ and pay a cost of no more than $O(n^{\ell - 1}\log n) = o(n^\ell)$. Thus
     \begin{align*}
@@ -76,36 +73,25 @@ when $(H,S,\tau)$ is a path of length $0,...,m$ with labelled endpoints. Finally
     $$
         \left|n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}|\Phi_{P_s,u,v}| - |\Phi_{H,S,u,v}| \right| = o(n^{\ell - 1}).
     $$
-    
 
-
-
-
-
-
-    Assume that $\pseudo$ matches all the stated moments, and let $(H,S,\tau)$ be an arbitrary partially labelled graph with $\ell$ connected components $(H_1,S_1,\tau_1) \cdots (H_\ell,S_\ell,\tau_\ell)$, and two distinguished vertices connected by a path of length $s$ and labelled $i$ and $j$ respectively. Write $\Phi_H$ for the set of all injective homomorphisms $\varphi: H \to G$, and $\Phi_{H,S,u,v}$ for the set of all such homomorphisms such that the distinguished vertices are mapped to $u$ and $v$ respectively. Let $P_s$ be the path of length $s$, and write $\Phi_s = \Phi_{P_s}$ and $\Phi_{s,u,v}$ to mean the injective homomorphisms such that the endpoints of the path are mapped to $u$ and $v$, and let
+    Let's write $H = H_1 \sqcup H_2 \cdots \sqcup H_\ell$, and assume that both distinguished vertices are in $H_1$. Recall for later use that $C_{H,S,d} = C_{H_1,S,d} C_{H_2,\emptyset}\cdots C_{H_\ell,\emptyset}$. Since each of the components is of constant size, we claim that
     $$
-        C = \frac{C_{d,H,S}}{C_{d,P_s,T}}.
+        |\Phi_{H,S,u,v}| = |\Phi_{H_1,S,u,v}| |\Phi_{H_2}| \cdots |\Phi_{H_\ell}| + o(n^{\ell - 1})
     $$
-    Note that this number counts exactly how many ways there are to place the remainder of $H$ in a rooted $d$-regular tree once we choose the path connecting the two distinguished points in $s$. Our key claim is that, as polynomials,
+    where by the latter terms we mean the number of occurrernces of $H_2,...,H_\ell$ respectively in $G$, without any constraints of distinguished vertices or labels. The idea is that we can choose one of the occurrences in $\Phi_{H,S,u,v}$ by first choosing where to place $(H_1,S)$ so that the vertices in $S$ map to $u$ and $v$, then choosing where to place $H_2$, etc. Since each component is of constant size, we overcount only by an additive $O(n^{\ell - 1})$ by ignoring the requirement that the connected components not collide. But $|\Phi_{H_i}| = p_{H_i,\emptyset,\emptyset}(\bx,\bG)$ for each $i=2,...,\ell$, and by Proposition each of these are $nC_{d,H_i,\emptyset} + o(n)$. Similarly, from our discussion above,
     $$
-        \left\|\frac{C_{d,H,S}}{C_{d,P_s,T}}p_{P_s,i,j}(x) - p_{H,S,\tau} \right\|_1 = o(n^\ell),
+        |\Phi_{H_1,S_1,u,v}| = \frac{C_{H,S,d}}{C_{P_s,d}},
     $$
-    with high probability over $\bG \sim \Planted$, where $\| \cdot \|_1$ here means the coefficient-wise $L^1$ norm. 
-
-    To see why this is sufficient, note that (from a routine SoS calculation) the Boolean constraint implies $|\pseudo x_{u,i}x_{v,j}| \le 1$ for every $u,v,i,j$. Thus, using the local statistic constraints from Proposition [ref], we will have
+    since once we declare that the two vertices in $S$ are mapped to $m$-good vertices $u$ and $v$, our freedom in place the rest of $H_1$ is exactly the number of ways to to do so in a $d$-regular tree. But now we are done:
     $$
-        \pseudo p_{H,S,\tau}(x) \simeq_\ell \frac{C_{d,H,S}}{C_{d,P_s,T}}\pseudo p_{P_s,i,j} \simeq_\ell {C_{d,H,S}}{C_{d,P_s,T}} 
+        |\Phi_{H,S,u,v}| = |\Phi_{H_1,S_1,u,v}||\Phi_{H_2}|\cdots |\Phi_{H_\ell}| + o(n^{\ell - 1}) = n^{\ell - 1}\frac{C_{H_1,S,d}}{C_{P_s,d}}C_{H_2}\cdots C_{H_\ell} + o(n^{\ell - 1}) = n^{\ell - 1}\frac{C_{H,S,d}}{C_{P_s,d}} + o(n^{\ell - 1}).
     $$
 
-
-    it counts exactly how many ways there are to place the remainder of $H$ in a rooted $d$-regular tree once we choose the image of the path connecting the two points in $S$. It is a routine SoS calculation that the Boolean constraint implies $|\pseudo x_{u,i}x_{v,j}| \le 1$ for every $u,v,i,j$. For every $H,S,\tau$ we have
-    \begin{align*}
-        \left|\pseudo p_{H,S,\tau}(x,\bG) - C\pseudo p_{P_s,S,\tau}(x,\bG) \right|
-        &= \left|\sum_{\varphi \in \Phi_H}\pseudo \prod_{a\in S} x_{\varphi(a),\tau(a)} - C\sum_{\varphi \in \Phi_s}\pseudo \prod_{a\in S}x_{\varphi(a),\tau(a)}\right| \\
-        &= \left|\sum_{u,v}\left(|\Phi_{H,S,u,v}| - C|\Phi_{s,u,v}|\right)\pseudo x_{u,i}x_{v,j}\right|.
-    \end{align*}
-    If $\ell = 1$, the only non-zero terms in the above sum are when $u$ and $v$ are connected by a path of length $s$; there are $O(n)$ such pairs at worst. By Lemma [ref], only $o(n)$ of them have constant depth (say $2s$) neighborhoods that contain a cycle; for the rest $|\Phi_{H,S,u,v}| = C|\Phi_{s,u,v}|$, and we get that the the difference above is at worst $o(n)$ in magnitude. [Finish]
+    We finally need to treat the case when $s = \infty$ and the distinguished vertices of $H$ are in different connected components; under this assumption $|\Phi_{H,S,u,v}| = O(n^{\ell - 2})$, since there are only $\ell - 2$ components to place once we commit to mapping the distinguished vertices to a given $u$ and $v$. Again we need to consider
+    $$
+        \sum_{u,v}\left|n^{\ell - 1}\frac{C_{H,S,d}}{C_{P_s,d}}|\Phi_{P_s,u,v}| - |\Phi_{H,S,u,v}|\right|,
+    $$
+    and again we can restrict the sum to the $m$-good vertices for the price of an additive $o(n^\ell)$, since we are omitting $O(n\log n)$ terms with magnitude $O(n^{\ell - 2})$. From this point the calculation continues more or less as it does above.
 \end{proof}
     
 Proposition [ref] in hand, we can now set about constructing a pseudoexpectation. We'll construct $l\in \bbR^{nk}$ and $X \in \bbR^{nk\times nk}$ so that (i) the $\calB_k$ constraints in Lemma [ref] hold, and (ii)

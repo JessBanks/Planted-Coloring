@@ -104,12 +104,16 @@ We will need standard fact about reversible Markov chains. Let us maintain the n
 \subsection{Local Statistics in the Planted Model} % (fold)
 \label{sub:local_statistics_in_the_planted_model}
 
-The Local Statistics SDP that we are studying includes constraints that our pseudoexpectation match certain low-degree moments in the planted distribution. As we discussed in the technical overview, these correspond to the counts of partially labelled subgraphs in $G$. To set some notation, a \textit{partially labelled graph} $(H,S,\tau)$ is a graph $H = (V(H),E(H))$, together with a distinguished subset of vertices $S \subset V(H)$, and a labelling $\tau : S \to [k]$ of these distinguished vertices. We'll say a graph is \emph{unlabeled} or \textit{fully labelled} if $S = \emptyset$ or $S = V(H)$, and in these cases abuse notation and simply refer to $H$ or $(H,\tau)$ respectively. An \textit{occurrence} of a partially labelled graph $(H,S,\tau)$ in a fully labelled one $(G,\sigma)$ is an injective homomorphism $H \to G$, that agrees on labels, i.e. vertices in $S$ are mapped to ones in $V(G)$ with the same label.
+The Local Statistics SDP that we are studying includes constraints that our pseudoexpectation match certain low-degree moments in the planted distribution. As we discussed in the technical overview, these correspond to the counts of partially labelled subgraphs in $G$. To set some notation, a \textit{partially labelled graph} $(H,S,\tau)$ is a graph $H = (V(H),E(H))$, together with a distinguished subset of vertices $S \subset V(H)$, and a labelling $\tau : S \to [k]$ of these distinguished vertices. We'll say a graph is \emph{unlabeled} or \textit{fully labelled} if $S = \emptyset$ or $S = V(H)$, and in these cases abuse notation and simply refer to $H$ or $(H,\tau)$ respectively. At times it will also be useful to refer to graphs with distinguished vertices, but no labelling; we will write these as $(H,S)$. An \textit{occurrence} of a partially labelled graph $(H,S,\tau)$ in a fully labelled one $(G,\sigma)$ is an injective homomorphism $H \to G$, that agrees on labels, i.e. vertices in $S$ are mapped to ones in $V(G)$ with the same label.
 
 The low-degree moment constraints in $\LS(2,m)$ are exactly the counts of occurrences of partially labelled subgraphs $(H,S,\tau)$ in a graph $\bG \sim \Planted$, for which $H$ has at most $m$ edges and $2$ distinguished vertices. The following theorem characterizes these counts in any planted model; we will discuss it briefly below and remit the proof to the appendix.
 
+\begin{definition}
+    Let $(H,S)$ be a connected graph on $O(1)$ edges, with distinguished vertices $S$. Define $C_{H,S,d}$ to be the number of occurrences of $(H,S)$ in an infinite $d$-regular tree in which some vertex in $S$ is mapped to the root. If $S = \emptyset$, choose some distinguished vertex arbitrarily---the count will be the same no matter which one is chosen. Finally, if $(H,S) = (H_1,S_1) \sqcup \cdots \sqcup (H_\ell,S_\ell)$ has $\ell$ connected components, take $C_{H,S,d} = C_{H_1,S_1} \cdots C_{H_\ell,S_\ell}$. We note for later use that if $H$ contains a cycle, $C_{H,S} = 0$, and if it is a path of length $s$ with endpoints distinguished, $C_{H,S} = \|q_s\|^s_{\km}$, the number of vertices at depth $s$ in the tree.
+\end{definition}
+
 \begin{theorem}[Local Statistics]
-    Let $C_{H,S,d}$ be the number of occurrences of $(H,S)$ in a rooted $d$-regular tree in which some vertex in $S$ is mapped to the root. Then, if $(H,S,\tau)$ is a partially labeled graph with $O(1)$ edges, $\ell$ connected components, and at most two distinguished vertices, then in any RSBM $\Planted_{d,k,M,\pi}$,
+    If $(H,S,\tau)$ is a partially labelled graph with $O(1)$ edges, then in any planted model $\Planted_{d,k,M,\pi}$,
     \begin{enumerate}
         \item If $H$ is unlabelled, i.e. $S = \emptyset$, then $n^{-\ell} \expected p_{H,S,\tau}(\bx,\bG) \to C_{H,S,d}$
         \item If $H$ is labelled, with $S = \{\alpha,\beta\}$, $\tau(\alpha) = i$, and $\tau(\beta) = j$, then
@@ -119,10 +123,6 @@ The low-degree moment constraints in $\LS(2,m)$ are exactly the counts of occurr
     \end{enumerate}
     and $p_{H,S,\tau}(\bx,\bG)$ enjoys concentration up to an additive $\pm o(n^\ell)$. We say that $\dist(\alpha,\beta) = \infty$ if these two vertices lie in disjoint components of $H$, and we interpret $M_{i,j}^\infty = \pi(j)$.
 \end{theorem}
-
-\begin{remark}
-    Note that if $H$ contains a cycle, $C_{H,S,d} = 0$, and that if $(H,S)$ is a path of length $s$ with endpoints distinguished, $C_{H,S,d} = \|q_s\|^2_{\km}$, the number of vertices at depth $s$ in a rooted $d$-regular tree. When $\bG \sim\Planted$, this theorem reduces to the well-known Benjamini-Schramm convergence of $d$-regular random graphs to the $d$-regular tree. \todo{right?}
-\end{remark}
 
 \begin{remark}
     In our Local Statistics SDP [ref], we promised to formalize the symbol $\simeq$ appearing in the affine moment-matching constraints on the pseudoexpectation; let's do so now. Throughout the paper, fix a very small error tolerance $0 < \delta$, and write $\simeq_\ell$ to mean ``equal up to $\pm \delta n^\ell$''. Then the constraint for each partially labelled subgraph with $\ell$ connected components should read $\pseudo p_{H,S,\tau}(x,G) \simeq_\ell \expected p_{H,S,\tau}(\bx,\bG)$. We will write $\simeq$ instead of $\simeq_1$ whenever there is no chance for confusion. Finally, because we have defined our model quite rigidly, whenever $(H,S,\tau)$ consists of a single vertex with label $i\in [k]$, $p_{H,S,\tau}(\bx,\bG) = \pi(i)n$. Similarly when $(H,S)$ consists of two distinguished vertices with labels $i,j\in[k]$ respectively, $$
