@@ -10,7 +10,7 @@ After first writing down the general properties required of \textit{any} quadrat
 $$
     \pseudo p_{H,S,\tau}(x,G) \simeq \expected p_{H,S,\tau}(\bx,\bG)
 $$
-when $(H,S,\tau)$ is a path of length $0,...,m$ with labelled endpoints. Finally, we'll construct a pseudoexpectation matching these path moments by way of some further tools from orthogonal polynomials.
+when $(H,S,\tau)$ is a path of length $0,...,m$ with labelled endpoints. Finally, we'll construct a pseudoexpectation matching these path moments by way of some elementary properties of the non-backtracking polynomials from Section [ref].
 
 \begin{lemma}
     The set of $\calB_k$-satisfying pseudoexpectations is parameterized by pairs $(X,l) \in \bbR^{nk\times nk}\times \bbR^{nk}$ for which
@@ -45,11 +45,61 @@ when $(H,S,\tau)$ is a path of length $0,...,m$ with labelled endpoints. Finally
 \end{proposition}
 
 \begin{proof}
-    Assume that $\pseudo$ matches all the stated moments, and let $(H,S,\tau)$ be an arbitrary partially labelled graph with $\ell$ connected components, and two distinguished vertices connected by a path of length $s$ and labelled $i$ and $j$ respectively. Write $\Phi_H$ for the set of all injective homomorphisms $\varphi: H \to G$, and $\Phi_{H,S,u,v}$ for the set of all such homomorphisms such that the distinguished vertices are mapped to $u$ and $v$ respectively. Let $P_s$ be the path of length $s$, and write $\Phi_s = \Phi_{P_s}$ and $\Phi_{s,u,v}$ to mean the injective homomorphisms such that the endpoints of the path are mapped to $u$ and $v$. Let
+    Assume that $\pseudo$ matches all the promised moments, and let $(H,S,\tau)$ be an arbitrary partially labelled graph with $\ell$ connected components, and two distinguished vertices connected by a path of length $0 \le \le \infty$, where $s = 0$ means that the distinguished vertices, and their labels, are identical, and $s = \infty$ means that they have no path connecting them. Let's use the shorthand $(P_s,i,j)$ for the path of length $s$ with distinguished endpoints labelled $i$ and $j$ respectively. This extends naturally to the corner cases $s = 0$, when there is only one distinguished vertex and $i = j$, and $s = \infty$ when we will interpret it as two disconnected and labelled vertices.
+
+    Our central claim will be that, as polynomials, with high probability
+    \begin{equation} \label{eq:poly-apx}
+        \left\| n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}p_{P_s,i,j} - p_{H,S,\tau} \right\|_1 = o(n^\ell) \simeq_\ell 0
+    \end{equation}
+    where here $\|\cdot \|$ means the coefficient-wise $L^1$ norm. Once we've shown this, it is a standard SoS calculation that the Boolean constraint implies $|\pseudo x_{u,i}x_{v,j}| \le 1$ for every $u,v,i,j$. Thus, using the local statistic constraints from Proposition [ref], we will have
     $$
-        C = \frac{C_{d,H,S}}{C_{d,P_s,T}},
+        \pseudo p_{H,S,\tau} \simeq_\ell n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}} \pseudo p_{P_s,i,j} \simeq_\ell n^\ell \pi(i)M_{i,j}^s C_{d,H,S}
     $$
-    noting that $C$ is an integer: it counts exactly how many ways there are to place the remainder of $H$ in a rooted $d$-regular tree once we choose the image of the path connecting the two points in $S$. It is a routine SoS calculation that the Boolean constraint implies $|\pseudo x_{u,i}x_{v,j}| \le 1$ for every $u,v,i,j$. For every $H,S,\tau$ we have
+    as desired.
+
+    To prove \eqref{eq:poly-apx}, we need to open up the subgraph counting polynomials $p_{H,S,\tau}$ a bit more, and we'll require some notation to do this cleanly. For each $(H,S,\tau)$, write $\Phi_{H,S,u,v}$ for the set of all injective homomorphisms $H \to \bG$ such that the distinguished vertices are mapped to the vertices $u$ and $v$ of $\bG$. Then
+    \begin{align*}
+        n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}} p_{P_s,i,j}(x) - p_{H,S,\tau}(x)
+        &= \sum_{u,v} \left(n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}|\Phi_{P_s,u,v}| - |\Phi_{H,S,\tau}| \right) x_{u,i}x_{v,j},
+    \end{align*}
+    and the quantity we care about is
+    $$
+        \left\| n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}} p_{P_s,i,j}(x) - p_{H,S,\tau}(x) \right\|_1 = \sum_{u,v} \left|n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}|\Phi_{P_s,u,v}| - |\Phi_{H,S,u,v}| \right|.
+    $$
+
+    Let's first consider the case when $s < \infty$, so that the two distinguished vertices in $H$ are connected by some path of length at most $m$. Under this assumption $|\Phi_{H,S,u,v}| = O(n^{\ell - 1})$. Writing $U$ for the set of $m$-good vertices---which by Lemma [ref] has size at least $n - O(\log n)$---and recalling that every vertex has at most $O(1)$ vertices in its depth-$m$ neighborhood, we can restrict the above sum to run over only $u,v \in U$ and pay a cost of no more than $O(n^{\ell - 1}\log n) = o(n^\ell)$. Thus
+    \begin{align*}
+        \left\| n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}} p_{P_s,i,j}(x) - p_{H,S,\tau}(x) \right\|_1 
+        &= \sum_{u,v \in U} \left|n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}|\Phi_{P_s,u,v}| - |\Phi_{H,S,u,v}| \right| + o(n^\ell).
+    \end{align*}
+    There are only $O(n)$ nonzero terms in the above sum, again because $u\in U$ means that there are only $O(1)$ vertices $v$ reachible via a path of length $s \le m$, and both $\Phi_{H,S,u,v}$ and $\Phi_{P_s,u,v}$ are empty if $u$ and $v$ are not connected in this way. This means we've reduced the problem to showing that
+    $$
+        \left|n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}|\Phi_{P_s,u,v}| - |\Phi_{H,S,u,v}| \right| = o(n^{\ell - 1}).
+    $$
+    
+
+
+
+
+
+
+    Assume that $\pseudo$ matches all the stated moments, and let $(H,S,\tau)$ be an arbitrary partially labelled graph with $\ell$ connected components $(H_1,S_1,\tau_1) \cdots (H_\ell,S_\ell,\tau_\ell)$, and two distinguished vertices connected by a path of length $s$ and labelled $i$ and $j$ respectively. Write $\Phi_H$ for the set of all injective homomorphisms $\varphi: H \to G$, and $\Phi_{H,S,u,v}$ for the set of all such homomorphisms such that the distinguished vertices are mapped to $u$ and $v$ respectively. Let $P_s$ be the path of length $s$, and write $\Phi_s = \Phi_{P_s}$ and $\Phi_{s,u,v}$ to mean the injective homomorphisms such that the endpoints of the path are mapped to $u$ and $v$, and let
+    $$
+        C = \frac{C_{d,H,S}}{C_{d,P_s,T}}.
+    $$
+    Note that this number counts exactly how many ways there are to place the remainder of $H$ in a rooted $d$-regular tree once we choose the path connecting the two distinguished points in $s$. Our key claim is that, as polynomials,
+    $$
+        \left\|\frac{C_{d,H,S}}{C_{d,P_s,T}}p_{P_s,i,j}(x) - p_{H,S,\tau} \right\|_1 = o(n^\ell),
+    $$
+    with high probability over $\bG \sim \Planted$, where $\| \cdot \|_1$ here means the coefficient-wise $L^1$ norm. 
+
+    To see why this is sufficient, note that (from a routine SoS calculation) the Boolean constraint implies $|\pseudo x_{u,i}x_{v,j}| \le 1$ for every $u,v,i,j$. Thus, using the local statistic constraints from Proposition [ref], we will have
+    $$
+        \pseudo p_{H,S,\tau}(x) \simeq_\ell \frac{C_{d,H,S}}{C_{d,P_s,T}}\pseudo p_{P_s,i,j} \simeq_\ell {C_{d,H,S}}{C_{d,P_s,T}} 
+    $$
+
+
+    it counts exactly how many ways there are to place the remainder of $H$ in a rooted $d$-regular tree once we choose the image of the path connecting the two points in $S$. It is a routine SoS calculation that the Boolean constraint implies $|\pseudo x_{u,i}x_{v,j}| \le 1$ for every $u,v,i,j$. For every $H,S,\tau$ we have
     \begin{align*}
         \left|\pseudo p_{H,S,\tau}(x,\bG) - C\pseudo p_{P_s,S,\tau}(x,\bG) \right|
         &= \left|\sum_{\varphi \in \Phi_H}\pseudo \prod_{a\in S} x_{\varphi(a),\tau(a)} - C\sum_{\varphi \in \Phi_s}\pseudo \prod_{a\in S}x_{\varphi(a),\tau(a)}\right| \\
@@ -75,13 +125,13 @@ It will simplify things immensely to use the same change of basis as we did in S
 The key steps in designing $\check X$ are as follows.
 %
 \begin{proposition}
-    For every $m$ and every $\lambda$ such that $|\lambda|^2(d-1) < 1$, there exists a polynomial $p$ nonnegative on $(-2\sqrt{d-1},2\sqrt{d-1})$ and satisfying
+    For every $m$ and every $\lambda$ such that $|\lambda|^2(d-1) < 1$, there exists a polynomial $y$ nonnegative on $(-2\sqrt{d-1},2\sqrt{d-1})$ and satisfying
     $$
-        \langle q_s,p \rangle_{\km} = \lambda^s\|q_s\|^2_{\km}.
+        \langle q_s,y \rangle_{\km} = \lambda^s\|q_s\|^2_{\km}.
     $$
 \end{proposition}
 \begin{proposition}
-    Let $\bG \sim \Null$. If there exists a polynomial $p$ meeting the conditions of Proposition [ref] for some $\lambda \in (-1,1)$, then there exists a PSD matrix $Y(\lambda)$ for which
+    Let $\bG \sim \Null$. If there exists a polynomial $y$ meeting the conditions of Proposition [ref] for some $\lambda \in (-1,1)$, then there exists a PSD matrix $Y(\lambda)$ for which
     \begin{align*}
         Y(\lambda)_{u,u} &= 1 & & \forall u\in[n] \\
          \langle Y(\lambda), \nb{s}{\bG} \rangle &\simeq \lambda^s \|q_s\|^2_{\km}n & & \forall s \in[m] \\
@@ -112,8 +162,8 @@ $$
 is a pseudoexpectation satisfying $\calB_k$. Equation [ref] guarantees PSD-ness, since we have multiplied a matrix and its transpose on the right and left respectively of a PSD matrix. Since $\pi$ is the first row of $F^{-1}$, we know $l_i = \pi(i)e$. On the other hand, $X$ is obtained by changing basis block-wise, the diagonal of $X$ depends only on the diagonals of $\bbJ$ and the $Y(\lambda_i)$, all of which are all ones, so
 \begin{align*}
     \diag X 
-    &= \diag\big\left((F^{-T}\otimes \1)\Diag\diag \check X (F^{-1}\otimes \1)\big\right) \\
-    &=\diag\big\left((F^{-T}\otimes \1) (F^{-1}\otimes \1)\big\right) \\
+    &= \diag\big((F^{-T}\otimes \1)\Diag\diag \check X (F^{-1}\otimes \1)\big) \\
+    &=\diag\big((F^{-T}\otimes \1) (F^{-1}\otimes \1)\big) \\
     &= \diag\left(F^{-T}F^{-1} \otimes \1\right) \\
     &= \diag\left(\Diag\pi \otimes \1\right) \\
     &= (\pi(1)e,...,\pi(k)e)
@@ -128,59 +178,53 @@ $$
 $$
 This completes the construction of our pseudoexpectation.
 
+\begin{remark}
+    By correctly setting the $\epsilon$ from Proposition [ref] and the global error tolerance $\delta$, we can once again choose $(\epsilon,\delta) = (a,b)$ with the property that whenever the $\LS(2,m)$ SDP is feasible $\delta = b$, it is feasible as well with $\delta = 2b$. Thus every one of the $\simeq$ constraints---i.e. those that depend on the observed graph $\bG$---are satisfied with slack $\Omega(n)$.
+\end{remark}
+
 \begin{proof}[Proof of Proposition 6.1]
-    Recall the function
+    Such a polynomial $y$ is exactly of the form
     $$
-        \Phi_{m,\lambda} = \sum_{s = 0}^m q_s\lambda^s
+        y = \sum_{s = 0}^m \lambda^s q_s + \text{terms with larger $q_s$'s}.
     $$
-    that we defined in Section [ref]. From the quadrature rule of Lemma [ref], if we call $r_1,...,r_{m+1}$ the roots of $q_{m+1}$, there exist weights $w_1,...,w_{m+1} > 0$ with the property that
+    We will use the extremely simple construction of letting the coefficients on the terms $q_{m+1},q_{m+1}, \cdots$ \emph{also} be powers of $\lambda$. The idea here is that, whenever $|\lambda|^2(d-1) < 1$, this series converges to a positive function on $(-2\sqrt{d-1},2\sqrt{d-1})$, so by taking a long enough initial segment, we can get a positive approximant. 
+
+    In particular, let $p \gg m$ be even, and set
     $$
-        \int f(x) \dee \mu_{\km} = \sum_{\ell \in [m+1]} f(r_\ell)w_\ell
+        y = \sum_{s = 0}^p \lambda^s q_s.
     $$
-    whenever $\deg f \le 2m - 1$. Whenever $\Phi_{m,\lambda}(r_\ell) > 0$ for every $\ell \in [m]$, we can take a nonnegative linear combination of the polynomials guaranteed to use in lemma [ref] to produce a sequence of nonnegative polynomials $f_p$ for which
+    It is a standard calculation, employing the recurrence relation on the polynomials $q_s$, that
     $$
-        \langle q_s, f_p \rangle = \sum_{\ell \in [m+1]} w_\ell \Phi_{m,\lambda}(r_\ell) q_s(r_\ell) = \langle q_s,\Phi_{m,\lambda} \rangle \to \lambda^s \|q_s\|^2_{\km} \qquad \forall s =0,1,...,m.
+        y(x) = \frac{1 - \lambda^2 + \lambda^{p+2}(d-1)q_p(x) - \lambda^{p+1}q_{p+1}(x)}{(d-1)\lambda^2 - \lambda x + 1}.
     $$
-    Since $m$ is fixed, this convergence is uniform and we can approximate every such inner product to within any additive precision we desire by choosing $p$ sufficiently large.
-    
-    It remains, then, to discern when $\Phi_{m,\lambda}(r_\ell) > 0$ for every root $r_\ell$. It is a standard calculation, employing the recurrence relation on the polynomials $q_s$, that
-    \begin{align*}
-        \Phi_{m,\lambda}(r_\ell) 
-        &= \frac{1 - \lambda^2 + \lambda^{m+2}(d-1)q_m(r_\ell) - \lambda^{m+1}q_{m+1}(r_\ell)}{(d-1)\lambda^2 - \lambda r_\ell + 1} \\
-        &= \frac{1 - \lambda^2 + \lambda^{m+2}(d-1)q_m(r_\ell)}{(d-1)\lambda^2 - \lambda r_\ell + 1} & & r_\ell \text{ is a root of } q_{m+1}
-    \end{align*}
-    The denominator is always positive, and from Lemma [ref] we have the uniform bound
+    One an quickly verify that
     $$
-        |q_m(r_\ell)| \le 2(m + 2)\|q_m\|_{\km}.
+        \frac{1 - \lambda^2}{(d-1)\lambda^2 - \lambda x + 1} > 0 \qquad \forall |x| \le 2\sqrt{d-1},
     $$
-    Thus if $\lambda^2(d-1) < 1$, we have
-    $$
-        \lambda^{m+2}(d-1)q_m(r_\ell) \le \lambda^m \cdot 2(m + 2) \sqrt{d(d-1)^{m-1}} \to_m 0;
-    $$
-    this settles the first assertion of Proposition [ref].
+    so all we need to verify is that $\lambda^2(d-1) < 1$ ensures $\lambda^{p+2}(d-1)q_p - \lambda^{p+1}q_{p+1} \to_p 0$. This follows immediately from Lemma [ref], as $|q_p| \le 2p\sqrt{d(d-1)^p}$.
 \end{proof}
 
 \begin{proof}[Proof of Proposition 6.***]
-    Let $p$ be the polynomial guaranteed in the theorem statement; our strategy will be to modify the matrix $p(A_{\bG})$. First note that by expanding $p$ in the $q_s$ basis, we have
+    Let $y$ be the polynomial guaranteed in the theorem statement; our strategy will be to modify the matrix $y(A_{\bG})$. First note that by expanding $y$ in the $q_s$ basis, we have
     $$
-        p(A_{\bG}) = \sum_{s = 0}^m q_s(A_{\bG})\lambda^s + \cdots = \sum_{s=0}^m \nb{s}{\bG}\lambda^s + \cdots,
+        y(A_{\bG}) = \sum_{s = 0}^m q_s(A_{\bG})\lambda^s + \cdots = \sum_{s=0}^m \nb{s}{\bG}\lambda^s + \cdots,
     $$
-    so it is clear that $p(A_{\bG})$ satisfies the affine constraints against the $\nb{s}{\bG}$ matrices. Moreover, as $p$ is strictly positive on $(-2\sqrt{d-1},2\sqrt{d-1})$, it is nonnegative on a constant size fattening of this interval, and by Friedman's theorem the spectrum of $A_{\bG}$ other than the eignevalue at $d$ is contained w.h.p. in such a set. Thus $p(A_{\bG})$ is positive, except perhaps the eigenvalue $p(d)$, which we will fix in a moment.
+    so it is clear that $y(A_{\bG})$ satisfies the affine constraints against the $\nb{s}{\bG}$ matrices. Moreover, as $y$ is strictly positive on $[-2\sqrt{d-1},2\sqrt{d-1}]$, it is (by continuity) nonnegative on a constant size fattening of this interval, and by Friedman's theorem the spectrum of $A_{\bG}$ other than the eignevalue at $d$ is contained w.h.p. in such a set. Thus $y(A_{\bG})$ is positive, except perhaps the eigenvalue $y(d)$, which we will fix in a moment.
     
-    However, $p(A_{\bG})$ does not have the right inner product with the all ones matrix, and---unless $2\deg p + 1 < \girth(G)$---its diagonal entries need not be ones. Our corrective to these issues will exploit two fortunate facts. First, those diagonal entries different from one exactly correspond to the $(2\deg p + 1$)-bad vertices in $G$; from Lemma [ref] we know that there are at most $O(\log n)$ of these. Second, as $p$ is a scalar polynomial and $\bbJ$ commutes with $A_{\bG}$,
+    However, $y(A_{\bG})$ does not have the right inner product with the all ones matrix, and---unless $2\deg y + 1 < \girth(G)$---its diagonal entries need not be ones. Our corrective to these issues will exploit two fortunate facts. First, those diagonal entries different from one exactly correspond to the $(2\deg y + 1$)-bad vertices in $G$; from Lemma [ref] we know that there are at most $O(\log n)$ of these. Second, as $y$ is a scalar polynomial and $\bbJ$ commutes with $A_{\bG}$,
     $$
-        \langle p(A_{\bG}),\bbJ/n \rangle = p(d) = O_n(1).
+        \langle y (A_{\bG}),\bbJ/n \rangle = y(d) = O_n(1).
     $$
     
-    Thus we can correct the inner product with $\bbJ$, and at the same time resolve the possible negativity of the eigenvalue $p(d)$, by passing to
+    Thus we can correct the inner product with $\bbJ$, and at the same time resolve the possible negativity of the eigenvalue $y(d)$, by passing to
     \begin{align*}
          \tilde Y(\lambda) 
-         &= \frac{1}{1 - \p(d)/n}\left(\1 - \bbJ/n\right)p(A_{\bG})\left(\1 - \bbJ/n\right) \\
-         &= \frac{1}{1 - p(d)/n}\big\left(p(A_{\bG}) - p(d)\bbJ/n\big\right);
+         &= \frac{1}{1 - y(d)/n} \left(\1 - \bbJ/n\right) y(A_{\bG})\left(\1 - \bbJ/n\right) \\
+         &= \frac{1}{1 - y(d)/n} \big(y(A_{\bG}) - y(d)\bbJ/n\big);
     \end{align*}
-    since $\langle \nb{\bG}{s},\bbJ/n\rangle = q_s(d) = O(1)$ the result will still satisfy the inner product constraints with the matrices $\nb{\bG}{s}$ up to an additive $\pm \delta n$. This new matrix is certainly PSD, for instance by writing out $p(A_{\bG})$ in its eigenvalue basis, and observing that left and right multiplication by $(\1 - \bbJ/n)$ simply projects away the eigenspace of the $p(d)$ eigenvalue. Thus we can write the $\tilde Y(\lambda)_{u,v} = \alpha_u^T\alpha_v$ for some vectors $\alpha_1,...,\alpha_n \in \bbR^n$. The scale factor we applied above makes sure that for every $u$ that is not $(2\deg p + 1)$-bad, $\|\alpha_u\| = 1$, and being orthogonal to the all-ones matrix is equivalent to $\sum_u \alpha_u = 0$.
+    since $\langle \nb{\bG}{s},\bbJ/n\rangle = q_s(d) = O(1)$ the result will still satisfy the inner product constraints with the matrices $\nb{\bG}{s}$ up to an additive $\pm \delta n$. This new matrix is certainly PSD, for instance by writing out $y(A_{\bG})$ in its eigenvalue basis, and observing that left and right multiplication by $(\1 - \bbJ/n)$ simply projects away the eigenspace of the $y(d)$ eigenvalue. Thus we can write the $\tilde Y(\lambda)_{u,v} = \alpha_u^T\alpha_v$ for some vectors $\alpha_1,...,\alpha_n \in \bbR^n$. The scale factor we applied above makes sure that for every $u$ that is not $(2\deg y + 1)$-bad, $\|\alpha_u\| = 1$, and being orthogonal to the all-ones matrix is equivalent to $\sum_u \alpha_u = 0$.
     
-    The remaining diagonal elements are at worst some constant $C$ dependent on $d$ and $p$, since the diagonal entries of each $\nb{s}{\bG}$ are all $O(1)$. Thus, writing $U$ for the set of $(2\deg p + 1)$-bad vertices, we know
+    The remaining diagonal elements are at worst some constant $C$ dependent on $d$ and $y$, since the diagonal entries of each $\nb{s}{\bG}$ are all $O(1)$. Thus, writing $U$ for the set of $(2\deg y + 1)$-bad vertices, we know
     $$
         \left\|\sum_{u \notin U} \alpha_u \right\| = \left\|\sum_{u\in U} \alpha_u \right\| \le C\log n
     $$

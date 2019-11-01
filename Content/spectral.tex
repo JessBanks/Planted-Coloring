@@ -1,4 +1,5 @@
-\section{Interlude: Spectral Distinguishing}
+\section{Interlude: Spectral Distinguishing} % (fold)
+\label{sec:interlude_spectral_distinguishing}
 
 Our argument in the previous section can be recast to prove Corollary [ref], namely that above the Kesten-Stigum threshold the spectrum of the adjacency matrix can also be used to distinguish the null and planted distributions. 
 
@@ -29,3 +30,5 @@ for some polynomial $f(x)$ positive within $\pm o_n(1)$ of $(-2\sqrt{d-1},2\sqrt
 \begin{remark}
     To distinguish the null model from the planted one using the spectrum of $A_{\bG}$, simply return \textsc{planted} if $A_{\bG}$ has a single eigenvalue other than $d$ whose magnitude is bigger than $2\sqrt{d-1} + \delta$ for any error tolerance $\delta$ you choose, and \textsc{null} otherwise. Unfortunately, this distinguishing algorithm is not robust to adversarial edge insertions and deletions. For instance, given a graph $\bG \sim \Null$, the adversary can create a disjoint copy of $K_{d+1}$, the complete graph on $d+1$ vertices, whose eigenvalues are all $\pm d$. The spectrum of the perturbed graph is the disjoint union of $\pm d$ and the eigenvalues of the other component(s), so the algorithm will be fooled. \todo{Can you do this without disconnecting the graph? Can you move eigenvalues \textit{inside} the bulk?} We will show in Section [ref] that the Local Statistics SDP is robust to this kind of perturbation.
 \end{remark}
+
+% section interlude_spectral_distinguishing (end)

@@ -1,0 +1,27 @@
+\section{Recovery} % (fold)
+\label{sec:recovery}
+
+As discussed in the introduction, this paper will not settle fully the question of recovering the planted communities. However, we can at least reduce some key aspects of this problem to Conjecture [ref] regarding the spectrum of $A_{\bG}$ when $\bG \sim \Planted_{(d,k,M,\pi)}$.
+
+There are numerous ways to pose the recovery task, and as many metrics of success, but let us set ourselves the modest goal of, given $\bG$ drawn from a planted model with $\lambda_1^2,...,\lambda_\ell^2 > (d-1)^{-1}$ and knowledge of the paramters $(d,k,M,\pi)$, recovering a vector in $\bbR^n$ with constant correlation to each of the vectors $\check \bx_1,...,\check \bx_\ell$ from the prior section. If $\ell = k$, we can use this and our knowledge of $M$ to apply the change-of-basis $F^{-1}$ and recover vectors correlated to the indicators $\bx_1,...,\bx_k$ for each of the $k$ communities. 
+
+Our first claim is that, assuming Conjecture [ref], the eigenvectors of $A_{\bG}$ can be used to approximate the $\check \bx_i$'s. In the prior section we showed that there exists a polynomial $f$ strictly positive on $(-2\sqrt{d-1},2\sqrt{d-1}) \cup \{d\}$ with the property that
+$$
+	\check x_i^T f(A) \check x_i < -\delta n
+$$
+for some constant $\delta$. Writing $\mu_1,...,\mu_n$ for the eigenvalues of $A_{\bG}$ and $\Pi_1, \cdots \Pi_n$ for the orthogonal projectors onto their associated eigenspaces, we can expand this as
+\begin{align*}
+	-\delta n &> \sum_{u \in [n]} f(\mu_u) \check \bx_i^T \Pi_u \check \bx_i \\
+	&= \sum_{|\mu_u| < 2\sqrt{d-1}}f(\mu_u) \check \bx_i^T \Pi_u \check \bx_i + \sum_{|\mu_u| \ge 2\sqrt{d-1}}f(\mu_u) \check \bx_i^T \Pi_u \check x_i \\
+	&\ge \sum_{|\mu_u| \ge 2\sqrt{d-1}}f(\mu_u) \check \bx_i^T \Pi_u \check \bx_i & & f(x) \text{ positive on $(-2\sqrt{d-1},2\sqrt{d-1})$} \\
+	&\ge \inf_{|x| \le d}f(x) \cdot \check \bx_i^T \left(\sum_{|\mu_u| \ge 2\sqrt{d-1}} \Pi_u \right) \check \bx_i.
+\end{align*}
+Thus, even if there are only constantly many eigenvectors outside the bulk, a (for instance) random vector in their span will have $O(n)$ correlation with each of the $\check \bx_i$'s.
+
+In order to recover \emph{robustly} we will lean on the results of Section [ref]. If we begin with $\bG$ from the planted model, perform $\epsilon n$ adversarial edge insertion or deletions, and then run the SDP again, Theorem [ref] tells us that the old SDP solution will \emph{still} be feasible. Thus, if we take $\check X$ from the SDP run on the corrupted graph, we will still have
+\begin{align*}
+	-\delta n > \langle f(A_{\bG}), \check X_{i,i} \rangle \ge \inf_{|x| \le d} f(x) \cdot \langle \sum_{|\mu_u| \ge 2\sqrt{d-1}} \Pi_u, \check X_{i,i} \rangle,
+\end{align*}
+so a, say, Gaussian vector with covariance $\check X_{i,i}$ will have constant correlation with the subspace spanned by the outside-the-bulk eigenvectors of $A_{\bG}$, the adjacency matrix of the \emph{unperturbed} graph, which we showed above have the same correlation guarantee with the $\check \bx_{i}$'s.
+
+% section recovery (end)

@@ -427,7 +427,7 @@
 %
 %
 \newcommand{\Sref}[1]{\hyperref[#1]{\S\ref*{#1}}}
-
+\newcommand{\etal}{\text{et al.}}
 
 
 
@@ -441,7 +441,7 @@
 
 %\usepackage[options ]{algorithm2e}
 
-%\usepackage{content/planted}
+% \usepackage{content/planted}
 
 \newcommand{\fullmodel}{Degree Regular Block Model}
 \newcommand{\model}{DRBM}
@@ -489,6 +489,7 @@
 \bibliography{bib/mr,bib/dblp,bib/bibliography,bib/plantedcoloring,bib/listDecoding}
 
 \appendix
+\input{Content/recovery.tex}
 \input{Content/planted.tex}
 \input{Depreciated/prob-exp-calculation.tex}
 

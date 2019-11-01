@@ -51,11 +51,11 @@ Our main theorem is that the the Local Statistics hierarchy can robustly solve t
 	and is robust to adversarial addition or deletion of $o(n)$ edges. On the other hand, for any constant $m$ and $d< d_{KS}$, the $\LS(2,m)$ SDP fails with probability $1 - o(1)$ to distinguish.
 \end{theorem}
 
-\noindent It is a priori possible that one could achieve the KS threshold without taking $m\to \infty$. However, we show that this cannot be true in general.
+% \noindent It is a priori possible that one could achieve the KS threshold without taking $m\to \infty$. However, we show that this cannot be true in general.
 
-\begin{theorem}
-    For every $m\in\bbN$ and $C\ge 1$, there exists a parameter set $(d,k,M,\pi)$ for which $d > d_{KS} + C$ but $\LS(2,m)$ cannot solve the detection problem.
-\end{theorem}
+% \begin{theorem}
+%     For every $m\in\bbN$ and $C\ge 1$, there exists a parameter set $(d,k,M,\pi)$ for which $d > d_{KS} + C$ but $\LS(2,m)$ cannot solve the detection problem.
+% \end{theorem}
 
 We also prove a stronger robustness guarantee, in particular that that $\LS(2,m)$ can tolerate $\epsilon_m n$ adversarial edge perturbations, although $\epsilon_m \to 0$ as we move up the hierarchy. This creates a trade-off between robustness, which we lose as added information is incorporated to the SDP at each successive level, and fidelity to the threshold, which we approach as $m\to\infty$.
 
@@ -69,7 +69,17 @@ Along the way we will inadvertently prove that standard spectral detection using
 	Let $\bG$ be drawn from the RSBM with parameters $(d,k,M,\pi)$, and set $\epsilon > 0$. There exists some $\delta = \delta(\epsilon)$ such that, for each eigenvalue $\lambda$ of $M$ satisfying $|\lambda| > 1/\sqrt{d-1} + \epsilon$, the adjacency matrix $A_{\bG}$  is guaranteed one eigenvalue $\mu$ satisfying $|\mu| > 2\sqrt{d-1} + \delta$.
 \end{corollary}
 
-Regrettably, we do not resolve to similar satisfaction the issue of efficient or robust recovery above Kesten-Stigum. The eigenvectors guaranteed to us by Theorem [ref] are certainly correlated to the community structure, and we can prove that the Local Statistics hierarchy can robustly approximate them. However, the remaining and technically challenging ingredient is a proof that graphs drawn from the planted model do not accumulate \emph{additional}, spurious eigenvalues outside the bulk.
+Regrettably, we do not resolve to similar satisfaction the issue of efficient or robust recovery above Kesten-Stigum. The eigenvectors guaranteed to us by Theorem [ref] are certainly correlated to the community structure, and we can prove that the Local Statistics hierarchy can robustly approximate them: 
+
+\begin{theorem}
+	In any planted model $\Planted$ for which the $\LS(2,m)$ hierarchy can solve the distinguishing problem, it can robustly approximate the eigenvectors outside the bulk of $A_{\bG}$, for $\bG \sim \Planted$, in the sense that [finish].
+\end{theorem}
+
+However, the remaining and technically challenging ingredient is a proof that graphs drawn from the planted model do not accumulate \emph{additional}, spurious eigenvalues outside the bulk. From weak convergence of the empirical spectral distribution of $A_{\bG}$ to the Kesten-McKay law, we know that there must be $o(n)$ eigenvalues with modulus larger than $2\sqrt{d-1}$, but the guarantee of Theorem [ref] only kicks in once there are, i.e. $O(1)$ of them. We believe the following conjecture feasible to prove with a careful mirroring of the techniques in [ref Bordenave], but the execution of this is beyond the scope of the current work.
+
+\begin{conjecture}
+	Let $\Planted_{(d,k,M,\pi)}$ be any \model with $|\lambda_1|,...,|\lambda_\ell| > (d-1)^{-1/2}$. Then, for any $\epsilon$, with high probability, $A_{\bG}$ has only $\ell$ eigenvalues with modulus larger than $2\sqrt{d-1} + \epsilon$.
+\end{conjecture}
 
 \paragraph{Related Work.}
 

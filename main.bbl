@@ -1,0 +1,174 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\def\cprime{$'$} \def\cprime{$'$} \def\cprime{$'$} \def\cprime{$'$}
+  \def\cprime{$'$} \def\cprime{$'$} \def\cprime{$'$} \def\cprime{$'$}
+  \def\cprime{$'$} \def\cprime{$'$} \def\cprime{$'$}
+  \def\polhk#1{\setbox0=\hbox{#1}{\ooalign{\hidewidth
+  \lower1.5ex\hbox{`}\hidewidth\crcr\unhbox0}}} \def\cprime{$'$}
+  \def\cprime{$'$} \def\cprime{$'$} \def\cprime{$'$} \def\cprime{$'$}
+  \def\cprime{$'$} \def\cprime{$'$} \def\cprime{$'$} \def\cprime{$'$}
+  \def\cprime{$'$} \def\cprime{$'$}
+  \def\cfac#1{\ifmmode\setbox7\hbox{$\accent"5E#1$}\else
+  \setbox7\hbox{\accent"5E#1}\penalty 10000\relax\fi\raise 1\ht7
+  \hbox{\lower1.15ex\hbox to 1\wd7{\hss\accent"13\hss}}\penalty 10000
+  \hskip-1\wd7\penalty 10000\box7} \def\cprime{$'$} \def\cprime{$'$}
+  \def\cprime{$'$} \def\cprime{$'$} \def\cprime{$'$} \def\cprime{$'$}
+  \def\ocirc#1{\ifmmode\setbox0=\hbox{$#1$}\dimen0=\ht0 \advance\dimen0
+  by1pt\rlap{\hbox to\wd0{\hss\raise\dimen0
+  \hbox{\hskip.2em$\scriptscriptstyle\circ$}\hss}}#1\else {\accent"17 #1}\fi}
+\providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+\providecommand{\MR}{\relax\ifhmode\unskip\space\fi MR }
+% \MRhref is called by the amsart/book/proc definition of \MR.
+\providecommand{\MRhref}[2]{%
+  \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
+}
+\providecommand{\href}[2]{#2}
+\begin{thebibliography}{DKMZ11}
+
+\bibitem[ABH16]{abbe2016exact}
+Emmanuel Abbe, Afonso~S Bandeira, and Georgina Hall, \emph{Exact recovery in
+  the stochastic block model}, IEEE Transactions on Information Theory
+  \textbf{62} (2016), no.~1, 471--487.
+
+\bibitem[ABLS07]{alon2007non}
+Noga Alon, Itai Benjamini, Eyal Lubetzky, and Sasha Sodin,
+  \emph{Non-backtracking random walks mix faster}, Communications in
+  Contemporary Mathematics \textbf{9} (2007), no.~04, 585--603.
+
+\bibitem[AS12]{awasthi2012improved}
+Pranjal Awasthi and Or~Sheffet, \emph{Improved spectral-norm bounds for
+  clustering}, Approximation, Randomization, and Combinatorial Optimization.
+  Algorithms and Techniques, Springer, 2012, pp.~37--49.
+
+\bibitem[AS15]{abbe2015community}
+Emmanuel Abbe and Colin Sandon, \emph{Community detection in general stochastic
+  block models: Fundamental limits and efficient algorithms for recovery}, 2015
+  IEEE 56th Annual Symposium on Foundations of Computer Science, IEEE, 2015,
+  pp.~670--688.
+
+\bibitem[BKM17]{banks2017lov}
+Jess Banks, Robert Kleinberg, and Cristopher Moore, \emph{The
+  lov$\backslash$'asz theta function for random regular graphs and community
+  detection in the hard regime}, arXiv preprint arXiv:1705.01194 (2017).
+
+\bibitem[BLM15]{bordenave2015non}
+Charles Bordenave, Marc Lelarge, and Laurent Massouli{\'e},
+  \emph{Non-backtracking spectrum of random graphs: community detection and
+  non-regular ramanujan graphs}, 2015 IEEE 56th Annual Symposium on Foundations
+  of Computer Science, IEEE, 2015, pp.~1347--1357.
+
+\bibitem[BS95]{blum1995coloring}
+Avrim Blum and Joel Spencer, \emph{Coloring random and semi-random k-colorable
+  graphs}, Journal of Algorithms \textbf{19} (1995), no.~2, 204--234.
+
+\bibitem[BSW01]{ben2001short}
+Eli Ben-Sasson and Avi Wigderson, \emph{Short proofs are narrow—resolution
+  made simple}, Journal of the ACM (JACM) \textbf{48} (2001), no.~2, 149--169.
+
+\bibitem[CJSX14]{chen2014clustering}
+Yudong Chen, Ali Jalali, Sujay Sanghavi, and Huan Xu, \emph{Clustering
+  partially observed graphs via convex optimization}, The Journal of Machine
+  Learning Research \textbf{15} (2014), no.~1, 2213--2238.
+
+\bibitem[CL{\etalchar{+}}15]{cai2015robust}
+T~Tony Cai, Xiaodong Li, et~al., \emph{Robust and computationally feasible
+  community detection in the presence of arbitrary outlier nodes}, The Annals
+  of Statistics \textbf{43} (2015), no.~3, 1027--1059.
+
+\bibitem[CO04]{coja2004coloring}
+Amin Coja-Oghlan, \emph{Coloring semirandom graphs optimally}, International
+  Colloquium on Automata, Languages, and Programming, Springer, 2004,
+  pp.~383--395.
+
+\bibitem[CO07]{coja2007solving}
+\bysame, \emph{Solving np-hard semirandom graph problems in polynomial expected
+  time}, Journal of Algorithms \textbf{62} (2007), no.~1, 19--46.
+
+\bibitem[CSV17]{CharikarSV17}
+Moses Charikar, Jacob Steinhardt, and Gregory Valiant, \emph{Learning from
+  untrusted data}, Proceedings of the 49th Annual ACM SIGACT Symposium on
+  Theory of Computing, ACM, 2017, pp.~47--60.
+
+\bibitem[DKMZ11]{decelle2011inference}
+Aurelien Decelle, Florent Krzakala, Cristopher Moore, and Lenka Zdeborov{\'a},
+  \emph{Inference and phase transitions in the detection of modules in sparse
+  networks}, Physical Review Letters \textbf{107} (2011), no.~6, 065701.
+
+\bibitem[Fei02]{feigerandom3sat}
+Uriel Feige, \emph{Relations between average case complexity and approximation
+  complexity}, Proceedings of the thiry-fourth annual ACM symposium on Theory
+  of computing, ACM, 2002, pp.~534--543.
+
+\bibitem[FK00]{feige2000finding}
+Uriel Feige and Robert Krauthgamer, \emph{Finding and certifying a large hidden
+  clique in a semirandom graph}, Random Structures \& Algorithms \textbf{16}
+  (2000), no.~2, 195--208.
+
+\bibitem[FK01]{feige2001heuristics}
+Uriel Feige and Joe Kilian, \emph{Heuristics for semirandom graph problems},
+  Journal of Computer and System Sciences \textbf{63} (2001), no.~4, 639--671.
+
+\bibitem[Gri01]{grigoriev2001linear}
+Dima Grigoriev, \emph{Linear lower bound on degrees of positivstellensatz
+  calculus proofs for the parity}, Theoretical Computer Science \textbf{259}
+  (2001), no.~1, 613--622.
+
+\bibitem[GV16]{guedon2016community}
+Olivier Gu{\'e}don and Roman Vershynin, \emph{Community detection in sparse
+  networks via grothendieck’s inequality}, Probability Theory and Related
+  Fields \textbf{165} (2016), no.~3-4, 1025--1049.
+
+\bibitem[HS17]{hopkins2017efficient}
+Samuel~B Hopkins and David Steurer, \emph{Efficient bayesian estimation from
+  few samples: community detection and related problems}, Foundations of
+  Computer Science (FOCS), 2017 IEEE 58th Annual Symposium on, IEEE, 2017,
+  pp.~379--390.
+
+\bibitem[HWX16]{hajek2016achieving}
+Bruce Hajek, Yihong Wu, and Jiaming Xu, \emph{Achieving exact cluster recovery
+  threshold via semidefinite programming}, IEEE Transactions on Information
+  Theory \textbf{62} (2016), no.~5, 2788--2797.
+
+\bibitem[KK10]{kumar2010clustering}
+Amit Kumar and Ravindran Kannan, \emph{Clustering with spectral norm and the
+  k-means algorithm}, 2010 IEEE 51st Annual Symposium on Foundations of
+  Computer Science, IEEE, 2010, pp.~299--308.
+
+\bibitem[KV06]{krivelevich2006semirandom}
+Michael Krivelevich and Dan Vilenchik, \emph{Semirandom models as benchmarks
+  for coloring algorithms}, 2006 Proceedings of the Third Workshop on Analytic
+  Algorithmics and Combinatorics (ANALCO), SIAM, 2006, pp.~211--221.
+
+\bibitem[Mas14]{massoulie2014community}
+Laurent Massouli{\'e}, \emph{Community detection thresholds and the weak
+  ramanujan property}, Proceedings of the forty-sixth annual ACM symposium on
+  Theory of computing, ACM, 2014, pp.~694--703.
+
+\bibitem[MMV12]{makarychev2012approximation}
+Konstantin Makarychev, Yury Makarychev, and Aravindan Vijayaraghavan,
+  \emph{Approximation algorithms for semi-random partitioning problems},
+  Proceedings of the forty-fourth annual ACM symposium on Theory of computing,
+  ACM, 2012, pp.~367--384.
+
+\bibitem[MMV16]{makarychev2016learning}
+\bysame, \emph{Learning communities in the presence of errors}, Conference on
+  Learning Theory, 2016, pp.~1258--1291.
+
+\bibitem[MNS18]{mossel2018proof}
+Elchanan Mossel, Joe Neeman, and Allan Sly, \emph{A proof of the block model
+  threshold conjecture}, Combinatorica \textbf{38} (2018), no.~3, 665--708.
+
+\bibitem[Moi12]{moitra2012singly}
+Ankur Moitra, \emph{A singly-exponential time algorithm for computing
+  nonnegative rank}, arXiv preprint arXiv:1205.0044 (2012).
+
+\bibitem[MS15]{montanari2015semidefinite}
+Andrea Montanari and Subhabrata Sen, \emph{Semidefinite programs on sparse
+  random graphs and their application to community detection}, arXiv preprint
+  arXiv:1504.05910 (2015).
+
+\bibitem[SVC16]{SteinhardtVC16}
+Jacob Steinhardt, Gregory Valiant, and Moses Charikar, \emph{Avoiding imposters
+  and delinquents: Adversarial crowdsourcing and peer prediction}, Advances in
+  Neural Information Processing Systems, 2016, pp.~4439--4447.
+
+\end{thebibliography}
