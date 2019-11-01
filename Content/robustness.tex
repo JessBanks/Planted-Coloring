@@ -1,4 +1,5 @@
-\section{Robustness Guarantees} \label{sec:robust}
+\section{Robustness Guarantees} 
+\label{sec:robust}
 
 In this section, again fix a planted model $\Planted$ with parameters $(d,k,M,\pi)$, and let $\kappa(n)$ be some slowly growing function of $n$. Assume that we observe a graph $\widetilde\bH$ on $n$ vertices, which we are promised was drawn from one of $\Null$ or $\Planted$ and then corrupted by $\kappa(n)$ adversarial edge insertions or deletions. Our goal is to decide, upon seeing $\widetilde\bH$, from which model the unperturbed graph $\bG$ was was sampled. We present an algorithm below that works for an appropriate regime of $\kappa$. 
 
@@ -19,14 +20,15 @@ In this section, again fix a planted model $\Planted$ with parameters $(d,k,M,\p
 	\end{align*}
 	In particular, this means the entrywise 1-norm of $\nb{\bG}{s}-\nb{\bH}{s}$, is bounded by $2\beta\epsilon n\cdot 2d(d-1)^{\ell-1}$ since there are at most $2\beta\eps n$ corrupted vertices (i.e. if all corrupted edges had disjoint endpoints).
 	
-	From Remark [ref], if $\bG$ is drawn from the planted distribution, the matrices $Y(\lambda_i)$ are PSD and satisfy the affine constraints regarding inner products with the $\nb{s}{\bG}$ matrices with slack $\Omega(n)$. Every diagonal entry of $Y(\lambda_i)$ is one, so by PSDness their off-diagonal entries have modulus at most one. Thus
+	From Remark \ref{rem:dual-slack}, if $\bG$ is drawn from the planted distribution, the matrices $Y(\lambda_i)$ are PSD and satisfy the affine constraints regarding inner products with the $\nb{s}{\bG}$ matrices with slack $\Omega(n)$. Every diagonal entry of $Y(\lambda_i)$ is one, so by PSDness their off-diagonal entries have modulus at most one. Thus
 	$$
         \left|\langle \nb{\bG}{s} Y(\lambda_i) \rangle - \langle \nb{\bH}{s}\rangle \right| = \left|	\langle \nb{\bG}{s} - \nb{\bH}{s}\rangle\right| \le \left\|\nb{\bG}{s} - \nb{\bH}{s}\right\|_1 \le 2\beta\epsilon d(d-1)^{s-1}.
 	$$
     Because of the $\Omega(n)$ slack, if we construct $Y(\lambda_i)$ from $\bH$ instead of $\bG$, the constraints will \emph{still} be satisfied for small enough $\epsilon$. We can then use these $Y(\lambda_i)$ to build the full feasible solution as before.
     
-    On the other hand, when $\bG$ is drawn from the null model, any pseudoexpectation satisfying the Boolean and Single Color constraints violates some linear combination of the above affine constraints by a margin of $\Omega(n)$, and this constraint will still be violated for $\epsilon$ sufficiently small.
-    \end{proof}
+    On the other hand, when $\bG$ is drawn from the null model, we noted in Remark \ref{rem:primal-slack} that any pseudoexpectation satisfying the Boolean and Single Color constraints violates some linear combination of the above affine constraints by a margin of $\Omega(n)$, and this constraint will still be violated for $\epsilon$ sufficiently small.
+\end{proof}
+
 \begin{remark}
     The parameter $\eps$ controlling the number of adversarial edge insertions and deletions made to random input $\bG$ that the level-$m$ $LocalStatistic$ SDP can tolerate can be seen to decrease with $m$, which is indicative of a tradeoff between how close to the threshold an algorithm in this hierarchy works and how robust it is to perturbations.
 \end{remark}

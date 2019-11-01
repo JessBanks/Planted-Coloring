@@ -3,14 +3,15 @@
 \BOOKMARK [1][-]{section.3}{Technical Overview}{}% 3
 \BOOKMARK [2][-]{subsection.3.1}{Detection, Refutation, and Sum-of-Squares}{section.3}% 4
 \BOOKMARK [2][-]{subsection.3.2}{The Local Statistics Hierarchy}{section.3}% 5
-\BOOKMARK [1][-]{section.4}{Preliminaries}{}% 6
-\BOOKMARK [2][-]{subsection.4.1}{Nonbacktracking Walks and Orthogonal Polynomials}{section.4}% 7
-\BOOKMARK [2][-]{subsection.4.2}{Reversible Markov Chains}{section.4}% 8
-\BOOKMARK [2][-]{subsection.4.3}{Local Statistics in the Planted Model}{section.4}% 9
-\BOOKMARK [1][-]{section.5}{Distinguishing with Local Statistics}{}% 10
-\BOOKMARK [1][-]{section.6}{Interlude: Spectral Distinguishing}{}% 11
-\BOOKMARK [1][-]{section.7}{Lower Bounds Against Local Statistics SDPs}{}% 12
-\BOOKMARK [1][-]{section.8}{Robustness Guarantees}{}% 13
-\BOOKMARK [1][-]{appendix.A}{Recovery}{}% 14
-\BOOKMARK [1][-]{appendix.B}{The Regular Stochastic Block Model}{}% 15
-\BOOKMARK [1][-]{appendix.C}{Expectations in the Planted Model}{}% 16
+\BOOKMARK [2][-]{subsection.3.3}{Further Directions and Future Work}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Preliminaries}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{Nonbacktracking Walks and Orthogonal Polynomials}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.2}{Reversible Markov Chains}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.3}{Local Statistics in the Planted Model}{section.4}% 10
+\BOOKMARK [1][-]{section.5}{Distinguishing with Local Statistics}{}% 11
+\BOOKMARK [1][-]{section.6}{Interlude: Spectral Distinguishing}{}% 12
+\BOOKMARK [1][-]{section.7}{Lower Bounds Against Local Statistics SDPs}{}% 13
+\BOOKMARK [1][-]{section.8}{Robustness Guarantees}{}% 14
+\BOOKMARK [1][-]{appendix.A}{Recovery}{}% 15
+\BOOKMARK [1][-]{appendix.B}{The Degree Regular Block Model}{}% 16
+\BOOKMARK [1][-]{appendix.C}{Expectations in the Planted Model}{}% 17

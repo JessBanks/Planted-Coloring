@@ -1,4 +1,5 @@
-\section{Distinguishing with Local Statistics}    \label{sec:algo}
+\section{Distinguishing with Local Statistics}    
+\label{sec:algo}
 
 Throughout this section, fix the parameters $(d,k,M,\pi)$ of a planted model $\Planted$. We'll prove half of our main theorem, namely that for any $\epsilon > 0$, if
 $$
@@ -8,9 +9,9 @@ then there exists some $m$ so that the $\LS(2,m)$ SDP can distinguish the plante
 $$
     \pseudo p(x,G) = p(\bx,\bG)
 $$
-for any polynomial we choose. We will thus be done if we can show \textit{infeasibility} when $\Planted$ is above the KS threshold, $m$ is sufficiently large, and $\bG\sim \Null$. Our strategy will be to first reduce to the problem of designing a univariate polynomial with particular properties, and then to solve this design problem using some elementary results from Section [ref].
+for any polynomial we choose. We will thus be done if we can show \textit{infeasibility} when $\Planted$ is above the KS threshold, $m$ is sufficiently large, and $\bG\sim \Null$. Our strategy will be to first reduce to the problem of designing a univariate polynomial with particular properties, and then to solve this design problem using some elementary results from Section \ref{sec:prelims}.
 
-Let $\bG \sim \Planted$, and assume we had a viable pseudoexptation $\pseudo$ for the $\LS(2,m)$ SDP. Write $X \succeq 0$ for the $nk\times nk$ matrix whose $(u,i),(v,j)$ entry is $\pseudo x_{u,i}x_{v,j}$ (it is routine that $\pseudo \succeq 0$ implies positive semidefiniteness of $X$; we refer the reader to [ref]). It will at times be useful to think of $X$ as a $k\times k$ matrix of $n\times n$ blocks $X_{i,j}$, and at others as an $n\times n$ matrix of $k\times k$ blocks $X_{u,v}$. Recall also the matrices $\sa{s}{\bG}$ from Section [] that count self-avoiding walks of length $s$. Our strategy will be to first write the moment-matching constraints on $\pseudo$ as affine constraints of the form $\langle X_{i,j}, Y \rangle \simeq C$, and then combine these affine constraints to contradict feasibility of $X$.
+Let $\bG \sim \Planted$, and assume we had a viable pseudoexptation $\pseudo$ for the $\LS(2,m)$ SDP. Write $X \succeq 0$ for the $nk\times nk$ matrix whose $(u,i),(v,j)$ entry is $\pseudo x_{u,i}x_{v,j}$ (it is routine that $\pseudo \succeq 0$ implies positive semidefiniteness of $X$). It will at times be useful to think of $X$ as a $k\times k$ matrix of $n\times n$ blocks $X_{i,j}$, and at others as an $n\times n$ matrix of $k\times k$ blocks $X_{u,v}$. Recall also the matrices $\sa{s}{\bG}$ from Section \ref{sec:prelims} that count self-avoiding walks of length $s$. Our strategy will be to first write the moment-matching constraints on $\pseudo$ as affine constraints of the form $\langle X_{i,j}, Y \rangle \simeq C$, and then combine these affine constraints to contradict feasibility of $X$.
 
 \begin{lemma}
     For any $i,j$, and any $s = 0,...,m$, recalling that $\nb{s}{G}$ is the matrix counting non-backtracking walks of length $s$, and $\bbJ$ is the all-ones matrix,
@@ -21,16 +22,15 @@ Let $\bG \sim \Planted$, and assume we had a viable pseudoexptation $\pseudo$ fo
 \end{lemma}
 
 \begin{proof}
-    For the first assertion, let $(H,S,\tau)$ be the path of length $s$ whose endpoints are labelled $i,j\in[k]$. Each \textit{self-avoiding} walk of length $s$ in $G$ is an occurrence of $H$, so from Lemma [ref]
+    For the first assertion, let $(H,S,\tau)$ be the path of length $s$ whose endpoints are labelled $i,j\in[k]$. Each \textit{self-avoiding} walk of length $s$ in $G$ is an occurrence of $H$, so from Theorem \ref{thm:local-stats}
     $$
         \langle X_{i,j},\sa{s}{\bG}\rangle = \pseudo p_{H,S,\tau}(x,\bG) \simeq \pi(i)M_{i,j}^s \|q_s\|^2_{\km}.
     $$
-    We can now use Lemma [ref] to replace the self-avoiding walk matrices $\sa{s}{\bG}$ with their non-backtracking counterparts. The matrix $X$ has diagonal elements $X_{(u,i),(u,i)} = \pseudo x_{u,i}^2 = \pseudo x_{i,u}$ by the Boolean constraint, and $\pseudo (x_{u,1} + \cdots + x_{u,k}) = 1$ by the Single Color constraint. By PSD-ness of $X$, every $\pseudo x_{u,i}^2 = \pseudo x_{u,i}$ is nonnegative, so each is between zero and one. It is a standard fact that the off-diagonal entries of such a PSD matrix have magnitude at most one, so from Lemma [ref]
+    We can now use Lemma \ref{lem:sa-nb} to replace the self-avoiding walk matrices $\sa{s}{\bG}$ with their non-backtracking counterparts. The matrix $X$ has diagonal elements $X_{(u,i),(u,i)} = \pseudo x_{u,i}^2 = \pseudo x_{i,u}$ by the Boolean constraint, and $\pseudo (x_{u,1} + \cdots + x_{u,k}) = 1$ by the Single Color constraint. By PSD-ness of $X$, every $\pseudo x_{u,i}^2 = \pseudo x_{u,i}$ is nonnegative, so each is between zero and one. It is a standard fact that the off-diagonal entries of such a PSD matrix have magnitude at most one, so from Lemma \ref{lem:NBW-poly-bound}
     $$
         \langle X_{i,j}, \nb{s}{\bG} \rangle = \langle X_{i,j}, \sa{s}{\bG} \rangle + \langle X_{i,j} \sa{s}{\bG} - \nb{s}{\bG}\rangle = \langle X_{i,j}, \sa{s}{\bG} \rangle \pm O(\log n) \simeq \pi(i)M^s_{i,j} \|q_s\|^2_{\km}
     $$
-    \todo{something off in the previous equation}
-    for $s = 0,...,m$. For the second assertion, when $i\neq j$ take $(H,S,\tau)$ to be the partially labelled graph on two disconnected vertices, with labels $i$ and $j$ respectiveely. From Remark [ref] we have
+    for $s = 0,...,m$. For the second assertion, when $i\neq j$ take $(H,S,\tau)$ to be the partially labelled graph on two disconnected vertices, with labels $i$ and $j$ respectiveely. From Remark \ref{rem:ls-approx-def} we have
     $$
         \langle X_{i,j},\bbJ \rangle = \pseudo p_{H,S,\tau}(x,\bG) = \pi(i)\pi(j)n^2.
     $$
@@ -107,13 +107,13 @@ We can show that no $\check X$ satisfying the given constraints, and thus that t
 $$
     \sum_{s=0}^m c_s \nb{s}{\bG} = \sum_{s=0}^m c_s q_s(A_{\bG}) \triangleq f(A_{\bG})
 $$
-for some polynomial $f \in \bbR[x]$ of degree $m$. Because $f(A_{\bG})$ is a scalar polynomial in $A_{\bG}$, its eigenvalues are $f$ applied to those of $A_{\bG}$, and we get $f(A_{\bG}) \succeq 0$ with high probability \todo{no need for high probability here?} when $f$ is nonnegative on $\Spec A_{\bG}$. By Friedman's Theorem [ref], this spectrum consists of the `trivial' eigenvalue $d$, together with $n-1$ remaining eigenvalues whose magnitudes with high probability are at most $2\sqrt{d-1} + \eta$ for any $\eta > 0$. In fact, it is not necessary even that $f(d) > 0$. To see this, note that from our discussion above,
+for some polynomial $f \in \bbR[x]$ of degree $m$. Because $f(A_{\bG})$ is a scalar polynomial in $A_{\bG}$, its eigenvalues are $f$ applied to those of $A_{\bG}$, and we get $f(A_{\bG}) \succeq 0$ with high probability \todo{no need for high probability here?} when $f$ is nonnegative on $\Spec A_{\bG}$. By Friedman's Theorem \cite{friedman2008proo}, this spectrum consists of the `trivial' eigenvalue $d$, together with $n-1$ remaining eigenvalues whose magnitudes with high probability are at most $2\sqrt{d-1} + \eta$ for any $\eta > 0$. In fact, it is not necessary even that $f(d) > 0$. To see this, note that from our discussion above,
 $$
     \langle f\left(A_{\bG} - \tfrac{d}{n}\bbJ\right),\check X_{i,i} \rangle = \langle f(A_{\bG}) - \tfrac{f(d)}{n}\bbJ, \check X_{i,i} \rangle = \langle f(A_{\bG}), \check X_{i,i} \rangle
 $$
 for $i = 2,...,k$. Since $A_{\bG} - \tfrac{d}{n}\bbJ$ is the projection of $A$ away from the eigenspace corresponding to $d \in \Spec A_{\bG}$, $f(A_{\bG} - \tfrac{d}{n}\bbJ) \succeq 0$ whenever $f$ is positive on the remainder of the spectrum.
 
-From our discussion in Section [ref] of the preliminaries, for any $\lambda$
+From our discussion Section \ref{sec:prelims}, for any $\lambda$
 \begin{align*}
     \sum_{s=0}^m c_s \|q_s\|^2_{\km}\lambda^s 
     &= \sum_{s=0}^m \frac{\langle f,q_s \rangle_{km}}{\|q_s\|^2_{km}}\|q_s\|^2_{\km}\lambda^s \\
@@ -126,7 +126,7 @@ Call $\mu$ the largest even number less than or equal to $m$, and take
 $$
     f(x) = -q_\mu(x) + 2\mu\|q_\mu\|_{\km} + \epsilon
 $$
-which by Lemma [ref] is nonnegative on the desired interval. This choice of $f$ satisfies
+which by Lemma \ref{lem:NBW-poly-bound} is nonnegative on the desired interval. This choice of $f$ satisfies
 $$
     \langle f(x),\Phi_{\mu,\lambda}\rangle = -\|q_\mu\|^2_{\km}|\lambda|^\mu + 2\mu\|q_\mu\|_{\km} + \epsilon,
 $$
