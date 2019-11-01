@@ -53,9 +53,9 @@ Moreover, every such family of orthogonal polynomials has a \emph{quadrature rul
 
 We will also need the following lemma of Alon et al. \cite[Lemma 2.3]{alon2007non} bounding the size of the polynomials $q_s$:
 \begin{lemma}   \label{lem:NBW-poly-bound}
-    For any $\epsilon>0$,
+    For any $\epsilon>0$, there exists a $\delta>0$ such that for $x\in[-2\sqrt{d-1}-\delta,2\sqrt{d-1}+\delta]$,
     $$
-        |q_s(x)| \le 2(s+1)\sqrt{d(d-1)^{s-1}} = 2(s+1)\|q_s\|_{\km}
+        |q_s(x)| \le 2(s+1)\sqrt{d(d-1)^{s-1}} + \epsilon = 2(s+1)\|q_s\|_{\km} + \epsilon
     $$
     \todo{$\epsilon$? is $x$ in some range here?}
 \end{lemma}
@@ -104,7 +104,7 @@ We will need standard fact about reversible Markov chains. Let us maintain the n
 \subsection{Local Statistics in the Planted Model} % (fold)
 \label{sub:local_statistics_in_the_planted_model}
 
-The Local Statistics SDP that we are studying includes constraints that our pseudoexpectation match certain low-degree moments in the planted distribution. As we discussed in the technical overview, these correspond to the counts of partially labelled subgraphs in $G$. To set some notation, a \textit{partially labelled graph} $(H,S,\tau)$ is a graph $H = (V(H),E(H))$, together with a distinguished subset of vertices $S \subset V(H)$, and a labelling $\tau : S \to [k]$ of these distinguished vertices. We'll say a graph is \emph{unlabeled} or \textit{fully labelled} if $S = \emmptyset$ or $S = V(H)$, and in these cases abuse notation and simply refer to $H$ or $(H,\tau)$ respectively. An \textit{occurrence} of a partially labelled graph $(H,S,\tau)$ in a fully labelled one $(G,\sigma)$ is an injective homomorphism $H \to G$, that agrees on labels, i.e. vertices in $S$ are mapped to ones in $V(G)$ with the same label.
+The Local Statistics SDP that we are studying includes constraints that our pseudoexpectation match certain low-degree moments in the planted distribution. As we discussed in the technical overview, these correspond to the counts of partially labelled subgraphs in $G$. To set some notation, a \textit{partially labelled graph} $(H,S,\tau)$ is a graph $H = (V(H),E(H))$, together with a distinguished subset of vertices $S \subseteq V(H)$, and a labelling $\tau : S \to [k]$ of these distinguished vertices. We'll say a graph is \emph{unlabeled} or \textit{fully labelled} if $S = \emptyset$ or $S = V(H)$, and in these cases abuse notation and simply refer to $H$ or $(H,\tau)$ respectively. An \textit{occurrence} of a partially labelled graph $(H,S,\tau)$ in a fully labelled one $(G,\sigma)$ is an injective homomorphism $H \to G$, that agrees on labels, i.e. vertices in $S$ are mapped to ones in $V(G)$ with the same label.
 
 The low-degree moment constraints in $\LS(2,m)$ are exactly the counts of occurrences of partially labelled subgraphs $(H,S,\tau)$ in a graph $\bG \sim \Planted$, for which $H$ has at most $m$ edges and $2$ distinguished vertices. The following theorem characterizes these counts in any planted model; we will discuss it briefly below and remit the proof to the appendix.
 

@@ -1,6 +1,6 @@
 \section{The Regular Stochastic Block Model}
 
-This appendix is devoted to several results on the RSBM, including the first moment calculation from the first section and the expectation and concentration of non-backtracking walk counts between vertices of different types. We begin with some standard results on the asymptotics of various combinatorial quantities we'll encounter. 
+This appendix is devoted to several results on the RSBM,\todo{degree regular block model?} including the first moment calculation from the first section and the expectation and concentration of non-backtracking walk counts between vertices of different types. We begin with some standard results on the asymptotics of various combinatorial quantities we'll encounter. 
 
 From Stirling's approximation
 $$
@@ -32,7 +32,7 @@ The result will be a simple graph with probability $1- o_n(1)$, so any results t
         &\le \expected\Xi \\
         &= \frac{1}{(dn-1)!!} {n\choose \pi n} \prod_i {\pi(i)dn \choose \pi(i)M_{i,-}dn} \prod_{i<j}(\pi(i)M_{i,j}dn)! \prod_i (\pi(i)M_{i,i}dn - 1)!! \\
         &\le\poly(n) \exp\left(-\frac{dn}{2}\log dn + \frac{dn}{2} + nH(\pi) + \sum_i \pi(i)dn H(M_{i,-}) \right. \\
-        &\qquad\qquasd\qquad \left. +\, \frac{1}{2}\sum_{i,j}\left(\pi(i)M_{i,j}dn\log\pi(i)M_{i,j}dn - \pi(i)M_{i,j}dn\right)\right) \\
+        &\qquad\qquad\qquad \left. +\, \frac{1}{2}\sum_{i,j}\left(\pi(i)M_{i,j}dn\log\pi(i)M_{i,j}dn - \pi(i)M_{i,j}dn\right)\right) \\
         &=\poly(n)\exp n\left(\left(1-\frac{d}{2}\right)H(\pi) + \frac{d}{2}H(\pi,M)\right)
     \end{align*} 
     where $H(M,\pi) = \sum_i \pi(i)H(M_{i,-})$ is the average row entropy of $M$, under the stationary distribution. Thus, the probability that $\Xi >0$, i.e. that $\bG$ has any $M$-good partitions, is exponentially small whenever

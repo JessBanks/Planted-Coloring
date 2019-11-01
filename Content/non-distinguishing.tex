@@ -112,8 +112,8 @@ $$
 is a pseudoexpectation satisfying $\calB_k$. Equation [ref] guarantees PSD-ness, since we have multiplied a matrix and its transpose on the right and left respectively of a PSD matrix. Since $\pi$ is the first row of $F^{-1}$, we know $l_i = \pi(i)e$. On the other hand, $X$ is obtained by changing basis block-wise, the diagonal of $X$ depends only on the diagonals of $\bbJ$ and the $Y(\lambda_i)$, all of which are all ones, so
 \begin{align*}
     \diag X 
-    &= \diag\big\left((F^{-T}\otimes \1)\Diag\diag \check X (F^{-1}\otimes \1)\big\right) \\
-    &=\diag\big\left((F^{-T}\otimes \1) (F^{-1}\otimes \1)\big\right) \\
+    &= \diag\left((F^{-T}\otimes \1)\Diag\diag \check X (F^{-1}\otimes \1)\right) \\
+    &=\diag\left((F^{-T}\otimes \1) (F^{-1}\otimes \1)\right) \\
     &= \diag\left(F^{-T}F^{-1} \otimes \1\right) \\
     &= \diag\left(\Diag\pi \otimes \1\right) \\
     &= (\pi(1)e,...,\pi(k)e)
@@ -175,8 +175,8 @@ This completes the construction of our pseudoexpectation.
     Thus we can correct the inner product with $\bbJ$, and at the same time resolve the possible negativity of the eigenvalue $p(d)$, by passing to
     \begin{align*}
          \tilde Y(\lambda) 
-         &= \frac{1}{1 - \p(d)/n}\left(\1 - \bbJ/n\right)p(A_{\bG})\left(\1 - \bbJ/n\right) \\
-         &= \frac{1}{1 - p(d)/n}\big\left(p(A_{\bG}) - p(d)\bbJ/n\big\right);
+         &= \frac{1}{1 - p(d)/n}\left(\1 - \bbJ/n\right)p(A_{\bG})\left(\1 - \bbJ/n\right) \\
+         &= \frac{1}{1 - p(d)/n}\left(p(A_{\bG}) - p(d)\bbJ/n\right);
     \end{align*}
     since $\langle \nb{\bG}{s},\bbJ/n\rangle = q_s(d) = O(1)$ the result will still satisfy the inner product constraints with the matrices $\nb{\bG}{s}$ up to an additive $\pm \delta n$. This new matrix is certainly PSD, for instance by writing out $p(A_{\bG})$ in its eigenvalue basis, and observing that left and right multiplication by $(\1 - \bbJ/n)$ simply projects away the eigenspace of the $p(d)$ eigenvalue. Thus we can write the $\tilde Y(\lambda)_{u,v} = \alpha_u^T\alpha_v$ for some vectors $\alpha_1,...,\alpha_n \in \bbR^n$. The scale factor we applied above makes sure that for every $u$ that is not $(2\deg p + 1)$-bad, $\|\alpha_u\| = 1$, and being orthogonal to the all-ones matrix is equivalent to $\sum_u \alpha_u = 0$.
     

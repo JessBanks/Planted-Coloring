@@ -23,7 +23,7 @@ Let $\bG \sim \Planted$, and assume we had a viable pseudoexptation $\pseudo$ fo
 \begin{proof}
     For the first assertion, let $(H,S,\tau)$ be the path of length $s$ whose endpoints are labelled $i,j\in[k]$. Each \textit{self-avoiding} walk of length $s$ in $G$ is an occurrence of $H$, so from Lemma [ref]
     $$
-        \langle X_{i,j},\sa{s}{\bG}\rangle = \pseudo p_{H,S,\tau}(x,\bG) \imeq \pi(i)M_{i,j}^s \|q_s\|^2_{\km}.
+        \langle X_{i,j},\sa{s}{\bG}\rangle = \pseudo p_{H,S,\tau}(x,\bG) \simeq \pi(i)M_{i,j}^s \|q_s\|^2_{\km}.
     $$
     We can now use Lemma [ref] to replace the self-avoiding walk matrices $\sa{s}{\bG}$ with their non-backtracking counterparts. The matrix $X$ has diagonal elements $X_{(u,i),(u,i)} = \pseudo x_{u,i}^2 = \pseudo x_{i,u}$ by the Boolean constraint, and $\pseudo (x_{u,1} + \cdots + x_{u,k}) = 1$ by the Single Color constraint. By PSD-ness of $X$, every $\pseudo x_{u,i}^2 = \pseudo x_{u,i}$ is nonnegative, so each is between zero and one. It is a standard fact that the off-diagonal entries of such a PSD matrix have magnitude at most one, so from Lemma [ref]
     $$
@@ -78,8 +78,8 @@ We will think of $\check X$, analogous to $X$, as a $k\times k$ matrix of $n\tim
         \vdots & \ddots & \vdots \\
         \langle X_{k,1},\nb{s}{\bG}\rangle & \cdots & \langle X_{k,k},\nb{s}{\bG}\rangle 
         \end{pmatrix} F \\
-        &\simeq F^T \Diag(\pi)M^s F \cdot \|q_s\|^s_{\KM} n \\
-        &= F^T\Diag(\pi)F\Lambda^s \cdot \|q_s\|^s_{\KM}n \\
+        &\simeq F^T \Diag(\pi)M^s F \cdot \|q_s\|^s_{\km} n \\
+        &= F^T\Diag(\pi)F\Lambda^s \cdot \|q_s\|^s_{\km}n \\
         &= \Lambda^s \cdot \|q_s\|^s_{\km}n
     \end{align*}
     A parallel calculation gives us 

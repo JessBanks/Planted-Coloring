@@ -1,13 +1,13 @@
 \section{A Robust Algorithm for the Distinguishing Problem} \label{sec:robust}
 
-In this section, again fix a planted model $\planted$ with parameters $(d,k,M,\pi)$, and let $\kappa(n)$ be some slowly growing function of $n$. Assume that we observe a graph $\widetilde\bH$ on $n$ vertices, which we are promised was drawn from one of $\Null$ or $\Planted$ and then corrupted by $\kappa(n)$ adversarial edge insertions or deletions. Our goal is to decide, upon seeing $\widetilde\bH$, from which model the unperturbed graph $\bG$ was was sampled. We present an algorithm below that works for an appropriate regime of $\kappa$. 
+In this section, again fix a planted model $\Planted$ with parameters $(d,k,M,\pi)$, and let $\kappa(n)$ be some slowly growing function of $n$. Assume that we observe a graph $\widetilde\bH$ on $n$ vertices, which we are promised was drawn from one of $\Null$ or $\Planted$ and then corrupted by $\kappa(n)$ adversarial edge insertions or deletions. Our goal is to decide, upon seeing $\widetilde\bH$, from which model the unperturbed graph $\bG$ was was sampled. We present an algorithm below that works for an appropriate regime of $\kappa$. 
 
 \begin{algorithm}	\label{alg:robust}
 	Given a graph $\widetilde{\bH}$ and $m \in \bbN$ as input, do the following.  Delete all edges incident to vertices that have degree greater than $d$ in $\widetilde{\bH}$, and then greedily add edges connecting any vertices with degree less than $d$ to obtain a $d$-regular graph $\bH$. Run the distinguishing SDP \eqref{eq:full-sdp} at level $m$ on $\bH$ and output \textsc{null} if the SDP is infeasible, and \textsc{planted} otherwise.
 \end{algorithm}
 
 \begin{theorem}
-    Let $\delta$ be any positive constant. Supposing $\lambda^2_2(d-1) = 1+\delta$, there exist $\eps > 0$ satisfying $\kappa(n)\le\eps n$, and $m \in \bbN$, such that Algorithm \ref{alg:robust}, on input $\widetilde{\bH}$ and $m$, correctly distinguishes whether $\bG$ was drawn from $\Null$, or from $\planted$ with probability $1-o(1)$.
+    Let $\delta$ be any positive constant. Supposing $\lambda^2_2(d-1) = 1+\delta$, there exist $\eps > 0$ satisfying $\kappa(n)\le\eps n$, and $m \in \bbN$, such that Algorithm \ref{alg:robust}, on input $\widetilde{\bH}$ and $m$, correctly distinguishes whether $\bG$ was drawn from $\Null$, or from $\Planted$ with probability $1-o(1)$.
 \end{theorem}
 \begin{proof}
 	Note that $\bH$ is can be obtained by taking $\bG$ and making up to $\beta\eps n$ edge insertions and deletions for an absolute constant $\beta$. It suffices to show that (i) the SDP is feasible on $\bH$ as input if $\bG$ is drawn from the planted distribution, and (ii) the SDP is infeasible on $\bH$ as input if $\bG$ is drawn from the null distribution.
