@@ -52,10 +52,10 @@ $$
 % \end{proof}
 
 We will also need the following lemma of Alon et al. \cite[Lemma 2.3]{alon2007non} bounding the size of the polynomials $q_s$:
-\begin{lemma}   \label{lem:NBW-poly-bound}
-    For any $\epsilon>0$,
+\begin{lemma} \label{lem:NBW-poly-bound}
+    For any $\epsilon>0$, there exists a $\delta>0$ such that for $x\in[-2\sqrt{d-1}-\delta,2\sqrt{d-1}+\delta]$,
     $$
-        |q_s(x)| \le 2(s+1)\sqrt{d(d-1)^{s-1}} = 2(s+1)\|q_s\|_{\km}
+        |q_s(x)| \le 2(s+1)\sqrt{d(d-1)^{s-1}} + \epsilon = 2(s+1)\|q_s\|_{\km} + \epsilon
     $$
     \todo{$\epsilon$? is $x$ in some range here?}
 \end{lemma}
@@ -68,7 +68,7 @@ This is because the diagonal entries of $\nb{s}{G}\nb{t}{G}$ count pairs of non-
 
 Luckily for us, sparse random graphs have very few cycles. To make this precise, call a vertex \emph{bad} if it is at most $L$ steps from a cycle of length at most $C$. These are exactly the vertices for which the diagonal entries of $\nb{s}{G}\nb{t}{G}$ are nonzero, when $s+t < C+L$.
 
-\begin{lemma}
+\begin{lemma} \label{lem:bad-vtx}
     For any constant $C$ and $L$, with high probability any graph $\bG \sim \Planted$ has at most $O(\log n)$ bad vertices.
 \end{lemma}
 
@@ -78,18 +78,22 @@ $$
 $$
 for any $s,t=O(1)$. The second useful corollary is more or less that in random graphs we can use non-backtracking walks as a proxy for self-avoiding ones.
 
-\begin{lemma}
+\begin{lemma} \label{lem:sa-nb}
     Write $\sa{s}{\bG}$ for the $n\times n$ matrix whose $i,j$ entry is a one exactly when $i$ and $j$ are connected by a self-avoiding walk of length $s$. Then with high probability, for any graph $\bG \sim \Planted$,
     \begin{equation}
-        \left\| \sa{s}{\bG} - \nb{s}{\bG} \right\| = O(\log n)
+        \left\| \sa{s}{\bG} - \nb{s}{\bG} \right\|_F^2 = O(\log n)
     \end{equation}
 \end{lemma}
+
+\begin{proof}
+    Every row of both $\nb{\bG}{s}$ and $\sa{\bG}{s}$ have $L^2$ norm $O(1)$, and they differ only in the rows corresponding to, say, the $2s$-bad vertices, of which there are here are only $O(\log n)$.
+\end{proof}
 
 \subsection{Reversible Markov Chains}
 
 We will need standard fact about reversible Markov chains. Let us maintain the notation for $M$, its eigenvalues $1 = \lambda_1 \ge |\lambda_2| \ge \cdots \ge |\lambda_k|$, and its stationary distribution $\pi$. Recall from above that $Me = e$, $\pi^T M = \pi^T$, and the reversibility condition on $M$ means $\Diag(\pi)M$ is symmetric. 
 
-\begin{lemma}
+\begin{lemma} \label{lem:markov-ev}
     Let $F$ be the matrix of right eigenvectors, normalized so that the columns have unit norm (note that the first column of $F$ is, up to scaling, the all-ones vector). Then $F^{-1}\Diag(\pi) F = \1$.
 \end{lemma}
 
@@ -112,7 +116,7 @@ The low-degree moment constraints in $\LS(2,m)$ are exactly the counts of occurr
     Let $(H,S)$ be a connected graph on $O(1)$ edges, with distinguished vertices $S$. Define $C_{H,S,d}$ to be the number of occurrences of $(H,S)$ in an infinite $d$-regular tree in which some vertex in $S$ is mapped to the root. If $S = \emptyset$, choose some distinguished vertex arbitrarily---the count will be the same no matter which one is chosen. Finally, if $(H,S) = (H_1,S_1) \sqcup \cdots \sqcup (H_\ell,S_\ell)$ has $\ell$ connected components, take $C_{H,S,d} = C_{H_1,S_1} \cdots C_{H_\ell,S_\ell}$. We note for later use that if $H$ contains a cycle, $C_{H,S} = 0$, and if it is a path of length $s$ with endpoints distinguished, $C_{H,S} = \|q_s\|^s_{\km}$, the number of vertices at depth $s$ in the tree.
 \end{definition}
 
-\begin{theorem}[Local Statistics]
+\begin{theorem}[Local Statistics] \ref{thm:local-stats}
     If $(H,S,\tau)$ is a partially labelled graph with $O(1)$ edges, then in any planted model $\Planted_{d,k,M,\pi}$,
     \begin{enumerate}
         \item If $H$ is unlabelled, i.e. $S = \emptyset$, then $n^{-\ell} \expected p_{H,S,\tau}(\bx,\bG) \to C_{H,S,d}$
@@ -124,17 +128,17 @@ The low-degree moment constraints in $\LS(2,m)$ are exactly the counts of occurr
     and $p_{H,S,\tau}(\bx,\bG)$ enjoys concentration up to an additive $\pm o(n^\ell)$. We say that $\dist(\alpha,\beta) = \infty$ if these two vertices lie in disjoint components of $H$, and we interpret $M_{i,j}^\infty = \pi(j)$.
 \end{theorem}
 
-\begin{remark}
-    In our Local Statistics SDP [ref], we promised to formalize the symbol $\simeq$ appearing in the affine moment-matching constraints on the pseudoexpectation; let's do so now. Throughout the paper, fix a very small error tolerance $0 < \delta$, and write $\simeq_\ell$ to mean ``equal up to $\pm \delta n^\ell$''. Then the constraint for each partially labelled subgraph with $\ell$ connected components should read $\pseudo p_{H,S,\tau}(x,G) \simeq_\ell \expected p_{H,S,\tau}(\bx,\bG)$. We will write $\simeq$ instead of $\simeq_1$ whenever there is no chance for confusion. Finally, because we have defined our model quite rigidly, whenever $(H,S,\tau)$ consists of a single vertex with label $i\in [k]$, $p_{H,S,\tau}(\bx,\bG) = \pi(i)n$. Similarly when $(H,S)$ consists of two distinguished vertices with labels $i,j\in[k]$ respectively, $$
+\begin{remark} \label{rem:ls-approx-def}
+    In our Local Statistics SDP \ref{def:ls-alg}, we promised to formalize the symbol $\simeq$ appearing in the affine moment-matching constraints on the pseudoexpectation; let's do so now. Throughout the paper, fix a very small error tolerance $0 < \delta$, and write $\simeq_\ell$ to mean ``equal up to $\pm \delta n^\ell$''. Then the constraint for each partially labelled subgraph with $\ell$ connected components should read $\pseudo p_{H,S,\tau}(x,G) \simeq_\ell \expected p_{H,S,\tau}(\bx,\bG)$. We will write $\simeq$ instead of $\simeq_1$ whenever there is no chance for confusion. Finally, because we have defined our model quite rigidly, whenever $(H,S,\tau)$ consists of a single vertex with label $i\in [k]$, $p_{H,S,\tau}(\bx,\bG) = \pi(i)n$. Similarly when $(H,S)$ consists of two distinguished vertices with labels $i,j\in[k]$ respectively, $$
         p_{H,S,\tau}(\bx,\bG) = \begin{cases} \pi(i)\pi(j)n^2 &i\neq j \\
         \pi(i)^2n^2 - \pi(i)n &i=j \end{cases}
     $$
     and the moment-matching constraints in our SDP will accordingly include $=$ instead of $\simeq$.\todo{Should we restate the entire SDP here?}
 \end{remark}
 
-Let's take a moment and get a feel for Theorem [ref]. As a warm-up, consider the case when $(H,S,\tau)$ is a path of length $s \le m$ with the endpoints labelled as $i,j\in [k]$, and we simply need to count the number of pairs of vertices in $G$ with labels $i$ and $j$ respectively that are connected by a path of length $s$. As $d$-regular random graphs from models like $\Planted$ have very few short cycles, assume for simplicity that the girth is in fact much larger than $m$, so that the depth-$s$ neighborhood about every vertex is a tree. If we start from a vertex $i$ and follow a uniformly random edge, the parameter matrix $M$ from our model says that, on average at least, the probability of arriving at a vertex in group $j$ is roughly $M_{i,j}$, and similarly if we take $s$ (non-backtracking) steps, this probability is roughly $M^s_{i,j}$. There are $\pi(i) n$ starting vertices in group $i$, and $d(d-1)^{s-1}$ vertices at distance $s$ from any such vertex. 
+Let's take a moment and get a feel for Theorem \ref{thm:local-stats}. As a warm-up, consider the case when $(H,S,\tau)$ is a path of length $s \le m$ with the endpoints labelled as $i,j\in [k]$, and we simply need to count the number of pairs of vertices in $G$ with labels $i$ and $j$ respectively that are connected by a path of length $s$. As $d$-regular random graphs from models like $\Planted$ have very few short cycles, assume for simplicity that the girth is in fact much larger than $m$, so that the depth-$s$ neighborhood about every vertex is a tree. If we start from a vertex $i$ and follow a uniformly random edge, the parameter matrix $M$ from our model says that, on average at least, the probability of arriving at a vertex in group $j$ is roughly $M_{i,j}$, and similarly if we take $s$ (non-backtracking) steps, this probability is roughly $M^s_{i,j}$. There are $\pi(i) n$ starting vertices in group $i$, and $d(d-1)^{s-1}$ vertices at distance $s$ from any such vertex. 
 
-If $(H,S,\tau)$ is a tree in which the two distinguished vertices are at distance $s$, then we can enumerate occurrences of $(H,S,\tau)$ in $G$ by first choosing the image of the path connecting these two, and then counting the ways to place the remaining vertices. If we again assume that the girth is sufficiently large, it isn't too hard to see that the number of ways to do this second step is a constant independent of the number of ways to place the path, so we've reduced to the case above. The idea for the cases $|S| = 0,1$ is similar. We'll prove Theorem [ref] in Appendix [ref].
+If $(H,S,\tau)$ is a tree in which the two distinguished vertices are at distance $s$, then we can enumerate occurrences of $(H,S,\tau)$ in $G$ by first choosing the image of the path connecting these two, and then counting the ways to place the remaining vertices. If we again assume that the girth is sufficiently large, it isn't too hard to see that the number of ways to do this second step is a constant independent of the number of ways to place the path, so we've reduced to the case above. The idea for the cases $|S| = 0,1$ is similar. We'll prove Theorem \ref{thm:local-stats} in Appendix [ref].
 
 
 % subsection local_statististics_in_the_planted_model (end)

@@ -1,13 +1,13 @@
 \section{Interlude: Spectral Distinguishing} % (fold)
-\label{sec:interlude_spectral_distinguishing}
+\label{sec:spectral}
 
-Our argument in the previous section can be recast to prove Corollary [ref], namely that above the Kesten-Stigum threshold the spectrum of the adjacency matrix can also be used to distinguish the null and planted distributions. 
+Our argument in the previous section can be recast to prove Corollary \ref{corr:spec-distinguishing}, namely that above the Kesten-Stigum threshold the spectrum of the adjacency matrix can also be used to distinguish the null and planted distributions. 
 
 Let $(\bx,\bG) \sim \calP_{d,k,M,\pi}$, and write $\bX \triangleq \bx \bx^T$, and 
 $$
  \check \bX = (F^T \otimes \1)\bX (F \otimes \1) = (F^T \bx)(F^T\bx)^T \triangleq \check \bx \check \bx^T.
 $$ 
-Think of $\check \bX$ as a block matrix $(\bX_{i,j})_{i,j \in [k]}$, as we did $X$ in the previous section, and $\check \bx$ as a block vector $(\check \bx_i)_{i\in [k]}$. Applying Theorem [ref:local statistics] and repeating the calculations in Lemmas [ref] \textit{mutatis mutandis} with $\bX$ instead of $X$, we can show  that w.h.p.
+Think of $\check \bX$ as a block matrix $(\bX_{i,j})_{i,j \in [k]}$, as we did $X$ in the previous section, and $\check \bx$ as a block vector $(\check \bx_i)_{i\in [k]}$. Applying Theorem \ref{thm:local-stats} and repeating the calculations in Lemmas \ref{lem:sdp-affine} and \ref{lem:sdp-affine-check} \textit{mutatis mutandis} with $\bX$ instead of $X$, we can show  that w.h.p.
 $$
     \langle \check \bX_{i,j}, \nb{s}{\bG} \rangle \simeq \lambda_i \|q_s\|^2_{\km} n \text{ if $i=j$}
 $$
@@ -25,10 +25,10 @@ Now let $|\lambda_i|^2(d-1) > 1$. We can show that $A_{\bG}$ has an eigenvalue o
 $$
 \check\bx_i^T f(A_{\bG})\check\bx_i = \langle \check \bX_{i,i}, f(A_{\bG}) \rangle < 0
 $$ 
-for some polynomial $f(x)$ positive within $\pm o_n(1)$ of $(-2\sqrt{d-1},2\sqrt{d-1})$. The same polynomial from Section [ref] works here. As the $\check \bx_i$ are orthogonal, we get one distinct eigenvalue outside the bulk for each eigenvalue of $M$ for which $|\lambda_i|^2(d-1) > 1$.
+for some polynomial $f(x)$ positive within $\pm o_n(1)$ of $(-2\sqrt{d-1},2\sqrt{d-1})$. The same polynomial from Section \ref{sec:algo} works here. As the $\check \bx_i$ are orthogonal, we get one distinct eigenvalue outside the bulk for each eigenvalue of $M$ for which $|\lambda_i|^2(d-1) > 1$.
 
 \begin{remark}
-    To distinguish the null model from the planted one using the spectrum of $A_{\bG}$, simply return \textsc{planted} if $A_{\bG}$ has a single eigenvalue other than $d$ whose magnitude is bigger than $2\sqrt{d-1} + \delta$ for any error tolerance $\delta$ you choose, and \textsc{null} otherwise. Unfortunately, this distinguishing algorithm is not robust to adversarial edge insertions and deletions. For instance, given a graph $\bG \sim \Null$, the adversary can create a disjoint copy of $K_{d+1}$, the complete graph on $d+1$ vertices, whose eigenvalues are all $\pm d$. The spectrum of the perturbed graph is the disjoint union of $\pm d$ and the eigenvalues of the other component(s), so the algorithm will be fooled. \todo{Can you do this without disconnecting the graph? Can you move eigenvalues \textit{inside} the bulk?} We will show in Section [ref] that the Local Statistics SDP is robust to this kind of perturbation.
+    To distinguish the null model from the planted one using the spectrum of $A_{\bG}$, simply return \textsc{planted} if $A_{\bG}$ has a single eigenvalue other than $d$ whose magnitude is bigger than $2\sqrt{d-1} + \delta$ for any error tolerance $\delta$ you choose, and \textsc{null} otherwise. Unfortunately, this distinguishing algorithm is not robust to adversarial edge insertions and deletions. For instance, given a graph $\bG \sim \Null$, the adversary can create a disjoint copy of $K_{d+1}$, the complete graph on $d+1$ vertices, whose eigenvalues are all $\pm d$. The spectrum of the perturbed graph is the disjoint union of $\pm d$ and the eigenvalues of the other component(s), so the algorithm will be fooled. \todo{Can you do this without disconnecting the graph? Can you move eigenvalues \textit{inside} the bulk?} We will show in Section \ref{sec:robust} that the Local Statistics SDP is robust to this kind of perturbation.
 \end{remark}
 
 % section interlude_spectral_distinguishing (end)

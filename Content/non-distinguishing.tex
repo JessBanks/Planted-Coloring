@@ -1,7 +1,7 @@
 \section{Lower Bounds Against Local Statistics SDPs}
-\label{sec:lower bound}
+\label{sec:lower-bound}
 
-In this section, we prove the complementary bound to Theorem [ref], namely that if every one of $\lambda_2,...,\lambda_k$ has modulus at most $1/\sqrt{d-1}$ there exists some feasible solution to the Local Path Statistics SDP for every $m \ge 1$. We can specify a pseudoexpectation completely by way of an $(nk + 1)\times(nk+1)$ positive semidefinite matrix
+In this section, we prove the complementary bound to Theorem \ref{thm:main}, namely that if every one of $\lambda_2,...,\lambda_k$ has modulus at most $1/\sqrt{d-1}$ there exists some feasible solution to the Local Path Statistics SDP for every $m \ge 1$. We can specify a pseudoexpectation completely by way of an $(nk + 1)\times(nk+1)$ positive semidefinite matrix
 $$
    \begin{pmatrix} 1 & \pseudo x^T \\ \pseudo x & \pseudo x^Tx \end{pmatrix} 
     \triangleq \begin{pmatrix} 1 & l^T \\ l & X \end{pmatrix}.
@@ -10,9 +10,9 @@ After first writing down the general properties required of \textit{any} quadrat
 $$
     \pseudo p_{H,S,\tau}(x,G) \simeq \expected p_{H,S,\tau}(\bx,\bG)
 $$
-when $(H,S,\tau)$ is a path of length $0,...,m$ with labelled endpoints. Finally, we'll construct a pseudoexpectation matching these path moments by way of some elementary properties of the non-backtracking polynomials from Section [ref].
+when $(H,S,\tau)$ is a path of length $0,...,m$ with labelled endpoints. Finally, we'll construct a pseudoexpectation matching these path moments by way of some elementary properties of the non-backtracking polynomials from Section \ref{sec:prelims}.
 
-\begin{lemma}
+\begin{lemma} \ref{lem:bk-description}
     The set of $\calB_k$-satisfying pseudoexpectations is parameterized by pairs $(X,l) \in \bbR^{nk\times nk}\times \bbR^{nk}$ for which
     \begin{align}
         \begin{pmatrix} 1 & l^T \\ l& X \end{pmatrix} &\succeq 0 \\
@@ -36,7 +36,7 @@ when $(H,S,\tau)$ is a path of length $0,...,m$ with labelled endpoints. Finally
    Writing $X = \pseudo x^T x$ and $l = \pseudo x$ as above, the first constraint is equivalent to $l = \diag(X)$, since the degree-zero polynomials are just constants, and we can guarantee that the second holds for every polynomial of degree at most one by requiring it on $p = 1$ and $p= ,x_{v,j}$ for all $v$ and $j$. The Lemma is simply a concise packaging of these facts, using the block notation $X = (X_{u,v})_{u,v\in[n]}$ and $l = (l_u)_{u\in [n]}$.
 \end{proof}
 
-\begin{proposition}
+\begin{proposition} \label{prop:paths-suffice}
     It suffices to check
     $$
         \pseudo p_{H,S,\tau}(x,\bG) \simeq \expected p_{H,S,\tau}(\bx,\bG)
@@ -53,7 +53,7 @@ when $(H,S,\tau)$ is a path of length $0,...,m$ with labelled endpoints. Finally
     \end{equation}
     where here $\|\cdot \|$ means the coefficient-wise $L^1$ norm. To get a feel for this, in the case when $H$ is connected and its two distinguished vertices are connected by a path of length $s$, $\tfrac{C_{H,S,d}}{C_{P_s,d}}$ counts the number of ways to place the remainder of $H$ in a $d$-regular tree (or locally-treelike graph), once we commit to the locations of the two distinguished vertices and the path between them. 
 
-    Once we've shown \eqref{eq:poly-apx}, it is a standard SoS calculation that the Boolean constraint implies $|\pseudo x_{u,i}x_{v,j}| \le 1$ for every $u,v,i,j$. Thus, using the local statistic constraints from Proposition [ref], we will have
+    Once we've shown \eqref{eq:poly-apx}, it is a standard SoS calculation that the Boolean constraint implies $|\pseudo x_{u,i}x_{v,j}| \le 1$ for every $u,v,i,j$. Thus, using the local statistic constraints from Theorem \ref{thm:local-stats}, we will have
     $$
         \pseudo p_{H,S,\tau} \simeq_\ell n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}} \pseudo p_{P_s,i,j} \simeq_\ell n^\ell \pi(i)M_{i,j}^s C_{d,H,S}
     $$
@@ -64,7 +64,7 @@ when $(H,S,\tau)$ is a path of length $0,...,m$ with labelled endpoints. Finally
         &= \sum_{u,v} \left|n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}|\Phi_{P_s,u,v}| - |\Phi_{H,S,u,v}| \right|.
     \end{align*}
 
-    Let's first consider the case when $s < \infty$, so that the two distinguished vertices in $H$ are connected by some path of length at most $m$. Under this assumption $|\Phi_{H,S,u,v}| = O(n^{\ell - 1})$. Writing $U$ for the set of $m$-good vertices---which by Lemma [ref] has size at least $n - O(\log n)$---and recalling that every vertex has at most $O(1)$ vertices in its depth-$m$ neighborhood, we can restrict the above sum to run over only $u,v \in U$ and pay a cost of no more than $O(n^{\ell - 1}\log n) = o(n^\ell)$. Thus
+    Let's first consider the case when $s < \infty$, so that the two distinguished vertices in $H$ are connected by some path of length at most $m$. Under this assumption $|\Phi_{H,S,u,v}| = O(n^{\ell - 1})$. Writing $U$ for the set of $m$-good vertices---which by Lemma \ref{lem:bad-vtx} has size at least $n - O(\log n)$---and recalling that every vertex has at most $O(1)$ vertices in its depth-$m$ neighborhood, we can restrict the above sum to run over only $u,v \in U$ and pay a cost of no more than $O(n^{\ell - 1}\log n) = o(n^\ell)$. Thus
     \begin{align*}
         \left\| n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}} p_{P_s,i,j}(x) - p_{H,S,\tau}(x) \right\|_1 
         &= \sum_{u,v \in U} \left|n^{\ell - 1}\frac{C_{d,H,S}}{C_{d,P_s,T}}|\Phi_{P_s,u,v}| - |\Phi_{H,S,u,v}| \right| + o(n^\ell).
@@ -94,13 +94,13 @@ when $(H,S,\tau)$ is a path of length $0,...,m$ with labelled endpoints. Finally
     and again we can restrict the sum to the $m$-good vertices for the price of an additive $o(n^\ell)$, since we are omitting $O(n\log n)$ terms with magnitude $O(n^{\ell - 2})$. From this point the calculation continues more or less as it does above.
 \end{proof}
     
-Proposition [ref] in hand, we can now set about constructing a pseudoexpectation. We'll construct $l\in \bbR^{nk}$ and $X \in \bbR^{nk\times nk}$ so that (i) the $\calB_k$ constraints in Lemma [ref] hold, and (ii)
+Proposition \ref{prop:paths-suffice} in hand, we can now set about constructing a pseudoexpectation. We'll construct $l\in \bbR^{nk}$ and $X \in \bbR^{nk\times nk}$ so that (i) the $\calB_k$ constraints in Lemma \ref{lem:bk-description} hold, and (ii)
 \begin{align*}
     \langle e, l_i \rangle &= \pi(i)n \\
     \langle X_{i,j}, \nb{s}{\bG} \rangle &\simeq \pi(i)M_{i,j}^s n \\
     \langle X_{i,j}, \bbJ \rangle &= \pi(i)\pi(j)n^2. 
 \end{align*}
-It will simplify things immensely to use the same change of basis as we did in Section [ref]. Namely, letting $F$ be the matrix of right eigenvectors, we will produce a pair $\check l \in \bbR^{nk}$ and $\check X \in \bbR^{nk\times nk}$ so that $l = (F^{-T} \otimes \1) \check l$ and $X = (F^{-T}\otimes \1) \check X (F^{-1} \otimes \1)$ satisfy the above conditions. Recycling the relevant calculations from Section [ref], the above moment conditions translate to
+It will simplify things immensely to use the same change of basis as we did in Section \ref{sec:algo}. Namely, letting $F$ be the matrix of right eigenvectors, we will produce a pair $\check l \in \bbR^{nk}$ and $\check X \in \bbR^{nk\times nk}$ so that $l = (F^{-T} \otimes \1) \check l$ and $X = (F^{-T}\otimes \1) \check X (F^{-1} \otimes \1)$ satisfy the above conditions. Recycling the relevant calculations from Section \ref{sec:algo}, the above moment conditions translate to
 \begin{align*}
     \langle e, \check l_i \rangle &= \begin{cases} n & i = 1 \\ 0 & \text{else} \end{cases} \\
     \langle \check X_{i,j}, \nb{s}{\bG} \rangle &\simeq \lambda_i^s \|q_s\|^2_{\km} n \\
@@ -110,14 +110,14 @@ It will simplify things immensely to use the same change of basis as we did in S
 
 The key steps in designing $\check X$ are as follows.
 %
-\begin{proposition}
-    For every $m$ and every $\lambda$ such that $|\lambda|^2(d-1) < 1$, there exists a polynomial $y$ nonnegative on $(-2\sqrt{d-1},2\sqrt{d-1})$ and satisfying
+\begin{proposition} \label{prop:poly-exists}
+    For every $\epsilon$, every $m$, and every $\lambda$ such that $|\lambda|^2(d-1) < 1 - \epsilon$, there exists a polynomial $y$ nonnegative on $(-2\sqrt{d-1},2\sqrt{d-1})$ and satisfying
     $$
         \langle q_s,y \rangle_{\km} = \lambda^s\|q_s\|^2_{\km}.
     $$
 \end{proposition}
-\begin{proposition}
-    Let $\bG \sim \Null$. If there exists a polynomial $y$ meeting the conditions of Proposition [ref] for some $\lambda \in (-1,1)$, then there exists a PSD matrix $Y(\lambda)$ for which
+\begin{proposition} \label{prop:mat-exists}
+    Let $\bG \sim \Null$. If there exists a polynomial $y$ meeting the conditions of Proposition \ref{prop:poly-exists} for some $\lambda \in (-1,1)$, then there exists a PSD matrix $Y(\lambda)$ for which
     \begin{align*}
         Y(\lambda)_{u,u} &= 1 & & \forall u\in[n] \\
          \langle Y(\lambda), \nb{s}{\bG} \rangle &\simeq \lambda^s \|q_s\|^2_{\km}n & & \forall s \in[m] \\
@@ -145,7 +145,7 @@ $$
     \begin{pmatrix} 1 & l^T \\ l & X \end{pmatrix}
     \triangleq \begin{pmatrix} 1 & \\ & F^{-T}\otimes \1 \end{pmatrix} \begin{pmatrix} 1 & \check l^T \\ \check l & \check X \end{pmatrix} \begin{pmatrix} 1 & \\ & F^{-1}\otimes \1 \end{pmatrix}
 $$
-is a pseudoexpectation satisfying $\calB_k$. Equation [ref] guarantees PSD-ness, since we have multiplied a matrix and its transpose on the right and left respectively of a PSD matrix. Since $\pi$ is the first row of $F^{-1}$, we know $l_i = \pi(i)e$. On the other hand, $X$ is obtained by changing basis block-wise, the diagonal of $X$ depends only on the diagonals of $\bbJ$ and the $Y(\lambda_i)$, all of which are all ones, so
+is a pseudoexpectation satisfying $\calB_k$. The above construction guarantees PSD-ness, since we have multiplied a matrix and its transpose on the right and left respectively of a PSD matrix. Since $\pi$ is the first row of $F^{-1}$, we know $l_i = \pi(i)e$. On the other hand, $X$ is obtained by changing basis block-wise, the diagonal of $X$ depends only on the diagonals of $\bbJ$ and the $Y(\lambda_i)$, all of which are all ones, so
 \begin{align*}
     \diag X 
     &= \diag\big((F^{-T}\otimes \1)\Diag\diag \check X (F^{-1}\otimes \1)\big) \\
@@ -165,10 +165,10 @@ $$
 This completes the construction of our pseudoexpectation.
 
 \begin{remark}
-    By correctly setting the $\epsilon$ from Proposition [ref] and the global error tolerance $\delta$, we can once again choose $(\epsilon,\delta) = (a,b)$ with the property that whenever the $\LS(2,m)$ SDP is feasible $\delta = b$, it is feasible as well with $\delta = 2b$. Thus every one of the $\simeq$ constraints---i.e. those that depend on the observed graph $\bG$---are satisfied with slack $\Omega(n)$.
+    By correctly setting the $\epsilon$ from Proposition \ref{prop:poly-exists} and the global error tolerance $\delta$, we can once again choose $(\epsilon,\delta) = (a,b)$ with the property that whenever the $\LS(2,m)$ SDP is feasible $\delta = b$, it is feasible as well with $\delta = 2b$. Thus every one of the $\simeq$ constraints---i.e. those that depend on the observed graph $\bG$---are satisfied with slack $\Omega(n)$.
 \end{remark}
 
-\begin{proof}[Proof of Proposition 6.1]
+\begin{proof}[Proof of Proposition \ref{prop:poly-exists}]
     Such a polynomial $y$ is exactly of the form
     $$
         y = \sum_{s = 0}^m \lambda^s q_s + \text{terms with larger $q_s$'s}.
@@ -187,17 +187,17 @@ This completes the construction of our pseudoexpectation.
     $$
         \frac{1 - \lambda^2}{(d-1)\lambda^2 - \lambda x + 1} > 0 \qquad \forall |x| \le 2\sqrt{d-1},
     $$
-    so all we need to verify is that $\lambda^2(d-1) < 1$ ensures $\lambda^{p+2}(d-1)q_p - \lambda^{p+1}q_{p+1} \to_p 0$. This follows immediately from Lemma [ref], as $|q_p| \le 2p\sqrt{d(d-1)^p}$.
+    so all we need to verify is that $\lambda^2(d-1) < 1$ ensures $\lambda^{p+2}(d-1)q_p - \lambda^{p+1}q_{p+1} \to_p 0$. This follows immediately from Lemma \ref{lem:NBW-poly-bound}, as $|q_p| \le 2p\sqrt{d(d-1)^p}$.
 \end{proof}
 
-\begin{proof}[Proof of Proposition 6.***]
+\begin{proof}[Proof of Proposition \ref{prop:mat-exists}]
     Let $y$ be the polynomial guaranteed in the theorem statement; our strategy will be to modify the matrix $y(A_{\bG})$. First note that by expanding $y$ in the $q_s$ basis, we have
     $$
         y(A_{\bG}) = \sum_{s = 0}^m q_s(A_{\bG})\lambda^s + \cdots = \sum_{s=0}^m \nb{s}{\bG}\lambda^s + \cdots,
     $$
     so it is clear that $y(A_{\bG})$ satisfies the affine constraints against the $\nb{s}{\bG}$ matrices. Moreover, as $y$ is strictly positive on $[-2\sqrt{d-1},2\sqrt{d-1}]$, it is (by continuity) nonnegative on a constant size fattening of this interval, and by Friedman's theorem the spectrum of $A_{\bG}$ other than the eignevalue at $d$ is contained w.h.p. in such a set. Thus $y(A_{\bG})$ is positive, except perhaps the eigenvalue $y(d)$, which we will fix in a moment.
     
-    However, $y(A_{\bG})$ does not have the right inner product with the all ones matrix, and---unless $2\deg y + 1 < \girth(G)$---its diagonal entries need not be ones. Our corrective to these issues will exploit two fortunate facts. First, those diagonal entries different from one exactly correspond to the $(2\deg y + 1$)-bad vertices in $G$; from Lemma [ref] we know that there are at most $O(\log n)$ of these. Second, as $y$ is a scalar polynomial and $\bbJ$ commutes with $A_{\bG}$,
+    However, $y(A_{\bG})$ does not have the right inner product with the all ones matrix, and---unless $2\deg y + 1 < \girth(G)$---its diagonal entries need not be ones. Our corrective to these issues will exploit two fortunate facts. First, those diagonal entries different from one exactly correspond to the $(2\deg y + 1$)-bad vertices in $G$; from Lemma \ref{lem:bad-vtx} we know that there are at most $O(\log n)$ of these. Second, as $y$ is a scalar polynomial and $\bbJ$ commutes with $A_{\bG}$,
     $$
         \langle y (A_{\bG}),\bbJ/n \rangle = y(d) = O_n(1).
     $$
